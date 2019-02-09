@@ -1,0 +1,41 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cibuilds/hugo:latest
+    working_directory: ~/hugo
+    environment:
+      HUGO_BUILD_DIR: ~/hugo-public
+    steps:
+
+      # install git
+      - run: apk update && apk add git
+
+      # install asciidoctor
+      - run: apk update && apk add asciidoctor
+
+      # checkout the repository
+      - checkout
+
+      - run: cd $HUGO_BUILD_DIR
+
+      - run: git clone git@github.com:kenfinnigan/kenfinnigan.github.io.git website
+
+      - run: cd website && git checkout master && cd $working_directory
+
+      - run: HUGO_ENV=production hugo -v -d $HUGO_BUILD_DIR/website
+
+      - run:
+          name: test our generated HTML files
+          command: |
+            htmlproofer $HUGO_BUILD_DIR --allow-hash-href --check-html \
+            --empty-alt-ignore --disable-external
+
+      - run: git config --global user.name "Ken Finnigan" && git config --global user.email "ken@kenfinnigan.me"
+
+      - run: cd $HUGO_BUILD_DIR/website
+      - run: git add -A .
+      - run: git commit -m "CI: Build and deploy website updates"
+      - run: git push origin master --force
+
