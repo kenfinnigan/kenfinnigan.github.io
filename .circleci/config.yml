@@ -17,7 +17,8 @@ jobs:
       - run: apk update && apk add asciidoctor
 
       # checkout the repository
-      - checkout path=$CIRCLE_WORKING_DIRECTORY/develop
+      - run:
+          command: checkout path=$CIRCLE_WORKING_DIRECTORY/develop
 
       - run: cd $CIRCLE_WORKING_DIRECTORY
 
