@@ -16,15 +16,19 @@ jobs:
       # install asciidoctor
       - run: apk update && apk add asciidoctor
 
+      - run:
+          command: |
+            mkdir develop
+            cd develop
+
       # checkout the repository
-      - run: mkdir develop && cd develop
       - checkout
 
-      - run: cd $CIRCLE_WORKING_DIRECTORY
-
-      - run: git clone git@github.com:kenfinnigan/kenfinnigan.github.io.git public
-
-      - run: cd public && git checkout master && cd HUGO_BUILD_DIR
+      - run:
+          command: |
+            cd $CIRCLE_WORKING_DIRECTORY
+            git clone git@github.com:kenfinnigan/kenfinnigan.github.io.git public
+            cd public && git checkout master && cd HUGO_BUILD_DIR
 
       - run: HUGO_ENV=production hugo -v -d $HUGO_OUTPUT_DIR
 
@@ -36,8 +40,10 @@ jobs:
 
       - run: git config --global user.name "Ken Finnigan" && git config --global user.email "ken@kenfinnigan.me"
 
-      - run: cd $HUGO_OUTPUT_DIR
-      - run: git add -A .
-      - run: git commit -m "CI- Build and deploy website updates"
-      - run: git push origin master --force
+      - run:
+          command: |
+            cd $HUGO_OUTPUT_DIR
+            git add -A .
+            git commit -m "CI- Build and deploy website updates"
+            git push origin master --force
 
