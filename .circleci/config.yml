@@ -18,7 +18,7 @@ jobs:
       # checkout the repository
       - checkout
 
-      - run: cd $HUGO_BUILD_DIR
+      - run: mkdir $HUGO_BUILD_DIR && cd $HUGO_BUILD_DIR
 
       - run: git clone git@github.com:kenfinnigan/kenfinnigan.github.io.git website
 
