@@ -1,0 +1,5 @@
+---
+title: "Ken's Blog"
+description: "musings of a stationary nomad"
+---
+Welcome to my blog on software, cloud, microservices, programming and other topics of interest to me.

@@ -1,0 +1,48 @@
+---
+title: "About"
+description: "software engineer, author, father, and hobby genealogist"
+---
+
+== About me
+
+image:/images/portrait.jpg[Ken Finnigan]
+
+I'm a Senior Principal Software Engineer at Red Hat
+with over 20 years experience with enterprises throughout the world.
+Currently I'm focused on microservices, cloud and in particular https://microprofile.io/[Eclipse MicroProfile].
+
+I'm now, mostly, a stationary nomad after growing up in Sydney, Australia.
+I've lived in London, Brussels, Eindhoven, Dublin, to name a few.
+Currently I'm stationary in Boston, USA,
+with my wife of nearly 12 years, Erin, and our two boys.
+
+I'm a father of two boys that constantly keep me on my toes,
+but also say the darndest things all the time!
+
+When I have some free time,
+I enjoy researching family trees of my wife's, mine, and friends.
+Sometimes you find some very interesting members of a family in the past!
+
+=== Open Source
+
+I can be found working on open source projects like https://microprofile.io/[Eclipse MicroProfile],
+https://github.com/smallrye[SmallRye], https://github.com/thorntail[Thorntail], and others.
+
+Previously I've contributed to projects such as https://github.com/liveoak-io[LiveOak],
+https://github.com/gatein/gatein-portal[GateIn], https://github.com/portletbridge[Portlet Bridge],
+and https://github.com/seam[JBoss Seam].
+
+=== Author
+
+Most recently I finished writing https://www.manning.com/books/enterprise-java-microservices[Enterprise Java Microservices] for Manning.
+
+Previously I've written the following books:
+
+https://www.amazon.com/JBoss-Weld-CDI-Java-Platform/dp/1782160183[JBoss Weld CDI for Java Platform]
+
+https://www.amazon.com/GateIn-Cookbook-Ken-Finnigan/dp/1849518629[GateIn Cookbook]
+
+=== How to find me
+
+I'm on twitter (https://twitter.com/kenfinnigan[@kenfinnigan]), on IRC at freenode as kenfinnigan,
+and can be reached via email (ken@kenfinnigan.me).
