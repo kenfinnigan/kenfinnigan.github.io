@@ -1,8 +1,7 @@
 ---
 title: "Introduction"
-date: 2019-02-08T20:54:25-05:00
+date: 2019-02-09T20:54:25-05:00
 show_reading_time: false
-draft: true
 ---
 
 It's definitely weird to think that this is the first time I will have had a personal blog in the over 20
