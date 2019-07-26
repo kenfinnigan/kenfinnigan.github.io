@@ -9,7 +9,7 @@ image:/images/portrait.jpg[Ken Finnigan]
 
 I'm a Senior Principal Software Engineer at Red Hat
 with over 20 years experience with enterprises throughout the world.
-Currently I'm focused on microservices, cloud and in particular https://microprofile.io/[Eclipse MicroProfile].
+Currently I'm focused on microservices, cloud, and in particular https://microprofile.io/[Eclipse MicroProfile].
 
 I'm now, mostly, a stationary nomad after growing up in Sydney, Australia.
 I've lived in London, Brussels, Eindhoven, Dublin, to name a few.
@@ -26,15 +26,17 @@ Sometimes you find some very interesting members of a family in the past!
 === Open Source
 
 I can be found working on open source projects like https://microprofile.io/[Eclipse MicroProfile],
-https://github.com/smallrye[SmallRye], https://github.com/thorntail[Thorntail], and others.
+https://github.com/smallrye[SmallRye], https://github.com/quarkusio/quarkus[Quarkus], and others.
 
-Previously I've contributed to projects such as https://github.com/liveoak-io[LiveOak],
+Previously I've contributed to projects such as https://github.com/thorntail[Thorntail], https://github.com/liveoak-io[LiveOak],
 https://github.com/gatein/gatein-portal[GateIn], https://github.com/portletbridge[Portlet Bridge],
 and https://github.com/seam[JBoss Seam].
 
 === Author
 
-Most recently I finished writing https://www.manning.com/books/enterprise-java-microservices[Enterprise Java Microservices] for Manning.
+My most recent book is
+https://www.manning.com/books/enterprise-java-microservices?a_aid=enterprisejavamicroservices&a_bid=3ec69b50[Enterprise Java Microservices]
+from Manning.
 
 Previously I've written the following books:
 
@@ -44,5 +46,6 @@ https://www.amazon.com/GateIn-Cookbook-Ken-Finnigan/dp/1849518629[GateIn Cookboo
 
 === How to find me
 
-I'm on twitter (https://twitter.com/kenfinnigan[@kenfinnigan]), on IRC at freenode as kenfinnigan,
+I'm on twitter (https://twitter.com/kenfinnigan[@kenfinnigan]),
+on Gitter at https://gitter.im/smallrye-io/community[SmallRye] as @kenfinnigan,
 and can be reached via email (ken@kenfinnigan.me).
