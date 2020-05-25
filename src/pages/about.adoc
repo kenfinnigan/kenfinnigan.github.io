@@ -1,0 +1,48 @@
+== About me
+:page-title: About
+:page-description: software engineer, author, father, and hobby genealogist
+
+image::portrait.jpg[Ken Finnigan]
+
+I'm a Senior Principal Software Engineer at Red Hat
+with over 20 years experience with enterprises throughout the world.
+Currently I'm focused on microservices, cloud, and in particular https://microprofile.io/[Eclipse MicroProfile, window="_blank"].
+
+I'm now, mostly, a stationary nomad after growing up in Sydney, Australia.
+I've lived in London, Brussels, Eindhoven, Dublin, to name a few.
+Currently I'm stationary in Boston, USA,
+with my wife of over 13 years, Erin, and our two boys.
+
+I'm a father of two boys that constantly keep me on my toes,
+but also say the darndest things all the time!
+
+When I have some free time,
+I enjoy researching family trees of my wife's, mine, and friends.
+Sometimes you find some very interesting members of a family in the past!
+
+=== Open Source
+
+I can be found working on open source projects like https://microprofile.io/[Eclipse MicroProfile, window="_blank"],
+https://github.com/smallrye[SmallRye, window="_blank"], https://github.com/quarkusio/quarkus[Quarkus, window="_blank"], and others.
+
+Previously I've contributed to projects such as https://github.com/thorntail[Thorntail, window="_blank"], https://github.com/liveoak-io[LiveOak, window="_blank"],
+https://github.com/gatein/gatein-portal[GateIn, window="_blank"], https://github.com/portletbridge[Portlet Bridge, window="_blank"],
+and https://github.com/seam[JBoss Seam, window="_blank"].
+
+=== Author
+
+My most recent book is
+https://www.manning.com/books/enterprise-java-microservices?a_aid=enterprisejavamicroservices&a_bid=3ec69b50[Enterprise Java Microservices, window="_blank"]
+from Manning.
+
+Previously I've written the following books:
+
+https://www.amazon.com/JBoss-Weld-CDI-Java-Platform/dp/1782160183[JBoss Weld CDI for Java Platform, window="_blank"]
+
+https://www.amazon.com/GateIn-Cookbook-Ken-Finnigan/dp/1849518629[GateIn Cookbook, window="_blank"]
+
+=== How to find me
+
+I'm on twitter (https://twitter.com/kenfinnigan[@kenfinnigan, window="_blank"]),
+on Gitter at https://gitter.im/smallrye-io/community[SmallRye, window="_blank"] as @kenfinnigan,
+and can be reached via email (ken@kenfinnigan.me).

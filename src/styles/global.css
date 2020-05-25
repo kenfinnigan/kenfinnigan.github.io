@@ -1,0 +1,39 @@
+.reset {
+  all: initial;
+}
+
+header {
+  background-image: url(../images/kings-cross.jpg);
+}
+
+.nested-img img {
+  width: auto !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.twitter, .github, .linkedin {
+  fill: #BABABA;
+}
+
+.new-window {
+  opacity: 0;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.link-transition:hover .new-window{
+  opacity: 1;
+}
+
+.twitter:hover {
+  fill: #1da1f2;
+}
+
+.github:hover {
+  fill: #6cc644;
+}
+
+.linkedin:hover {
+  fill: #0077b5
+}

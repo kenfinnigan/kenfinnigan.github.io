@@ -1,0 +1,28 @@
+= Updated to Gatsby
+
+:page-date: 2020-05-25
+:page-summary: It's been over a year since I first created this blog with the goal of posting more...
+
+It's been over a year since I first created this blog with the goal of posting more.
+It went so well that I've no posts until now,
+and I decided to move the blog to https://www.gatsbyjs.org/[GatsbyJS, window="_blank"] as well!
+
+Though Hugo wasn't too bad to set up and get working with Asciidoc content,
+the theme I'd chosen didn't make it easier to figure out,
+and I didn't really understand how to tweak pieces if needed.
+
+I explored a few options in deciding on an alternative blog platform,
+as there are plenty to choose from.
+As I had some previous experience with https://reactjs.org/[React, window="_blank"],
+using https://www.gatsbyjs.org/[GatsbyJS, window="_blank"] appeared to be a good fit.
+Though I had no previous experience with https://graphql.org/[GraphQL, window="_blank"],
+it seemed like a good opportunity to learn it.
+It was a little challenging to get to grips with in the beginning,
+but the docs are very thorough, so I managed to work through any issues without much hassle.
+
+In a future post I will cover the details of getting Asciidoc transformation
+working with https://www.gatsbyjs.org/[GatsbyJS, window="_blank"].
+
+Overall I'm very happy with the choice,
+and have found it reasonably easy to write components in https://reactjs.org/[React, window="_blank"]
+and retrieve the data with https://graphql.org/[GraphQL, window="_blank"].

@@ -2,3 +2,5 @@
 *.iml
 .DS_Store
 public
+node_modules
+.cache

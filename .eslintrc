@@ -1,0 +1,30 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "env": {
+    "browser": true,
+    "es2020": true
+  },
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "globals": {
+    "graphql": true
+  },
+  "ignorePatterns": ["gatsby-config.js", "gatsby-node.js"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
+  },
+  "settings": {
+    "import/core-modules": [],
+    "react": {
+      "pragma": "React",
+      "version": "detect"
+    }
+  }
+}
