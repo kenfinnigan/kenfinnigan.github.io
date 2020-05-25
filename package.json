@@ -47,7 +47,6 @@
     "clean": "gatsby clean",
     "lint": "./node_modules/.bin/eslint --ext .js,.jsx --ignore-pattern public .",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
-    "deploy": "gatsby build && gh-pages -d public -b master"
   },
   "repository": {
     "type": "git",
