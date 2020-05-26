@@ -29,7 +29,8 @@ jobs:
         with:
           ref: master
           path: site
-      - run: cp -TR main/public/* site
+      - run: cp * ../../site
+        working-directory: main/public
       - run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
