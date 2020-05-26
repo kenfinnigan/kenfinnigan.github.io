@@ -34,7 +34,8 @@ jobs:
       - run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -m "Publish updated site" -A
+          git add -A
+          git commit -m "Publish updated site"
         working-directory: site
       - name: Push changes
         uses: ad-m/github-push-action@master
