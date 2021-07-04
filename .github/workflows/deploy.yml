@@ -27,7 +27,7 @@ jobs:
         working-directory: main
       - uses: actions/checkout@v2
         with:
-          ref: master
+          ref: gh-pages
           path: site
       - run: cp -r * ../../site
         working-directory: main/public
@@ -41,5 +41,5 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
-          branch: master
+          branch: gh-pages
           directory: site
