@@ -58,9 +58,9 @@ it was only Bob and I working on it.
 We had a great time bouncing ideas off each other and exploring different avenues.
 Over time interest in microservices and uber jars grew, and so did the project.
 
-=== Eclipse MicroProfile and SmallRye
+=== MicroProfile and SmallRye
 
-It was exciting to be involved in forming https://microprofile.io/[Eclipse MicroProfile, window="_blank"] in 2016, along with IBM, Tomitribe, Payara, and London Java Community (LJC).
+It was exciting to be involved in forming https://microprofile.io/[MicroProfile, window="_blank"] in 2016, along with IBM, Tomitribe, Payara, and London Java Community (LJC).
 https://microprofile.io/[MicroProfile, window="_blank"] was a great opportunity to learn more about microservices
 developed for the cloud and what they need above and beyond Java to be successful.
 We made some misteps over the years,
