@@ -13,6 +13,9 @@ work with today, and have met over the years.
 When I first joined Red Hat it was actually Amentra,
 as I started in the consulting organization which was later renamed to Red Hat Consulting.
 After almost a year of being a consultant, I wanted to get back to engineering and innovating.
+
+=== GateIn and PortletBridge
+
 I was lucky enough to have an opportunity to join the https://gatein.jboss.org/[GateIn, window="_blank"] portal project.
 My focus was on https://portletbridge.jboss.org/[PortletBridge, window="_blank"],
 a library enabling the use of JSF components in portlets.
@@ -24,6 +27,8 @@ There were many challenges as JSF and Portlets had very different lifecycles!
 One of my proudest moments was implementing a CDI scope for portlets,
 with some guidance from https://twitter.com/julienviet?lang=en[Julient Viet, window="_blank"],
 which later was added to the PortletBridge specification in the JCP.
+
+=== LiveOak
 
 When the popularity of portals waned,
 I was privileged, and honored, to work side by side with https://twitter.com/bobmcwhirter?lang=en[Bob McWhirter, window="_blank"]
@@ -42,6 +47,8 @@ I explored a few different things to work on.
 I ended up shifting to Developer Tooling for a short while working on WebIDEs,
 and an "all-in-one" installer to provide all the necessary tools for developing with containers.
 
+=== WildFly Swarm
+
 An opportunity came up to work with https://twitter.com/bobmcwhirter?lang=en[Bob McWhirter, window="_blank"] again
 for a new take on https://www.wildfly.org/[WildFly, window="_blank"] targeted at microservices.
 Thus https://thorntail.io/[WildFly Swarm, window="_blank"] was born.
@@ -50,6 +57,8 @@ I can't remember exactly how long,
 it was only Bob and I working on it.
 We had a great time bouncing ideas off each other and exploring different avenues.
 Over time interest in microservices and uber jars grew, and so did the project.
+
+=== Eclipse MicroProfile and SmallRye
 
 It was exciting to be involved in forming https://microprofile.io/[Eclipse MicroProfile, window="_blank"] in 2016, along with IBM, Tomitribe, Payara, and London Java Community (LJC).
 https://microprofile.io/[MicroProfile, window="_blank"] was a great opportunity to learn more about microservices
@@ -77,6 +86,8 @@ but once it started coming together it was so much easier to manage than the pre
 Also, each of the extensions, what we called "fractions", needed way less code than the previous model.
 The work was stopped when we first started the PoC for https://quarkus.io/[Quarkus, window="_blank"]!
 
+=== Quarkus
+
 It was a pleasure and a privelege to be a part of the small team working on https://quarkus.io/[Quarkus, window="_blank"] from day one.
 It was a little sad to be moving on from https://thorntail.io/[Thorntail, window="_blank"],
 but it was great to be able to build on all the learnings from https://thorntail.io/[Thorntail, window="_blank"]
@@ -97,6 +108,8 @@ with incredible enthusiasm.
 I've been very happy to see what he's achieved in the last year or so,
 and look forward to seeing what he continues to accomplish.
 
+=== Observability
+
 Over the last 12 to 18 months I've still been working on https://quarkus.io/[Quarkus, window="_blank"],
 focused on the observability aspects.
 It all started when https://twitter.com/ebullientworks[Erin Schnabel, window="_blank"] shared
@@ -111,6 +124,8 @@ My observability journey began with https://micrometer.io/[Micrometer, window="_
 but quickly included https://opentelemetry.io/[OpenTelemetry, window="_blank"] as most vendors in the space were contributing.
 I've not contributed much to https://opentelemetry.io/[OpenTelemetry, window="_blank"] so far,
 but it's been a tremendous and welcoming experience dealing with the community.
+
+=== Thanks to everyone
 
 As my time at Red Hat draws to a close, at least for now,
 I want to profusely thank https://twitter.com/nmcl?lang=en[Mark Little, window="_blank"] for his guidance
