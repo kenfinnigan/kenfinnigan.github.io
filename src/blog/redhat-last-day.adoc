@@ -74,6 +74,8 @@ There was some immediate community building with OpenAPI,
 but other projects took some time to garner additional contributors,
 while others remained purely as a vehicle for Red Hat to share implementations.
 
+=== Thorntail
+
 I think it was around the time we created https://smallrye.io/[SmallRye, window="_blank"],
 that WildFly Swarm was renamed to https://thorntail.io/[Thorntail, window="_blank"].
 It would've been so cool if we could have found somewhere to make a plushy version of the logo!
