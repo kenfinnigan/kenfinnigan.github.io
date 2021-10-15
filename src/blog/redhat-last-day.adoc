@@ -1,0 +1,145 @@
+= Last day at Red Hat
+
+:page-date: 2021-10-15
+:page-summary: After nearly 11 years at Red Hat it's time to move onto a new challenge...
+
+After nearly 11 years at https://www.redhat.com/en[Red Hat, window="_blank"] it's time to move onto a new challenge.
+With so many incredible memories over my time at Red Hat it was a tough decision to make.
+Especially when thinking about the amazing people I've worked with in the past,
+work with today, and have met over the years.
+
+== Red Hat experiences
+
+When I first joined Red Hat it was actually Amentra,
+as I started in the consulting organization which was later renamed to Red Hat Consulting.
+After almost a year of being a consultant, I wanted to get back to engineering and innovating.
+
+=== GateIn and PortletBridge
+
+I was lucky enough to have an opportunity to join the https://gatein.jboss.org/[GateIn, window="_blank"] portal project.
+My focus was on https://portletbridge.jboss.org/[PortletBridge, window="_blank"],
+a library enabling the use of JSF components in portlets.
+Most of the work involved working with the https://richfaces.jboss.org/[RichFaces, window="_blank"] project
+to fix and verify as many components as possible worked in portlets.
+If memory serves,
+we were able to get it from about 70-80 components working to all 100+ components.
+There were many challenges as JSF and Portlets had very different lifecycles!
+One of my proudest moments was implementing a CDI scope for portlets,
+with some guidance from https://twitter.com/julienviet?lang=en[Julient Viet, window="_blank"],
+which later was added to the PortletBridge specification in the JCP.
+
+=== LiveOak
+
+When the popularity of portals waned,
+I was privileged, and honored, to work side by side with https://twitter.com/bobmcwhirter?lang=en[Bob McWhirter, window="_blank"]
+to define an architecture for an MBaaS (Mobile backend as a service) built on top of https://netty.io/[Netty, window="_blank"].
+We called the project https://github.com/liveoak-io[LiveOak, window="_blank"].
+It was some of the most challenging engineering work I've ever done,
+but also extremely fulfilling to see it come together.
+We had some great ideas around representing everything as an URL addressable resource,
+even databases!
+
+We worked on LiveOak for a couple of years until Red Hat bought FeedHenry.
+It was a very sad day for me when LiveOak was shuttered,
+I really felt it had a chance to be something big.
+After LiveOak,
+I explored a few different things to work on.
+I ended up shifting to Developer Tooling for a short while working on WebIDEs,
+and an "all-in-one" installer to provide all the necessary tools for developing with containers.
+
+=== WildFly Swarm
+
+An opportunity came up to work with https://twitter.com/bobmcwhirter?lang=en[Bob McWhirter, window="_blank"] again
+for a new take on https://www.wildfly.org/[WildFly, window="_blank"] targeted at microservices.
+Thus https://thorntail.io/[WildFly Swarm, window="_blank"] was born.
+For at least the first 6 months,
+I can't remember exactly how long,
+it was only Bob and I working on it.
+We had a great time bouncing ideas off each other and exploring different avenues.
+Over time interest in microservices and uber jars grew, and so did the project.
+
+=== Eclipse MicroProfile and SmallRye
+
+It was exciting to be involved in forming https://microprofile.io/[Eclipse MicroProfile, window="_blank"] in 2016, along with IBM, Tomitribe, Payara, and London Java Community (LJC).
+https://microprofile.io/[MicroProfile, window="_blank"] was a great opportunity to learn more about microservices
+developed for the cloud and what they need above and beyond Java to be successful.
+We made some misteps over the years,
+but hopefully continue to learn and grow from them.
+With the desire for https://www.wildfly.org/[WildFly, window="_blank"] to also include https://microprofile.io/[MicroProfile, window="_blank"],
+there was an opportunity to have re-use between https://www.wildfly.org/[WildFly, window="_blank"] and
+https://thorntail.io/[WildFly Swarm, window="_blank"].
+I pushed hard for the creation of https://smallrye.io/[SmallRye, window="_blank"] as a shared home for
+https://microprofile.io/[MicroProfile, window="_blank"] implementations.
+There was some immediate community building with OpenAPI,
+but other projects took some time to garner additional contributors,
+while others remained purely as a vehicle for Red Hat to share implementations.
+
+=== Thorntail
+
+I think it was around the time we created https://smallrye.io/[SmallRye, window="_blank"],
+that WildFly Swarm was renamed to https://thorntail.io/[Thorntail, window="_blank"].
+It would've been so cool if we could have found somewhere to make a plushy version of the logo!
+No such luck unfortunately.
+
+In early 2018 I'd spent a few months completely re-architecting https://thorntail.io/[Thorntail, window="_blank"]
+to have CDI at the very core of the runtime.
+It was tricky to figure out the right pieces initially,
+but once it started coming together it was so much easier to manage than the previous model.
+Also, each of the extensions, what we called "fractions", needed way less code than the previous model.
+The work was stopped when we first started the PoC for https://quarkus.io/[Quarkus, window="_blank"]!
+
+=== Quarkus
+
+It was a pleasure and a privelege to be a part of the small team working on https://quarkus.io/[Quarkus, window="_blank"] from day one.
+It was a little sad to be moving on from https://thorntail.io/[Thorntail, window="_blank"],
+but it was great to be able to build on all the learnings from https://thorntail.io/[Thorntail, window="_blank"]
+and combine it with AOT (Ahead of Time compilation) in https://quarkus.io/[Quarkus, window="_blank"].
+
+Having worked on https://quarkus.io/[Quarkus, window="_blank"] for a while,
+I had the pleasure of handing over https://thorntail.io/[Thorntail, window="_blank"]
+to https://twitter.com/_ladicek?lang=en[Ladislav Thon, window="_blank"].
+It wasn't the easiest for him to take on a project he knew would end one day,
+but he did so with distinction.
+
+After a couple of years of working on https://quarkus.io/[Quarkus, window="_blank"],
+https://smallrye.io/[SmallRye, window="_blank"], and https://microprofile.io/[MicroProfile, window="_blank"],
+it was time to hand over the reins of being the Technical Architect for Red Hat at MicroProfile.
+https://twitter.com/radcortez?lang=en[Roberto Cortez, window="_blank"] jumped in to take over
+https://smallrye.io/[SmallRye, window="_blank"] and https://microprofile.io/[MicroProfile, window="_blank"]
+with incredible enthusiasm.
+I've been very happy to see what he's achieved in the last year or so,
+and look forward to seeing what he continues to accomplish.
+
+=== Observability
+
+Over the last 12 to 18 months I've still been working on https://quarkus.io/[Quarkus, window="_blank"],
+focused on the observability aspects.
+It all started when https://twitter.com/ebullientworks[Erin Schnabel, window="_blank"] shared
+concerns with MicroProfile Metrics and how https://micrometer.io/[Micrometer, window="_blank"]
+is a mature library for metrics better suited to what SREs need to monitor Java applications.
+I can't thank Erin enough
+for opening my eyes to look beyond what might be more familiar to find gems from the wider ecosystem.
+Erin brings energy and enthusiasm to her work
+that is infectious!
+
+My observability journey began with https://micrometer.io/[Micrometer, window="_blank"],
+but quickly included https://opentelemetry.io/[OpenTelemetry, window="_blank"] as most vendors in the space were contributing.
+I've not contributed much to https://opentelemetry.io/[OpenTelemetry, window="_blank"] so far,
+but it's been a tremendous and welcoming experience dealing with the community.
+
+=== Thanks to everyone
+
+As my time at Red Hat draws to a close, at least for now,
+I want to profusely thank https://twitter.com/nmcl?lang=en[Mark Little, window="_blank"] for his guidance
+and mentorship over the years.
+I look forward to continuing our relationship,
+hopefully catching up at a conference at some point!
+I also want to thank all my managers over the years for helping to guide my growth,
+as well as all the fantastic team members I've had the pleasure to work with.
+
+I want to wish everyone on the https://quarkus.io/[Quarkus, window="_blank"] team continued success in the years ahead.
+
+== What's next?
+
+I will have a short break after Red Hat before beginning a new journey.
+Where I'm heading and what I'm up to will be for another post in the near future!
