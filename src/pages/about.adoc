@@ -4,9 +4,10 @@
 
 image::portrait.png[Ken Finnigan]
 
-I'm a Senior Principal Software Engineer at Red Hat
-with over 20 years experience with enterprises throughout the world.
-Currently I'm focused on observability on Kubernetes, particularly https://github.com/quarkusio/quarkus[Quarkus, window="_blank"].
+I'm a Senior Principal Software Engineer at Workday
+with over 25 years experience with enterprises throughout the world.
+I'm currently working on improving observability at Workday.
+Previously, I was at Red Hat for 11 years founding open source projects in middleware.
 
 I'm now, mostly, a stationary nomad after growing up in Sydney, Australia.
 I've lived in London, Brussels, Eindhoven, Dublin, to name a few.
