@@ -34,9 +34,8 @@ and https://github.com/seam[JBoss Seam, window="_blank"].
 
 === Author
 
-My most recent book is
-https://www.manning.com/books/kubernetes-native-microservices-with-quarkus-and-microprofile?utm_source=enterprisejavamicroservices&utm_medium=affiliate&utm_campaign=book_clingan_kubernetes_11_3_20&a_aid=enterprisejavamicroservices&a_bid=52b1302b[Kubernetes Native Microservices with Quarkus, and MicroProfile, window="_blank"]
-from Manning.
+My most recent books are https://oreil.ly/HcjbR[Reactive Systems in Java, window="_blank"], and
+https://www.manning.com/books/kubernetes-native-microservices-with-quarkus-and-microprofile?utm_source=enterprisejavamicroservices&utm_medium=affiliate&utm_campaign=book_clingan_kubernetes_11_3_20&a_aid=enterprisejavamicroservices&a_bid=52b1302b[Kubernetes Native Microservices with Quarkus, and MicroProfile, window="_blank"].
 
 Previously, I've written the following books:
 
