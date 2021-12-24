@@ -73,17 +73,6 @@ module.exports = {
         },
       },
     },
-    {
-      resolve: `gatsby-plugin-eslint`,
-      options: {
-        // Gatsby required rules directory
-        rulePaths: [gatsbyRequiredRules],
-        // Default settings that may be ommitted or customized
-        stages: ["develop"],
-        extensions: ["js", "jsx", "ts", "tsx"],
-        exclude: ["node_modules", "bower_components", ".cache", "public"],
-      },
-    },
     `gatsby-transformer-asciidoc`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-image`,
