@@ -1,0 +1,43 @@
+= The new journey!
+
+:page-date: 2021-12-23
+:page-summary: I'm now almost two months into my new journey, and it's time to provide an update!...
+
+I'm now almost two months into my new journey, and it's time to provide an update!
+
+== Where am I now?
+
+For those of you who have not already heard, I'm now at https://www.workday.com/[Workday, window="_blank"].
+My current role focuses on observability for the service teams developing SaaS applications and their related components.
+
+At the moment,
+I'm investigating and learning about SLOs and SLIs.
+As part of the work,
+I'm exploring https://openslo.com/[OpenSLO, window="_blank"] and
+https://sloth.dev/[Sloth, window="_blank"].
+
+== The first two months
+
+It's been an exhausting but also exciting first couple of months.
+There are many things I have learned about the existing observability systems and the current plans for improvements.
+However, there are also many things I have yet to learn.
+
+A tricky aspect of my learning journey to date is finding context for previous decisions.
+Context is crucial to understanding previous decisions and the current state of a system based on those decisions.
+
+I've enjoyed the opportunity to meet so many amazing people in such a short time,
+both within the group I'm in and across the whole organization.
+It's been wonderful experiencing how https://www.workday.com/[Workday, window="_blank"] does
+https://www.workday.com/en-us/company/about-workday/belonging-and-diversity.html?wdid=enus_ws_bdsol_wdnotice_wd_wd_web_19.1037[value inclusion,
+belonging, and equity (VIBE), window="_blank"].
+
+== What will the future bring?
+
+For now, continued learning and growth! Interspersed with the occasional rabbit hole of information I end up in.
+
+I'm still contributing to open source, though less on the code side at present.
+Two projects of present interest are https://github.com/cncf/tag-observability[CNCF TAG for Observability, window="_blank]" and https://opentelemetry.io/[OpenTelemetry, window="_blank"],
+though I anticipate additional projects soon.
+These two projects, in their way, are great for learning and utilizing the various parts of observability.
+
+I look forward to continuing my journey into observability and its many varied aspects.
