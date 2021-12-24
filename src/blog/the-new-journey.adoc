@@ -36,7 +36,7 @@ belonging, and equity (VIBE), window="_blank"].
 For now, continued learning and growth! Interspersed with the occasional rabbit hole of information I end up in.
 
 I'm still contributing to open source, though less on the code side at present.
-Two projects of present interest are https://github.com/cncf/tag-observability[CNCF TAG for Observability, window="_blank]" and https://opentelemetry.io/[OpenTelemetry, window="_blank"],
+Two projects of present interest are https://github.com/cncf/tag-observability[CNCF TAG for Observability, window="_blank"] and https://opentelemetry.io/[OpenTelemetry, window="_blank"],
 though I anticipate additional projects soon.
 These two projects, in their way, are great for learning and utilizing the various parts of observability.
 
