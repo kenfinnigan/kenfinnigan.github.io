@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 
-import SEO from "./seo"
+import Seo from "./seo"
 import Header from "./header"
 import Footer from "./footer"
 
@@ -19,7 +19,7 @@ const Layout = ({ pageTitle, pageDescription, pathName, children }) => {
 
   return (
     <>
-      <SEO title={pageTitle} description={pageDescription} pathName={pathName} />
+      <Seo title={pageTitle} description={pageDescription} pathName={pathName} />
       <Header pageTitle={pageTitle}
         pageDescription={pageDescription}
         siteAuthor={data.site.siteMetadata.author}
