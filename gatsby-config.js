@@ -14,7 +14,7 @@ const gatsbyRequiredRules = path.join(
 module.exports = {
   siteMetadata: {
     title: `Musings of a stationary nomad`,
-    description: `Personal blog of Ken Finnigan`,
+    description: `Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.`,
     author: `Ken Finnigan`,
     menuLinks: [
       {
