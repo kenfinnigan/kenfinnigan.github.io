@@ -49,7 +49,7 @@ export const pageQuery = graphql`
     allAsciidoc(
       filter: { fields: { blog: { eq: true } } }
       sort: { fields: [pageAttributes___date], order: DESC }
-      limit: 3
+      limit: 6
     ) {
       edges {
         node {
