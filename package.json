@@ -5,12 +5,12 @@
   "version": "1.0.0",
   "author": "Ken Finnigan <ken@kenfinnigan.me>",
   "dependencies": {
-    "gatsby": "^4.11.0",
+    "gatsby": "^4.11.2",
     "gatsby-plugin-google-gtag": "^4.11.0",
-    "gatsby-plugin-image": "^2.11.0",
+    "gatsby-plugin-image": "^2.11.1",
     "gatsby-plugin-react-helmet": "^5.11.0",
-    "gatsby-plugin-sharp": "^4.11.0",
-    "gatsby-source-filesystem": "^4.11.0",
+    "gatsby-plugin-sharp": "^4.11.1",
+    "gatsby-source-filesystem": "^4.11.1",
     "gatsby-transformer-asciidoc": "^3.11.0",
     "gatsby-transformer-sharp": "^4.11.0",
     "gray-matter": "^4.0.3",
@@ -20,7 +20,7 @@
     "react-helmet": "^6.0.0"
   },
   "devDependencies": {
-    "prettier": "^2.6.1"
+    "prettier": "^2.6.2"
   },
   "keywords": [
     "gatsby"
