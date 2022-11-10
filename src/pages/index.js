@@ -39,32 +39,30 @@ IndexPage.propTypes = {
   location: PropTypes.object,
 }
 
-export const pageQuery = graphql`
-  query SiteHomeQuery {
-    site {
-      siteMetadata {
-        title
-      }
+export const pageQuery = graphql`query SiteHomeQuery {
+  site {
+    siteMetadata {
+      title
     }
-    allAsciidoc(
-      filter: { fields: { blog: { eq: true } } }
-      sort: { fields: [pageAttributes___date], order: DESC }
-      limit: 6
-    ) {
-      edges {
-        node {
-          fields {
-            slug
-          }
-          document {
-            title
-          }
-          pageAttributes {
-            date(formatString: "MMMM DD, YYYY")
-            summary
-          }
+  }
+  allAsciidoc(
+    filter: {fields: {blog: {eq: true}}}
+    sort: {pageAttributes: {date: DESC}}
+    limit: 6
+  ) {
+    edges {
+      node {
+        fields {
+          slug
+        }
+        document {
+          title
+        }
+        pageAttributes {
+          date(formatString: "MMMM DD, YYYY")
+          summary
         }
       }
     }
   }
-`
+}`

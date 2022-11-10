@@ -37,28 +37,26 @@ BlogList.propTypes = {
   pageContext: PropTypes.object,
 }
 
-export const blogListQuery = graphql`
-  query blogListQuery($skip: Int!, $limit: Int!) {
-    allAsciidoc(
-      filter: { fields: { blog: { eq: true } } }
-      sort: { fields: [pageAttributes___date], order: DESC }
-      limit: $limit
-      skip: $skip
-    ) {
-      edges {
-        node {
-          fields {
-            slug
-          }
-          document {
-            title
-          }
-          pageAttributes {
-            date(formatString: "MMMM DD, YYYY")
-            summary
-          }
+export const blogListQuery = graphql`query blogListQuery($skip: Int!, $limit: Int!) {
+  allAsciidoc(
+    filter: {fields: {blog: {eq: true}}}
+    sort: {pageAttributes: {date: DESC}}
+    limit: $limit
+    skip: $skip
+  ) {
+    edges {
+      node {
+        fields {
+          slug
+        }
+        document {
+          title
+        }
+        pageAttributes {
+          date(formatString: "MMMM DD, YYYY")
+          summary
         }
       }
     }
   }
-`
+}`
