@@ -12,7 +12,7 @@ header {
   margin-right: auto;
 }
 
-.twitter, .github, .linkedin {
+.twitter, .github, .linkedin, .mastodon {
   fill: #BABABA;
 }
 
@@ -24,6 +24,10 @@ header {
 
 .link-transition:hover .new-window{
   opacity: 1;
+}
+
+.mastodon:hover {
+  fill: #2b90d9;
 }
 
 .twitter:hover {

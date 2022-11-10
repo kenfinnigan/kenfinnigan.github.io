@@ -28,6 +28,7 @@ module.exports = {
     ],
     siteUrl: `https://kenfinnigan.me/`,
     socialLinks: {
+      mastodon: `https://toot.community/@kenfinni`,
       twitter: `https://twitter.com/kenfinnigan`,
       linkedin: `https://linkedin.com/in/kenfinnigan`,
       github: `https://github.com/kenfinnigan`,
