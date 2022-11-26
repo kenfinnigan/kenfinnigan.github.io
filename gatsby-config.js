@@ -75,6 +75,7 @@ module.exports = {
       },
     },
     `gatsby-transformer-asciidoc`,
+    `gatsby-transformer-remark`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
