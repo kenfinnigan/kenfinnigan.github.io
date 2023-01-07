@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 07 Jan 2023 02:52:25 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[The new journey!]]></title><description><![CDATA[I'm now almost two months into my new journey, and it's time to provide an update!...]]></description><link>https://kenfinnigan.me/blog/the-new-journey/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/the-new-journey/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Thu, 23 Dec 2021 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m now almost two months into my new journey, and it&amp;#8217;s time to provide an update!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_where_am_i_now&quot;&gt;Where am I now?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For those of you who have not already heard, I&amp;#8217;m now at &lt;a href=&quot;https://www.workday.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Workday&lt;/a&gt;.
+My current role focuses on observability for the service teams developing SaaS applications and their related components.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;At the moment,
+I&amp;#8217;m investigating and learning about SLOs and SLIs.
+As part of the work,
+I&amp;#8217;m exploring &lt;a href=&quot;https://openslo.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenSLO&lt;/a&gt; and
+&lt;a href=&quot;https://sloth.dev/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Sloth&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_the_first_two_months&quot;&gt;The first two months&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It&amp;#8217;s been an exhausting but also exciting first couple of months.
+There are many things I have learned about the existing observability systems and the current plans for improvements.
+However, there are also many things I have yet to learn.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A tricky aspect of my learning journey to date is finding context for previous decisions.
+Context is crucial to understanding previous decisions and the current state of a system based on those decisions.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;ve enjoyed the opportunity to meet so many amazing people in such a short time,
+both within the group I&amp;#8217;m in and across the whole organization.
+It&amp;#8217;s been wonderful experiencing how &lt;a href=&quot;https://www.workday.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Workday&lt;/a&gt; does
+&lt;a href=&quot;https://www.workday.com/en-us/company/about-workday/belonging-and-diversity.html?wdid=enus_ws_bdsol_wdnotice_wd_wd_web_19.1037&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;value inclusion&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_what_will_the_future_bring&quot;&gt;What will the future bring?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For now, continued learning and growth! Interspersed with the occasional rabbit hole of information I end up in.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m still contributing to open source, though less on the code side at present.
+Two projects of present interest are &lt;a href=&quot;https://github.com/cncf/tag-observability&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;CNCF TAG for Observability&lt;/a&gt; and &lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt;,
+though I anticipate additional projects soon.
+These two projects, in their way, are great for learning and utilizing the various parts of observability.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I look forward to continuing my journey into observability and its many varied aspects.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Last day at Red Hat]]></title><description><![CDATA[After nearly 11 years at Red Hat it's time to move onto a new challenge...]]></description><link>https://kenfinnigan.me/blog/redhat-last-day/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/redhat-last-day/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Fri, 15 Oct 2021 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;After nearly 11 years at &lt;a href=&quot;https://www.redhat.com/en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Red Hat&lt;/a&gt; it&amp;#8217;s time to move onto a new challenge.
+With so many incredible memories over my time at Red Hat it was a tough decision to make.
+Especially when thinking about the amazing people I&amp;#8217;ve worked with in the past,
+work with today, and have met over the years.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_red_hat_experiences&quot;&gt;Red Hat experiences&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When I first joined Red Hat it was actually Amentra,
+as I started in the consulting organization which was later renamed to Red Hat Consulting.
+After almost a year of being a consultant, I wanted to get back to engineering and innovating.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;_gatein_and_portletbridge&quot;&gt;GateIn and PortletBridge&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I was lucky enough to have an opportunity to join the &lt;a href=&quot;https://gatein.jboss.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GateIn&lt;/a&gt; portal project.
+My focus was on &lt;a href=&quot;https://portletbridge.jboss.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;PortletBridge&lt;/a&gt;,
+a library enabling the use of JSF components in portlets.
+Most of the work involved working with the &lt;a href=&quot;https://richfaces.jboss.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;RichFaces&lt;/a&gt; project
+to fix and verify as many components as possible worked in portlets.
+If memory serves,
+we were able to get it from about 70-80 components working to all 100+ components.
+There were many challenges as JSF and Portlets had very different lifecycles!
+One of my proudest moments was implementing a CDI scope for portlets,
+with some guidance from &lt;a href=&quot;https://twitter.com/julienviet?lang=en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Julient Viet&lt;/a&gt;,
+which later was added to the PortletBridge specification in the JCP.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;_liveoak&quot;&gt;LiveOak&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When the popularity of portals waned,
+I was privileged, and honored, to work side by side with &lt;a href=&quot;https://twitter.com/bobmcwhirter?lang=en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Bob McWhirter&lt;/a&gt;
+to define an architecture for an MBaaS (Mobile backend as a service) built on top of &lt;a href=&quot;https://netty.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Netty&lt;/a&gt;.
+We called the project &lt;a href=&quot;https://github.com/liveoak-io&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;LiveOak&lt;/a&gt;.
+It was some of the most challenging engineering work I&amp;#8217;ve ever done,
+but also extremely fulfilling to see it come together.
+We had some great ideas around representing everything as an URL addressable resource,
+even databases!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We worked on LiveOak for a couple of years until Red Hat bought FeedHenry.
+It was a very sad day for me when LiveOak was shuttered,
+I really felt it had a chance to be something big.
+After LiveOak,
+I explored a few different things to work on.
+I ended up shifting to Developer Tooling for a short while working on WebIDEs,
+and an &quot;all-in-one&quot; installer to provide all the necessary tools for developing with containers.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;_wildfly_swarm&quot;&gt;WildFly Swarm&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;An opportunity came up to work with &lt;a href=&quot;https://twitter.com/bobmcwhirter?lang=en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Bob McWhirter&lt;/a&gt; again
+for a new take on &lt;a href=&quot;https://www.wildfly.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;WildFly&lt;/a&gt; targeted at microservices.
+Thus &lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;WildFly Swarm&lt;/a&gt; was born.
+For at least the first 6 months,
+I can&amp;#8217;t remember exactly how long,
+it was only Bob and I working on it.
+We had a great time bouncing ideas off each other and exploring different avenues.
+Over time interest in microservices and uber jars grew, and so did the project.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;_microprofile_and_smallrye&quot;&gt;MicroProfile and SmallRye&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It was exciting to be involved in forming &lt;a href=&quot;https://microprofile.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MicroProfile&lt;/a&gt; in 2016, along with IBM, Tomitribe, Payara, and London Java Community (LJC).
+&lt;a href=&quot;https://microprofile.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MicroProfile&lt;/a&gt; was a great opportunity to learn more about microservices
+developed for the cloud and what they need above and beyond Java to be successful.
+We made some misteps over the years,
+but hopefully continue to learn and grow from them.
+With the desire for &lt;a href=&quot;https://www.wildfly.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;WildFly&lt;/a&gt; to also include &lt;a href=&quot;https://microprofile.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MicroProfile&lt;/a&gt;,
+there was an opportunity to have re-use between &lt;a href=&quot;https://www.wildfly.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;WildFly&lt;/a&gt; and
+&lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;WildFly Swarm&lt;/a&gt;.
+I pushed hard for the creation of &lt;a href=&quot;https://smallrye.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SmallRye&lt;/a&gt; as a shared home for
+&lt;a href=&quot;https://microprofile.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MicroProfile&lt;/a&gt; implementations.
+There was some immediate community building with OpenAPI,
+but other projects took some time to garner additional contributors,
+while others remained purely as a vehicle for Red Hat to share implementations.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;_thorntail&quot;&gt;Thorntail&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I think it was around the time we created &lt;a href=&quot;https://smallrye.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SmallRye&lt;/a&gt;,
+that WildFly Swarm was renamed to &lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thorntail&lt;/a&gt;.
+It would&amp;#8217;ve been so cool if we could have found somewhere to make a plushy version of the logo!
+No such luck unfortunately.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In early 2018 I&amp;#8217;d spent a few months completely re-architecting &lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thorntail&lt;/a&gt;
+to have CDI at the very core of the runtime.
+It was tricky to figure out the right pieces initially,
+but once it started coming together it was so much easier to manage than the previous model.
+Also, each of the extensions, what we called &quot;fractions&quot;, needed way less code than the previous model.
+The work was stopped when we first started the PoC for &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt;!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;_quarkus&quot;&gt;Quarkus&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It was a pleasure and a privelege to be a part of the small team working on &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt; from day one.
+It was a little sad to be moving on from &lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thorntail&lt;/a&gt;,
+but it was great to be able to build on all the learnings from &lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thorntail&lt;/a&gt;
+and combine it with AOT (Ahead of Time compilation) in &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Having worked on &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt; for a while,
+I had the pleasure of handing over &lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thorntail&lt;/a&gt;
+to &lt;a href=&quot;https://twitter.com/_ladicek?lang=en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Ladislav Thon&lt;/a&gt;.
+It wasn&amp;#8217;t the easiest for him to take on a project he knew would end one day,
+but he did so with distinction.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;After a couple of years of working on &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt;,
+&lt;a href=&quot;https://smallrye.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SmallRye&lt;/a&gt;, and &lt;a href=&quot;https://microprofile.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MicroProfile&lt;/a&gt;,
+it was time to hand over the reins of being the Technical Architect for Red Hat at MicroProfile.
+&lt;a href=&quot;https://twitter.com/radcortez?lang=en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Roberto Cortez&lt;/a&gt; jumped in to take over
+&lt;a href=&quot;https://smallrye.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SmallRye&lt;/a&gt; and &lt;a href=&quot;https://microprofile.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MicroProfile&lt;/a&gt;
+with incredible enthusiasm.
+I&amp;#8217;ve been very happy to see what he&amp;#8217;s achieved in the last year or so,
+and look forward to seeing what he continues to accomplish.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;_observability&quot;&gt;Observability&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Over the last 12 to 18 months I&amp;#8217;ve still been working on &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt;,
+focused on the observability aspects.
+It all started when &lt;a href=&quot;https://twitter.com/ebullientworks&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Erin Schnabel&lt;/a&gt; shared
+concerns with MicroProfile Metrics and how &lt;a href=&quot;https://micrometer.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Micrometer&lt;/a&gt;
+is a mature library for metrics better suited to what SREs need to monitor Java applications.
+I can&amp;#8217;t thank Erin enough
+for opening my eyes to look beyond what might be more familiar to find gems from the wider ecosystem.
+Erin brings energy and enthusiasm to her work
+that is infectious!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;My observability journey began with &lt;a href=&quot;https://micrometer.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Micrometer&lt;/a&gt;,
+but quickly included &lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; as most vendors in the space were contributing.
+I&amp;#8217;ve not contributed much to &lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; so far,
+but it&amp;#8217;s been a tremendous and welcoming experience dealing with the community.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;_thanks_to_everyone&quot;&gt;Thanks to everyone&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As my time at Red Hat draws to a close, at least for now,
+I want to profusely thank &lt;a href=&quot;https://twitter.com/nmcl?lang=en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Mark Little&lt;/a&gt; for his guidance
+and mentorship over the years.
+I look forward to continuing our relationship,
+hopefully catching up at a conference at some point!
+I also want to thank all my managers over the years for helping to guide my growth,
+as well as all the fantastic team members I&amp;#8217;ve had the pleasure to work with.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I want to wish everyone on the &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt; team continued success in the years ahead.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_whats_next&quot;&gt;What&amp;#8217;s next?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I will have a short break after Red Hat before beginning a new journey.
+Where I&amp;#8217;m heading and what I&amp;#8217;m up to will be for another post in the near future!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Updated to Gatsby]]></title><description><![CDATA[It's been over a year since I first created this blog with the goal of posting more...]]></description><link>https://kenfinnigan.me/blog/updated-blog-to-gatsby/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/updated-blog-to-gatsby/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Mon, 25 May 2020 00:00:00 GMT</pubDate><content:encoded>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It&amp;#8217;s been over a year since I first created this blog with the goal of posting more.
+It went so well that I&amp;#8217;ve no posts until now,
+and I decided to move the blog to &lt;a href=&quot;https://www.gatsbyjs.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GatsbyJS&lt;/a&gt; as well!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Though Hugo wasn&amp;#8217;t too bad to set up and get working with Asciidoc content,
+the theme I&amp;#8217;d chosen didn&amp;#8217;t make it easier to figure out,
+and I didn&amp;#8217;t really understand how to tweak pieces if needed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I explored a few options in deciding on an alternative blog platform,
+as there are plenty to choose from.
+As I had some previous experience with &lt;a href=&quot;https://reactjs.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;React&lt;/a&gt;,
+using &lt;a href=&quot;https://www.gatsbyjs.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GatsbyJS&lt;/a&gt; appeared to be a good fit.
+Though I had no previous experience with &lt;a href=&quot;https://graphql.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GraphQL&lt;/a&gt;,
+it seemed like a good opportunity to learn it.
+It was a little challenging to get to grips with in the beginning,
+but the docs are very thorough, so I managed to work through any issues without much hassle.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In a future post I will cover the details of getting Asciidoc transformation
+working with &lt;a href=&quot;https://www.gatsbyjs.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GatsbyJS&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Overall I&amp;#8217;m very happy with the choice,
+and have found it reasonably easy to write components in &lt;a href=&quot;https://reactjs.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;React&lt;/a&gt;
+and retrieve the data with &lt;a href=&quot;https://graphql.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GraphQL&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Introduction]]></title><description><![CDATA[It's definitely weird to think that this is the first time I will have had a personal blog in the over 20 years that I've been working with technology of various kinds...]]></description><link>https://kenfinnigan.me/blog/introduction/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/introduction/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sat, 09 Feb 2019 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It&amp;#8217;s definitely weird to think that this is the first time I will have had a personal blog in the over 20
+years that I&amp;#8217;ve been working with technology of various kinds.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Maybe not so weird when I think that it&amp;#8217;s probably been on my &lt;strong&gt;todo list&lt;/strong&gt; for nearly 10 of those years.
+Possibly longer.
+It&amp;#8217;s actually been on my list so long I can&amp;#8217;t be sure how long it&amp;#8217;s been there!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So I finally pulled out the proverbial finger and put together a blog.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_a_bit_about_me&quot;&gt;A bit about me&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;ve been working on open source projects for about 10 years or so now,
+and I&amp;#8217;ve enjoyed every minute of being part of something in each of the communities that I&amp;#8217;ve participated in.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;What&amp;#8217;s more, being able to contribute to open source projects while working for Red Hat has been fantastic.
+It makes the job even more rewarding being able to participate openly with communities of different projects.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;ve always enjoyed playing with computers,
+and in particular programming on them.
+The first computer my family had in the early 80&amp;#8217;s was a Commodore 64.
+At the time it seemed like the games were so amazing!
+A couple of years after that we upgraded to the Commodore 128D,
+which is when I really began learning to program.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The first computer that was mine alone,
+I bought a second hand XT from Gateway with my pocket money.
+It was 1987 and it had a whopping 20MB HDD and 1280Kb RAM,
+and of course the wonderful 5 1/4&quot; floppy drive!
+My dad would bring home old versions of software they&amp;#8217;d been using at his work for me to play around with.
+I spent many hours installing dBase IV, Lotus 1-2-3, and the like.
+Continually switching through up to a dozen floppy disks to complete an installation.
+Those were the days!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_what_will_this_blog_be_about&quot;&gt;What will this blog be about?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Honestly, I&amp;#8217;m not entirely sure it will have a defined theme or group of topics right now.
+It will very much depend on how my interests change and what I might be working on at a specific time.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;What I can say is that there&amp;#8217;s definitely going to be topics on computing,
+most likely focusing around software development, microservices, and cloud.
+I may also talk about interesting genealogical things I find in doing my research.
+Some of which could cross over into software related to genealogy as well.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Lastly, you may find the odd post about family life or vacations we have taken.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_last_words&quot;&gt;Last words&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A lot of the above is a round about way of saying,
+&lt;em&gt;this blog won&amp;#8217;t be for everyone&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;At any rate,
+I hope from time to time you find interesting topics I&amp;#8217;ve discussed here.
+And if you do, please let me know.
+I may decide to talk deeper about those topics that others also find of interest.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Thanks for reading, Ken.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content:encoded></item></channel></rss>
