@@ -11,6 +11,9 @@ const Footer = ({ siteAuthor }) => {
         <Link to="/" className="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3">
           &copy; {new Date().getFullYear()} {siteAuthor}
         </Link>
+        <Link to="/rss.xml" className="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3">
+          RSS feed
+        </Link>
         <div>
           <SocialButtons />
         </div>
