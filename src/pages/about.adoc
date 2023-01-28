@@ -12,7 +12,7 @@ Previously, I was at Red Hat for 11 years founding open source projects in middl
 I'm now, mostly, a stationary nomad after growing up in Sydney, Australia.
 I've lived in London, Brussels, Eindhoven, Dublin, to name a few.
 Currently I'm stationary in Boston, USA,
-with my wife of over 14 years, Erin, and our two boys.
+with my wife of over 15 years, Erin, and our two boys.
 
 I'm a father of two boys that constantly keep me on my toes,
 but also say the darndest things all the time!
@@ -23,10 +23,11 @@ Sometimes you find some very interesting members of a family in the past!
 
 === Open Source
 
-I can be found working on open source projects: https://github.com/quarkusio/quarkus[Quarkus, window="_blank"],
+I can be found contributing to open source projects: https://openslo.com/[OpenSLO, window="_blank"],
 https://github.com/open-telemetry/opentelemetry-java[OpenTelemetry, window="_blank"], and others.
 
-Previously, I've contributed to https://github.com/smallrye[SmallRye, window="_blank"],
+Previously, I've contributed to https://github.com/quarkusio/quarkus[Quarkus, window="_blank"],
+https://github.com/smallrye[SmallRye, window="_blank"],
 https://microprofile.io/[Eclipse MicroProfile, window="_blank"],
 https://github.com/thorntail[Thorntail, window="_blank"], https://github.com/liveoak-io[LiveOak, window="_blank"],
 https://github.com/gatein/gatein-portal[GateIn, window="_blank"], https://github.com/portletbridge[Portlet Bridge, window="_blank"],
@@ -47,5 +48,6 @@ https://www.amazon.com/GateIn-Cookbook-Ken-Finnigan/dp/1849518629[GateIn Cookboo
 
 === How to find me
 
-I'm on twitter (https://twitter.com/kenfinnigan[@kenfinnigan, window="_blank"]),
+I'm on mastodon (https://fosstodon.org/@kenfinnigan[@kenfinnigan, window="_blank"]),
+and twitter (https://twitter.com/kenfinnigan[@kenfinnigan, window="_blank"]),
 and can be reached via email (ken@kenfinnigan.me).
