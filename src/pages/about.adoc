@@ -4,15 +4,17 @@
 
 image::portrait.png[Ken Finnigan]
 
-I'm a Senior Principal Software Engineer at Workday
+I'm an OpenTelemetry Architect at https://www.lumigo.io[Lumigo, window="blank"]
 with over 25 years experience with enterprises throughout the world.
-I'm currently working on improving observability at Workday.
-Previously, I was at Red Hat for 11 years founding open source projects in middleware.
+I'm currently focused on building out SDK distributions for https://www.lumigo.io[Lumigo, window="blank"]
+customers.
+Previously, I was at Workday,
+and at Red Hat for 11 years founding open source projects in middleware.
 
 I'm now, mostly, a stationary nomad after growing up in Sydney, Australia.
 I've lived in London, Brussels, Eindhoven, Dublin, to name a few.
 Currently I'm stationary in Boston, USA,
-with my wife of over 15 years, Erin, and our two boys.
+with my wife of over 16 years, Erin, and our two boys.
 
 I'm a father of two boys that constantly keep me on my toes,
 but also say the darndest things all the time!
