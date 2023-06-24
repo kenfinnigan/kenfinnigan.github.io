@@ -1,0 +1,67 @@
+= Life at Lumigo
+
+:page-date: 2023-06-24
+:page-summary: I've been at Lumigo for 6 weeks now, and it's been an eye-opening experience...
+
+I've been at https://www.lumigo.io[Lumigo, window="blank"] for 6 weeks now, and it's been an eye-opening experience on a personal level.
+Though there wasn't much opportunity at Workday for coding on a daily basis,
+I didn't realize how much my coding skills had atrophied in only 18 months.
+
+== "Non-coding" Architect
+
+I've always told myself I never wanted to be an _Ivory Tower Architect_,
+and even more so an architect who doesn't code.
+If you're not in the trenches with the rest of the team on a regular basis,
+how can you possibly know what's going on?
+And more importantly, how will you achieve buy-in for any changes if you're not feeling their pain with them?
+
+While reflecting on this realization,
+I thought back to the blog Charity Majors wrote on
+https://charity.wtf/2023/03/09/architects-anti-patterns-and-organizational-fuckery/["ARCHITECTS, ANTI-PATTERNS, AND ORGANIZATIONAL FUCKERY", window="blank"] in March.
+Charity stated: *_The role itself can also be one that does not set up the people who hold it for a successful career in the long run, if they are not careful. It can be a one-way street to being obsolete._*
+That's exactly what I felt, I was becoming obsolete.
+
+== How do I do this again?
+
+In the many years of being a software engineer, this was my biggest fear,
+losing the ability to code!
+Those first couple of weeks at https://www.lumigo.io[Lumigo, window="blank"] were really tough.
+It really kicked my imposter syndrome into high gear!
+
+I experienced everything from: How do you create a Helm chart?
+How do I use `kubectl`?
+And many more problems doing tasks that 18 months ago I wouldn't have to think about.
+I knew it, and I did it.
+
+I can't give enough thanks to everyone at https://www.lumigo.io[Lumigo, window="blank"] for being
+patient with me as I began my ramp-up with them.
+As the weeks have continued, remembering how to do these every day tasks has come back bit by bit.
+It's a very humbling experience to realize that the ability to code is most definitely a perishable skill!
+Like with any muscle, if it's not used frequently enough it atrophies.
+
+== I love coding!
+
+I would be lying if I said I'm completely back to where I was 18 months ago,
+but I'm getting there more and more every day.
+I'm extremely lucky to have been given this opportunity to get back into the trenches and code again.
+On a personal level,
+I've realized coding is something I truly love doing,
+and I'm not ready to give it up just yet.
+
+That's not to say I did't enjoy the other aspects of being an architect,
+but not at the expense of giving up the time I spend coding.
+
+== The future with Lumigo
+
+I'm really excited about the future with https://www.lumigo.io[Lumigo, window="blank"].
+There are so many interesting problems to solve,
+and it's definitely exciting to be at a startup again.
+I'm also enjoying being back in the
+https://opentelemetry.io/docs/instrumentation/java/[OpenTelemetry Java, window="blank"] community again,
+and in time I will also be contributing to open source too.
+
+Though my current title is _OpenTelemetry Architect_,
+the role is focused on building out the SDKs for OpenTelemetry,
+and ensuring developers have a great experience using them.
+I don't expect my new role to fall into the _Ivory Tower Architect_ anti-pattern,
+but I'll be keeping a close eye on it.
