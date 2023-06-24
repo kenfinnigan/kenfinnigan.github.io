@@ -1,4 +1,92 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 16 Jun 2023 23:23:42 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[The new journey!]]></title><description><![CDATA[I'm now almost two months into my new journey, and it's time to provide an update!...]]></description><link>https://kenfinnigan.me/blog/the-new-journey/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/the-new-journey/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Thu, 23 Dec 2021 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 24 Jun 2023 21:49:00 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Life at Lumigo]]></title><description><![CDATA[I've been at Lumigo for 6 weeks now, and it's been an eye-opening experience...]]></description><link>https://kenfinnigan.me/blog/life-at-lumigo/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/life-at-lumigo/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sat, 24 Jun 2023 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;ve been at &lt;a href=&quot;https://www.lumigo.io&quot; target=&quot;blank&quot;&gt;Lumigo&lt;/a&gt; for 6 weeks now, and it&amp;#8217;s been an eye-opening experience on a personal level.
+Though there wasn&amp;#8217;t much opportunity at Workday for coding on a daily basis,
+I didn&amp;#8217;t realize how much my coding skills had atrophied in only 18 months.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_non_coding_architect&quot;&gt;&quot;Non-coding&quot; Architect&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;ve always told myself I never wanted to be an &lt;em&gt;Ivory Tower Architect&lt;/em&gt;,
+and even more so an architect who doesn&amp;#8217;t code.
+If you&amp;#8217;re not in the trenches with the rest of the team on a regular basis,
+how can you possibly know what&amp;#8217;s going on?
+And more importantly, how will you achieve buy-in for any changes if you&amp;#8217;re not feeling their pain with them?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;While reflecting on this realization,
+I thought back to the blog Charity Majors wrote on
+&lt;a href=&quot;https://charity.wtf/2023/03/09/architects-anti-patterns-and-organizational-fuckery/&quot; target=&quot;blank&quot;&gt;ARCHITECTS, ANTI-PATTERNS, AND ORGANIZATIONAL FUCKERY&lt;/a&gt; in March.
+Charity stated: &lt;strong&gt;&lt;em&gt;The role itself can also be one that does not set up the people who hold it for a successful career in the long run, if they are not careful. It can be a one-way street to being obsolete.&lt;/em&gt;&lt;/strong&gt;
+That&amp;#8217;s exactly what I felt, I was becoming obsolete.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_how_do_i_do_this_again&quot;&gt;How do I do this again?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In the many years of being a software engineer, this was my biggest fear,
+losing the ability to code!
+Those first couple of weeks at &lt;a href=&quot;https://www.lumigo.io&quot; target=&quot;blank&quot;&gt;Lumigo&lt;/a&gt; were really tough.
+It really kicked my imposter syndrome into high gear!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I experienced everything from: How do you create a Helm chart?
+How do I use &lt;code&gt;kubectl&lt;/code&gt;?
+And many more problems doing tasks that 18 months ago I wouldn&amp;#8217;t have to think about.
+I knew it, and I did it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I can&amp;#8217;t give enough thanks to everyone at &lt;a href=&quot;https://www.lumigo.io&quot; target=&quot;blank&quot;&gt;Lumigo&lt;/a&gt; for being
+patient with me as I began my ramp-up with them.
+As the weeks have continued, remembering how to do these every day tasks has come back bit by bit.
+It&amp;#8217;s a very humbling experience to realize that the ability to code is most definitely a perishable skill!
+Like with any muscle, if it&amp;#8217;s not used frequently enough it atrophies.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_i_love_coding&quot;&gt;I love coding!&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I would be lying if I said I&amp;#8217;m completely back to where I was 18 months ago,
+but I&amp;#8217;m getting there more and more every day.
+I&amp;#8217;m extremely lucky to have been given this opportunity to get back into the trenches and code again.
+On a personal level,
+I&amp;#8217;ve realized coding is something I truly love doing,
+and I&amp;#8217;m not ready to give it up just yet.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;That&amp;#8217;s not to say I did&amp;#8217;t enjoy the other aspects of being an architect,
+but not at the expense of giving up the time I spend coding.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_the_future_with_lumigo&quot;&gt;The future with Lumigo&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m really excited about the future with &lt;a href=&quot;https://www.lumigo.io&quot; target=&quot;blank&quot;&gt;Lumigo&lt;/a&gt;.
+There are so many interesting problems to solve,
+and it&amp;#8217;s definitely exciting to be at a startup again.
+I&amp;#8217;m also enjoying being back in the
+&lt;a href=&quot;https://opentelemetry.io/docs/instrumentation/java/&quot; target=&quot;blank&quot;&gt;OpenTelemetry Java&lt;/a&gt; community again,
+and in time I will also be contributing to open source too.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Though my current title is &lt;em&gt;OpenTelemetry Architect&lt;/em&gt;,
+the role is focused on building out the SDKs for OpenTelemetry,
+and ensuring developers have a great experience using them.
+I don&amp;#8217;t expect my new role to fall into the &lt;em&gt;Ivory Tower Architect&lt;/em&gt; anti-pattern,
+but I&amp;#8217;ll be keeping a close eye on it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[The new journey!]]></title><description><![CDATA[I'm now almost two months into my new journey, and it's time to provide an update!...]]></description><link>https://kenfinnigan.me/blog/the-new-journey/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/the-new-journey/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Thu, 23 Dec 2021 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;I&amp;#8217;m now almost two months into my new journey, and it&amp;#8217;s time to provide an update!&lt;/p&gt;
