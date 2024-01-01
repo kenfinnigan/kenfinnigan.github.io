@@ -1,4 +1,48 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 29 Dec 2023 03:03:10 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Life at Lumigo]]></title><description><![CDATA[I've been at Lumigo for 6 weeks now, and it's been an eye-opening experience...]]></description><link>https://kenfinnigan.me/blog/life-at-lumigo/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/life-at-lumigo/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sat, 24 Jun 2023 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 01 Jan 2024 01:43:05 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Writing more often]]></title><description><![CDATA[Since starting this blog shortly before the pandemic began, I've been very inconsistent in my writing...]]></description><link>https://kenfinnigan.me/blog/writing-more/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/writing-more/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sun, 31 Dec 2023 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Since starting this blog shortly before the pandemic began,
+I&amp;#8217;ve been very inconsistent in my writing.
+Having been an author or co-author of a number of books in the last decade or so,
+I want to keep improving my writing skills.
+And the only way I can do that is to write more often.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_why_write_more_now&quot;&gt;Why write more now?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Recently I&amp;#8217;ve been thinking about what I want to spend my time on in the future,
+and I&amp;#8217;m still working on what exactly that might be.
+However, I do know that I enjoy writing, &lt;strong&gt;mostly&lt;/strong&gt;,
+and I would like to increase my writing while also improving how I write.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I don&amp;#8217;t know whether I&amp;#8217;ll write another book,
+maybe at some point,
+but I do want to write more consistently.
+Whether writing becomes a bigger part of my future or not,
+only time can answer that question.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_what_will_i_write_about&quot;&gt;What will I write about?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Right now I&amp;#8217;m not 100% sure what I&amp;#8217;ll write about.
+I will likely start with OpenTelemetry,
+as it&amp;#8217;s an area I&amp;#8217;ve been focused on for a few years.
+I could write about the process of writing instrumentation for OpenTelemetry,
+especially in relation to the Java SDK.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;d be interested in hearing from you about what you&amp;#8217;d like to read about.
+If you have any ideas, please let me know.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Life at Lumigo]]></title><description><![CDATA[I've been at Lumigo for 6 weeks now, and it's been an eye-opening experience...]]></description><link>https://kenfinnigan.me/blog/life-at-lumigo/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/life-at-lumigo/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sat, 24 Jun 2023 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;I&amp;#8217;ve been at &lt;a href=&quot;https://www.lumigo.io&quot; target=&quot;blank&quot;&gt;Lumigo&lt;/a&gt; for 6 weeks now, and it&amp;#8217;s been an eye-opening experience on a personal level.
