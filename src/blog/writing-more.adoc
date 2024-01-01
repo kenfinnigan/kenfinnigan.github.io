@@ -1,0 +1,34 @@
+= Writing more often
+
+:page-date: 2023-12-31
+:page-summary: Since starting this blog shortly before the pandemic began, I've been very inconsistent in my writing...
+
+Since starting this blog shortly before the pandemic began,
+I've been very inconsistent in my writing.
+Having been an author or co-author of a number of books in the last decade or so,
+I want to keep improving my writing skills.
+And the only way I can do that is to write more often.
+
+== Why write more now?
+
+Recently I've been thinking about what I want to spend my time on in the future,
+and I'm still working on what exactly that might be.
+However, I do know that I enjoy writing, *mostly*,
+and I would like to increase my writing while also improving how I write.
+
+I don't know whether I'll write another book,
+maybe at some point,
+but I do want to write more consistently.
+Whether writing becomes a bigger part of my future or not,
+only time can answer that question.
+
+== What will I write about?
+
+Right now I'm not 100% sure what I'll write about.
+I will likely start with OpenTelemetry,
+as it's an area I've been focused on for a few years.
+I could write about the process of writing instrumentation for OpenTelemetry,
+especially in relation to the Java SDK.
+
+I'd be interested in hearing from you about what you'd like to read about.
+If you have any ideas, please let me know.
