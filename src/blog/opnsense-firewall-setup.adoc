@@ -1,0 +1,210 @@
+= Setting up an OPNSense Firewall
+
+:page-date: 2024-02-06
+:page-summary: Over the years my home network has been powered by Ubiquiti hardware - nano HD APs, an in-wall AP, a Flex AP, an Outdoor Mesh, network switch, and a USG...
+
+Over the years my home network has been powered by https://www.ui.com/introduction[Ubiquiti, window="blank"] hardware - nano HD APs,
+an in-wall AP, a Flex AP, an Outdoor Mesh, network switch, and a USG.
+For the most part I've been very happy with the hardware, but I've had issues with the USG a few times.
+
+There have been occasions where upgrading the USG lead it to stop working, either requiring a factory reset and re-import of settings, or needing to rebuild the internal database.
+Though I was able to ssh into the USG and rebuild the database, it was always a pain.
+I often wouldn't know there was an issue until one of my kids complained about the internet not working.
+Also, there were times where I felt the USG was underpowered, and restricted the total bandwidth I was able to achieve in the house.
+
+== What to choose?
+
+I'd put off doing anything about it for probably a year or more.
+Yeah I know, the typical guy in IT putting off doing anything about their own environment!
+In late 2022 I finally began looking at options for a replacement,
+both from https://www.ui.com/introduction[Ubiquiti, window="blank"] and other alternatives that would still work with the existing APs I have.
+I happened to be talking about it with a friend and colleague,
+https://www.linkedin.com/in/alghanmi/[Rami, window="blank"],
+who lives and breathes infrastructure and networking,
+and he suggested I look into https://opnsense.org/[OPNsense, window="blank"].
+
+I vaguely recalled having heard of https://opnsense.org/[OPNsense, window="blank"],
+https://www.pfsense.org/[pfsense, window="blank"],
+and similar firewalls over the years but hadn't delved deep their capabilities or how to set them up.
+https://www.linkedin.com/in/alghanmi/[Rami, window="blank"] admitted there is more up front config required
+with https://opnsense.org/[OPNsense, window="blank"] than an *off the shelf* solution,
+but it provided a great deal more control over how it worked as well.
+
+== What about the hardware?
+
+As https://opnsense.org/[OPNsense, window="blank"] is a piece of software,
+it still needs hardware to run on.
+While chatting about it with https://www.linkedin.com/in/alghanmi/[Rami, window="blank"],
+he suggested I look at the https://www.hardkernel.com/shop/odroid-h3-plus/[ODROID-H3+, window="blank"].
+I was using a small Raspberry Pi device to run https://pi-hole.net/[pihole, window="blank"],
+but it was pre-assembled and I'd never really done any device building before.
+
+After reading through the details of the https://www.hardkernel.com/shop/odroid-h3-plus/[ODROID-H3+, window="blank"],
+most of the *work* was already done and it was just putting pieces together,
+which I could totally do!
+Here is the list of components I purchased from https://www.hardkernel.com/[HARDKERNEL, window="blank"]:
+
+* 1 x https://www.hardkernel.com/shop/odroid-h3-plus/[ODROID-H3+, window="blank"]
+* 2 x https://www.hardkernel.com/shop/samsung-16gb-ddr4-pc4-25600-so-dimm/[16GB DDR4 memory, window="blank"]
+* 1 x https://www.hardkernel.com/shop/128gb-emmc-module-h2-2/[128GB eMMC module, window="blank"]
+* 1 x https://www.hardkernel.com/shop/92x92x25mm-dc-cooling-fan-w-pwm-speed-sensor-tacho-2/[Fan, window="blank"]
+* 1 x https://www.hardkernel.com/shop/odroid-h3-case-type-2/[Type 2 case, window="blank"]
+* 1 x https://www.hardkernel.com/shop/15v-4a-power-supply-us-plug/[15V/4A US power plug]
+
+image::odroid-h3-plus.png[alt=ODROID-H3+, width=450]
+
+Once everything had arrived, it was construction time!
+Above is a photo of all the components laid out ready to be put together.
+The hardest part of the construction was getting the pieces of the case in the right position so they all connected correctly at the end!
+It took a couple of attempts to get that sorted,
+but then it came together nicely into the completed unit seen below.
+
+image::odroid-h3-plus-case.png[alt=ODROID-H3+ in case, width=450]
+
+== OPNsense installation
+
+With the hardware ready, now it was time to install https://opnsense.org/[OPNsense, window="blank"] and get it running.
+After loading the https://opnsense.org/[OPNsense, window="blank"] installation onto a USB stick,
+I used the _dvd_ installation type, I plugged it in and booted up the device.
+
+I chose to install FreeBSD with the ZFS file system to have journaling enabled.
+I don't know whether it's necessary, but seemed like a logical approach.
+When the installation of the operating system had completed,
+it was unable to find any network interfaces.
+At this point I was questioning whether I had made the correct decision to build a firewall myself as opposed to buying a pre-packaged solution!
+
+As the https://www.hardkernel.com/shop/odroid-h3-plus/[ODROID-H3+, window="blank"]
+uses a Realtek RTL8125B network card, FreeBSD was unable to recognize it.
+Luckily I found reference to the problem on a https://cyberdean.fr/blog/realtek-driver-free-bsd/[blog, window="blank"],
+with handy information on how to resolve it.
+
+I first ran `pciconf -vl` to verify the network cards were present but the driver was `none`.
+Then I found a driver package for the network card from https://www.freshports.org/net/realtek-re-kmod/[FreshPorts, window="blank"],
+which I downloaded and put onto another USB.
+Here are the steps I took to install the network driver:
+
+* `mkdir /mnt/usbstick`
+* `ls -l /dev/da*`
+* `mount -t msdosfs /dev/da1p2 /mnt/usbstick`
+** `da1` is the USB stick, and `p2` was the first partition
+* `pkg add /mnt/usbstick/realtek-re-kmod-v196.04.txz`
+** At the time I installed the driver it was `v196`
+* `umount /mnt/usbstick` and `rm -rf /mnt/usbstick`
+** Unmount the USB stick and remove the directory created for it
+
+To load the driver into the operating system we need to edit `/boot/loader.conf.local` and add the following:
+```
+if_re_load="YES"
+if_re_name="/boot/modules/if_re.ko"
+```
+
+With the change in place, `reboot` the device.
+Once booted, run `kldstat` to ensure that `if_re.ko` is loaded successfully.
+Lastly, run `ifconfig -a` to verify the NIC is now present.
+
+With the network card now detected, we can assign the interfaces with https://opnsense.org/[OPNsense, window="blank"].
+In my case, I assigned `re0` as the WAN (the internet), and `re1` as the LAN (internal network).
+Then set the IP address for the LAN and it's respective IP range,
+which can be customized to your preferences.
+One possible choice is an IP address of `192.168.0.1` for the LAN, and a range from `192.168.0.3` to `192.168.0.255`.
+
+== OPNsense set up
+
+A neat trick that https://www.linkedin.com/in/alghanmi/[Rami, window="blank"] told me was to set up the firewall inside your network!
+Doing this means not interrupting the existing internet in your house until you're ready,
+which is critical when you have kids that can't live without internet,
+and it doesn't expose an unsecured and un-configured firewall to potential attack.
+In this set up, the WAN of the device connects to your main internal network to get its internet.
+
+To be able to access the https://opnsense.org/[OPNsense, window="blank"] UI from your main home network,
+as it's on the WAN side of the firewall, we need to run `pfctl -d` after every reboot to disable the firewall.
+As the device isn't performing any protection for us yet, there's no issue in disabling the firewall while we finish the set up.
+
+I also installed https://tailscale.com/[Tailscale, window="blank"] by following https://tailscale.com/kb/1097/install-opnsense/[these instructions, window="blank"].
+
+There are a couple of key things you want to verify in the UI before continuing much further.
+Go to System -> Settings -> Administration and verify the following:
+
+* HTTPS enabled for web protocol
+* HTTP Strict Transport Security enabled
+* Disable DNS Rebinding Checks is unchecked
+
+I then created an administrator account and disabled the root user,
+by following https://homenetworkguy.com/how-to/disable-root-user-opnsense/[these instructions, window="blank"],
+to increase security.
+I also enabled multi-factor authentication for the administrator account,
+based on https://homenetworkguy.com/how-to/enable-multi-factor-authentication-in-opnsense/[this, window="blank"].
+
+To finish the set up of https://tailscale.com/[Tailscale, window="blank"],
+head to Interfaces -> Assignments in the UI.
+There should already be an interface named *tailscale* in the New Interface section,
+click on the plus icon.
+We need to enable the interface, and also prevent it from being removed.
+Give the interface a name, set the IPv4 config to static, and set the IPv4 address to the one from https://tailscale.com/[Tailscale, window="blank"].
+
+Next I set up the VLANs.
+I wanted a separate VLAN for any server or device, another for personal computers and phones, another for work devices, and another for IoT devices.
+When creating the interface for a VLAN change the IP address to have `/24`, as `/32` is the default.
+If the default remains, it won't think there are any IP addresses available for use.
+When all your desired VLANs have been created,
+head to Services -> DHCPv4 in the UI and for each VLAN enable DHCP and set the desired IP range.
+
+By default, access to the internet is disallowed from all VLANs,
+and all VLANs can communicate with each other and the parent, which is the main LAN.
+In the UI, go to Firewalls -> Rules.
+For each interface name, set your preferred firewall rules.
+In my case, I allowed all VLANs to access the internet,
+but disallowed the IoT VLAN from talking with any other VLAN.
+
+That's the basic set up for the https://opnsense.org/[OPNsense, window="blank"] firewall.
+With all the above done, I took the next step and replaced the existing USG device with the new firewall!
+
+== OPNsense and Bonjour printer
+
+As all things do, it worked, to an extent.
+All usual devices worked as expected with the new firewall, but there were a few exceptions that needed to be handled.
+The first of which was the printer.
+
+To enable printers to use the Bonjour protocol to communicate,
+we need to install an mDNS repeater into https://opnsense.org/[OPNsense, window="blank"].
+You may ask why I want to use Bonjour for printer communication,
+we have several iPhones and Macs in the house,
+which makes it just easier if we do.
+
+The instructions for setting up mDNS with https://opnsense.org/[OPNsense, window="blank"]
+are covered https://docs.opnsense.org/manual/how-tos/multicast-dns.html[here, window="blank"] in detail.
+First step is to install the plugin through the UI.
+Once the plugin is installed, enable the service and select which network VLANs should be enabled.
+In my case, I enabled it for the main LAN and the VLAN where all our personal devices are connected,
+including the printer itself.
+
+== OPNsense and a Nintendo Switch
+
+There was still one device that was having trouble connecting to online play,
+my son's Nintendo Switch!
+Looking at the internet settings of the Nintendo Switch,
+it was showing a NAT type of *D* when at least a *C* is recommended for best online play.
+
+I found a great https://blog.jamie.ie/posts/switch-opnsense/[resource, window="blank"] explaining what was needed to improve it!
+Under Services -> DHCPv4, find the VLAN which the Nintendo Switch is connecting to and add a new static DHCP mapping rule
+with the MAC and IP of the Nintendo Switch.
+Then in Firewall -> NAT -> Outbound, change *Automatic* to *Hybrid* and save the changes.
+Next, create a new rule with the following properties:
+
+* Set *Interface* to _WAN_
+* Set it to use _IPv4_
+* Set *Protocol* to _any_
+* For *Source address*, select _Single host or Network_ and set the IP Address to that of the Nintendo Switch with `/32`
+* Set *Destination address* to _any_
+* Set *Static-port* to enabled
+
+== A year of experiences
+
+After having used https://opnsense.org/[OPNsense, window="blank"] for a year now,
+and performed many minor and several major upgrades in that time,
+I am impressed with how well the software performs and how smooth the upgrades are.
+There have been several times where I've needed to customize specific configuration for various reasons,
+but once I got the hang of the UI and how things are set up, I've found it very easy to navigate.
+
+There was definitely a learning curve, especially in resolving the issues around network cards not being found, etc.
+But I feel the experience was a great learning one, and worth it in the long run.

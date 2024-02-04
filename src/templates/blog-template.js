@@ -11,8 +11,8 @@ const AdocPostTemplate = ({ data, location }) => {
       pageDescription={data.asciidoc.pageAttributes.date}
       pathName={data.asciidoc.fields.slug}>
 
-      <article className="pa3 pa4-ns nested-copy-line-height nested-img">
-        <section className="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray">
+      <article className="pa3 pa4-ns nested-copy-line-height">
+        <section className="cf ph3 ph5-l pv3 pv4-l f4 tl-l center lh-copy mid-gray" style={{maxWidth: 850}}>
           <div dangerouslySetInnerHTML={{ __html: data.asciidoc.html }} />
         </section>
       </article>

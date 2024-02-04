@@ -11,7 +11,7 @@ const AdocPageTemplate = ({ data, location }) => {
       pageDescription={data.asciidoc.pageAttributes.description}>
 
       <article className="pa3 pa4-ns nested-copy-line-height nested-img">
-        <section className="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray">
+        <section className="cf ph3 ph5-l pv3 pv4-l f4 tc-l center lh-copy mid-gray" style={{maxWidth: 750}}>
           <div dangerouslySetInnerHTML={{ __html: data.asciidoc.html }} />
         </section>
       </article>
