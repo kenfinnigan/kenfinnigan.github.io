@@ -1,4 +1,342 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 03 Feb 2024 14:58:39 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Writing more often]]></title><description><![CDATA[Since starting this blog shortly before the pandemic began, I've been very inconsistent in my writing...]]></description><link>https://kenfinnigan.me/blog/writing-more/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/writing-more/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sun, 31 Dec 2023 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 06 Feb 2024 11:52:07 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Setting up an OPNSense Firewall]]></title><description><![CDATA[Over the years my home network has been powered by Ubiquiti hardware - nano HD APs, an in-wall AP, a Flex AP, an Outdoor Mesh, network switch, and a USG...]]></description><link>https://kenfinnigan.me/blog/opnsense-firewall-setup/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/opnsense-firewall-setup/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 06 Feb 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Over the years my home network has been powered by &lt;a href=&quot;https://www.ui.com/introduction&quot; target=&quot;blank&quot;&gt;Ubiquiti&lt;/a&gt; hardware - nano HD APs,
+an in-wall AP, a Flex AP, an Outdoor Mesh, network switch, and a USG.
+For the most part I&amp;#8217;ve been very happy with the hardware, but I&amp;#8217;ve had issues with the USG a few times.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There have been occasions where upgrading the USG lead it to stop working, either requiring a factory reset and re-import of settings, or needing to rebuild the internal database.
+Though I was able to ssh into the USG and rebuild the database, it was always a pain.
+I often wouldn&amp;#8217;t know there was an issue until one of my kids complained about the internet not working.
+Also, there were times where I felt the USG was underpowered, and restricted the total bandwidth I was able to achieve in the house.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_what_to_choose&quot;&gt;What to choose?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;d put off doing anything about it for probably a year or more.
+Yeah I know, the typical guy in IT putting off doing anything about their own environment!
+In late 2022 I finally began looking at options for a replacement,
+both from &lt;a href=&quot;https://www.ui.com/introduction&quot; target=&quot;blank&quot;&gt;Ubiquiti&lt;/a&gt; and other alternatives that would still work with the existing APs I have.
+I happened to be talking about it with a friend and colleague,
+&lt;a href=&quot;https://www.linkedin.com/in/alghanmi/&quot; target=&quot;blank&quot;&gt;Rami&lt;/a&gt;,
+who lives and breathes infrastructure and networking,
+and he suggested I look into &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I vaguely recalled having heard of &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt;,
+&lt;a href=&quot;https://www.pfsense.org/&quot; target=&quot;blank&quot;&gt;pfsense&lt;/a&gt;,
+and similar firewalls over the years but hadn&amp;#8217;t delved deep their capabilities or how to set them up.
+&lt;a href=&quot;https://www.linkedin.com/in/alghanmi/&quot; target=&quot;blank&quot;&gt;Rami&lt;/a&gt; admitted there is more up front config required
+with &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; than an &lt;strong&gt;off the shelf&lt;/strong&gt; solution,
+but it provided a great deal more control over how it worked as well.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_what_about_the_hardware&quot;&gt;What about the hardware?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; is a piece of software,
+it still needs hardware to run on.
+While chatting about it with &lt;a href=&quot;https://www.linkedin.com/in/alghanmi/&quot; target=&quot;blank&quot;&gt;Rami&lt;/a&gt;,
+he suggested I look at the &lt;a href=&quot;https://www.hardkernel.com/shop/odroid-h3-plus/&quot; target=&quot;blank&quot;&gt;ODROID-H3+&lt;/a&gt;.
+I was using a small Raspberry Pi device to run &lt;a href=&quot;https://pi-hole.net/&quot; target=&quot;blank&quot;&gt;pihole&lt;/a&gt;,
+but it was pre-assembled and I&amp;#8217;d never really done any device building before.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;After reading through the details of the &lt;a href=&quot;https://www.hardkernel.com/shop/odroid-h3-plus/&quot; target=&quot;blank&quot;&gt;ODROID-H3+&lt;/a&gt;,
+most of the &lt;strong&gt;work&lt;/strong&gt; was already done and it was just putting pieces together,
+which I could totally do!
+Here is the list of components I purchased from &lt;a href=&quot;https://www.hardkernel.com/&quot; target=&quot;blank&quot;&gt;HARDKERNEL&lt;/a&gt;:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;1 x &lt;a href=&quot;https://www.hardkernel.com/shop/odroid-h3-plus/&quot; target=&quot;blank&quot;&gt;ODROID-H3+&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;2 x &lt;a href=&quot;https://www.hardkernel.com/shop/samsung-16gb-ddr4-pc4-25600-so-dimm/&quot; target=&quot;blank&quot;&gt;16GB DDR4 memory&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;1 x &lt;a href=&quot;https://www.hardkernel.com/shop/128gb-emmc-module-h2-2/&quot; target=&quot;blank&quot;&gt;128GB eMMC module&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;1 x &lt;a href=&quot;https://www.hardkernel.com/shop/92x92x25mm-dc-cooling-fan-w-pwm-speed-sensor-tacho-2/&quot; target=&quot;blank&quot;&gt;Fan&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;1 x &lt;a href=&quot;https://www.hardkernel.com/shop/odroid-h3-case-type-2/&quot; target=&quot;blank&quot;&gt;Type 2 case&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;1 x &lt;a href=&quot;https://www.hardkernel.com/shop/15v-4a-power-supply-us-plug/&quot;&gt;15V/4A US power plug&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/odroid-h3-plus.png&quot; alt=&quot;ODROID-H3+&quot; width=&quot;450&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Once everything had arrived, it was construction time!
+Above is a photo of all the components laid out ready to be put together.
+The hardest part of the construction was getting the pieces of the case in the right position so they all connected correctly at the end!
+It took a couple of attempts to get that sorted,
+but then it came together nicely into the completed unit seen below.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/odroid-h3-plus-case.png&quot; alt=&quot;ODROID-H3+ in case&quot; width=&quot;450&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_opnsense_installation&quot;&gt;OPNsense installation&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With the hardware ready, now it was time to install &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; and get it running.
+After loading the &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; installation onto a USB stick,
+I used the &lt;em&gt;dvd&lt;/em&gt; installation type, I plugged it in and booted up the device.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I chose to install FreeBSD with the ZFS file system to have journaling enabled.
+I don&amp;#8217;t know whether it&amp;#8217;s necessary, but seemed like a logical approach.
+When the installation of the operating system had completed,
+it was unable to find any network interfaces.
+At this point I was questioning whether I had made the correct decision to build a firewall myself as opposed to buying a pre-packaged solution!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As the &lt;a href=&quot;https://www.hardkernel.com/shop/odroid-h3-plus/&quot; target=&quot;blank&quot;&gt;ODROID-H3+&lt;/a&gt;
+uses a Realtek RTL8125B network card, FreeBSD was unable to recognize it.
+Luckily I found reference to the problem on a &lt;a href=&quot;https://cyberdean.fr/blog/realtek-driver-free-bsd/&quot; target=&quot;blank&quot;&gt;blog&lt;/a&gt;,
+with handy information on how to resolve it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I first ran &lt;code&gt;pciconf -vl&lt;/code&gt; to verify the network cards were present but the driver was &lt;code&gt;none&lt;/code&gt;.
+Then I found a driver package for the network card from &lt;a href=&quot;https://www.freshports.org/net/realtek-re-kmod/&quot; target=&quot;blank&quot;&gt;FreshPorts&lt;/a&gt;,
+which I downloaded and put onto another USB.
+Here are the steps I took to install the network driver:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;mkdir /mnt/usbstick&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;ls -l /dev/da*&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;mount -t msdosfs /dev/da1p2 /mnt/usbstick&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;da1&lt;/code&gt; is the USB stick, and &lt;code&gt;p2&lt;/code&gt; was the first partition&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;pkg add /mnt/usbstick/realtek-re-kmod-v196.04.txz&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;At the time I installed the driver it was &lt;code&gt;v196&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;umount /mnt/usbstick&lt;/code&gt; and &lt;code&gt;rm -rf /mnt/usbstick&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Unmount the USB stick and remove the directory created for it&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To load the driver into the operating system we need to edit &lt;code&gt;/boot/loader.conf.local&lt;/code&gt; and add the following:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if_re_load=&quot;YES&quot;
+if_re_name=&quot;/boot/modules/if_re.ko&quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With the change in place, &lt;code&gt;reboot&lt;/code&gt; the device.
+Once booted, run &lt;code&gt;kldstat&lt;/code&gt; to ensure that &lt;code&gt;if_re.ko&lt;/code&gt; is loaded successfully.
+Lastly, run &lt;code&gt;ifconfig -a&lt;/code&gt; to verify the NIC is now present.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With the network card now detected, we can assign the interfaces with &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt;.
+In my case, I assigned &lt;code&gt;re0&lt;/code&gt; as the WAN (the internet), and &lt;code&gt;re1&lt;/code&gt; as the LAN (internal network).
+Then set the IP address for the LAN and it&amp;#8217;s respective IP range,
+which can be customized to your preferences.
+One possible choice is an IP address of &lt;code&gt;192.168.0.1&lt;/code&gt; for the LAN, and a range from &lt;code&gt;192.168.0.3&lt;/code&gt; to &lt;code&gt;192.168.0.255&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_opnsense_set_up&quot;&gt;OPNsense set up&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A neat trick that &lt;a href=&quot;https://www.linkedin.com/in/alghanmi/&quot; target=&quot;blank&quot;&gt;Rami&lt;/a&gt; told me was to set up the firewall inside your network!
+Doing this means not interrupting the existing internet in your house until you&amp;#8217;re ready,
+which is critical when you have kids that can&amp;#8217;t live without internet,
+and it doesn&amp;#8217;t expose an unsecured and un-configured firewall to potential attack.
+In this set up, the WAN of the device connects to your main internal network to get its internet.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To be able to access the &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; UI from your main home network,
+as it&amp;#8217;s on the WAN side of the firewall, we need to run &lt;code&gt;pfctl -d&lt;/code&gt; after every reboot to disable the firewall.
+As the device isn&amp;#8217;t performing any protection for us yet, there&amp;#8217;s no issue in disabling the firewall while we finish the set up.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I also installed &lt;a href=&quot;https://tailscale.com/&quot; target=&quot;blank&quot;&gt;Tailscale&lt;/a&gt; by following &lt;a href=&quot;https://tailscale.com/kb/1097/install-opnsense/&quot; target=&quot;blank&quot;&gt;these instructions&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There are a couple of key things you want to verify in the UI before continuing much further.
+Go to System &amp;#8594; Settings &amp;#8594; Administration and verify the following:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;HTTPS enabled for web protocol&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;HTTP Strict Transport Security enabled&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Disable DNS Rebinding Checks is unchecked&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I then created an administrator account and disabled the root user,
+by following &lt;a href=&quot;https://homenetworkguy.com/how-to/disable-root-user-opnsense/&quot; target=&quot;blank&quot;&gt;these instructions&lt;/a&gt;,
+to increase security.
+I also enabled multi-factor authentication for the administrator account,
+based on &lt;a href=&quot;https://homenetworkguy.com/how-to/enable-multi-factor-authentication-in-opnsense/&quot; target=&quot;blank&quot;&gt;this&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To finish the set up of &lt;a href=&quot;https://tailscale.com/&quot; target=&quot;blank&quot;&gt;Tailscale&lt;/a&gt;,
+head to Interfaces &amp;#8594; Assignments in the UI.
+There should already be an interface named &lt;strong&gt;tailscale&lt;/strong&gt; in the New Interface section,
+click on the plus icon.
+We need to enable the interface, and also prevent it from being removed.
+Give the interface a name, set the IPv4 config to static, and set the IPv4 address to the one from &lt;a href=&quot;https://tailscale.com/&quot; target=&quot;blank&quot;&gt;Tailscale&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Next I set up the VLANs.
+I wanted a separate VLAN for any server or device, another for personal computers and phones, another for work devices, and another for IoT devices.
+When creating the interface for a VLAN change the IP address to have &lt;code&gt;/24&lt;/code&gt;, as &lt;code&gt;/32&lt;/code&gt; is the default.
+If the default remains, it won&amp;#8217;t think there are any IP addresses available for use.
+When all your desired VLANs have been created,
+head to Services &amp;#8594; DHCPv4 in the UI and for each VLAN enable DHCP and set the desired IP range.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;By default, access to the internet is disallowed from all VLANs,
+and all VLANs can communicate with each other and the parent, which is the main LAN.
+In the UI, go to Firewalls &amp;#8594; Rules.
+For each interface name, set your preferred firewall rules.
+In my case, I allowed all VLANs to access the internet,
+but disallowed the IoT VLAN from talking with any other VLAN.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;That&amp;#8217;s the basic set up for the &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; firewall.
+With all the above done, I took the next step and replaced the existing USG device with the new firewall!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_opnsense_and_bonjour_printer&quot;&gt;OPNsense and Bonjour printer&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As all things do, it worked, to an extent.
+All usual devices worked as expected with the new firewall, but there were a few exceptions that needed to be handled.
+The first of which was the printer.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To enable printers to use the Bonjour protocol to communicate,
+we need to install an mDNS repeater into &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt;.
+You may ask why I want to use Bonjour for printer communication,
+we have several iPhones and Macs in the house,
+which makes it just easier if we do.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The instructions for setting up mDNS with &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt;
+are covered &lt;a href=&quot;https://docs.opnsense.org/manual/how-tos/multicast-dns.html&quot; target=&quot;blank&quot;&gt;here&lt;/a&gt; in detail.
+First step is to install the plugin through the UI.
+Once the plugin is installed, enable the service and select which network VLANs should be enabled.
+In my case, I enabled it for the main LAN and the VLAN where all our personal devices are connected,
+including the printer itself.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_opnsense_and_a_nintendo_switch&quot;&gt;OPNsense and a Nintendo Switch&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There was still one device that was having trouble connecting to online play,
+my son&amp;#8217;s Nintendo Switch!
+Looking at the internet settings of the Nintendo Switch,
+it was showing a NAT type of &lt;strong&gt;D&lt;/strong&gt; when at least a &lt;strong&gt;C&lt;/strong&gt; is recommended for best online play.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I found a great &lt;a href=&quot;https://blog.jamie.ie/posts/switch-opnsense/&quot; target=&quot;blank&quot;&gt;resource&lt;/a&gt; explaining what was needed to improve it!
+Under Services &amp;#8594; DHCPv4, find the VLAN which the Nintendo Switch is connecting to and add a new static DHCP mapping rule
+with the MAC and IP of the Nintendo Switch.
+Then in Firewall &amp;#8594; NAT &amp;#8594; Outbound, change &lt;strong&gt;Automatic&lt;/strong&gt; to &lt;strong&gt;Hybrid&lt;/strong&gt; and save the changes.
+Next, create a new rule with the following properties:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Set &lt;strong&gt;Interface&lt;/strong&gt; to &lt;em&gt;WAN&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Set it to use &lt;em&gt;IPv4&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Set &lt;strong&gt;Protocol&lt;/strong&gt; to &lt;em&gt;any&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;For &lt;strong&gt;Source address&lt;/strong&gt;, select &lt;em&gt;Single host or Network&lt;/em&gt; and set the IP Address to that of the Nintendo Switch with &lt;code&gt;/32&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Set &lt;strong&gt;Destination address&lt;/strong&gt; to &lt;em&gt;any&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Set &lt;strong&gt;Static-port&lt;/strong&gt; to enabled&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_a_year_of_experiences&quot;&gt;A year of experiences&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;After having used &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; for a year now,
+and performed many minor and several major upgrades in that time,
+I am impressed with how well the software performs and how smooth the upgrades are.
+There have been several times where I&amp;#8217;ve needed to customize specific configuration for various reasons,
+but once I got the hang of the UI and how things are set up, I&amp;#8217;ve found it very easy to navigate.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There was definitely a learning curve, especially in resolving the issues around network cards not being found, etc.
+But I feel the experience was a great learning one, and worth it in the long run.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Writing more often]]></title><description><![CDATA[Since starting this blog shortly before the pandemic began, I've been very inconsistent in my writing...]]></description><link>https://kenfinnigan.me/blog/writing-more/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/writing-more/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sun, 31 Dec 2023 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Since starting this blog shortly before the pandemic began,
