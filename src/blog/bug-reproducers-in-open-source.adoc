@@ -1,0 +1,240 @@
+= Bug Reproducers in Open Source
+
+:page-date: 2024-02-19
+:page-summary: I've worked in open source for over 15 years. During that time I've seen a lot of issue reports...
+:source-highlighter: highlight.js
+
+I've worked in open source for over 15 years.
+During that time I've seen a lot of issue reports, both as a user and as a maintainer.
+The experience of working and contributing to open source projects as a maintainer
+is invaluable.
+Being a maintainer for an open source project is often a thankless job,
+but it does provide insight into being a good open source citizen when raising
+issues with the projects you use.
+
+Recently I had an experience of investigating and reporting a bug
+I came across with the https://github.com/open-telemetry/opentelemetry-java-instrumentation[OpenTelemetry Java Instrumentation, window="blank"] project.
+Here I explain my process from finding the initial problem,
+investigating the root issue,
+and finally creating a bug reproducer to help the maintainers fix the issue.
+
+== The Problem
+
+At https://www.lumigo.io[Lumigo, window="blank"],
+we extend the upstream https://github.com/open-telemetry/opentelemetry-java-instrumentation[OpenTelemetry Java Instrumentation, window="blank"]
+with additional functionality.
+To package the additions,
+we have a https://github.com/lumigo-io/opentelemetry-java-distro[custom distribution, window="blank"].
+
+While testing the distribution I came across a particularly odd situation where an application
+should have been responding with a _403_ http status code,
+as the user is unauthorized.
+However, the application responded with a _406_ status code.
+I spent some time reviewing our custom extensions to see if anything jumped out as being a likely culprit.
+No such luck.
+
+Where the error occurred is not a simple or small piece of code.
+To help narrow down the issue,
+I decided to create a small reproducer to help isolate the problem as much as possible.
+
+== Creating a Reproducer
+
+A reproducer should be the smallest piece of code to demonstrate a specific issue.
+Granted, it can be challenging to narrow down application code when you're not sure of the origin.
+And there are times where it is impossible to create a small reproducer without recreating the original application in full.
+
+Thankfully in this case, I had some clues as to the problem.
+When the _406_ status code is returned, there is an exception raised as well.
+
+[source,bash]
+----
+org.springframework.web.HttpMediaTypeNotAcceptableException:
+  Could not find acceptable representation
+----
+
+As the error occurs when using Spring Boot, Spring Security, and a REST endpoint,
+I added the following dependencies in my `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+----
+
+As we want custom security for the endpoint, we exclude the auto configuration for security:
+
+[source,java]
+----
+@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
+@EnableAutoConfiguration
+public class SampleActuatorApplication {
+	public static void main(String[] args) {
+		SpringApplication.run(SampleActuatorApplication.class, args);
+	}
+}
+----
+
+To force all requests to the endpoint to be authenticated,
+we add the following security configuration:
+
+[source,java]
+----
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+  @Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+			.authorizeRequests()
+			.antMatchers("/report/**").authenticated();
+	}
+}
+----
+
+And lastly, the REST controller:
+
+[source,java]
+----
+@RestController
+@RequestMapping
+public class SampleController {
+
+  @GetMapping(produces = "application/pdf", path = {"/report/{id}"})
+  public ResponseEntity<byte []> getReport(
+      @AuthenticationPrincipal final User user,
+      @NotNull @PathVariable String id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .header("Content-Type", "application/pdf")
+            .body("Here is my PDF".getBytes());
+  }
+}
+----
+
+The key point to note with the reproducer is the endpoint produces a result with the media type of _application/pdf_.
+We will see shortly why this is important.
+
+Reproducers are a great way for a developer to isolate a problem they're investigating,
+and critical for open source maintainers to recreate a problem quickly.
+Quick reproduction of a problem goes a long way to getting a problem fixed.
+
+NOTE: The reproducer for this problem is available https://github.com/kenfinnigan/otel-spring-reproducer/tree/main[here, window="blank"].
+
+== Investigating the Cause
+
+With the reproducer in hand,
+I could then hit the REST endpoint with _curl_ and step debug through the code.
+Not just stepping through the code in the reproducer,
+but also the code of Spring itself,
+and the https://github.com/open-telemetry/opentelemetry-java-instrumentation[OpenTelemetry Java Instrumentation, window="blank"] code.
+
+Unfortunately,
+the https://bytebuddy.net/#/[ByteBuddy, window="blank"] instrumentation advice can't be stepped through,
+because it gets inlined with the code it instruments.
+In this particular situation though,
+there were instrumentation helper classes I could debug through to help me understand what was happening.
+
+Stepping through the Spring Framework code handling the _403_ error,
+I noticed it was trying to convert the JSON error response into the _application/pdf_ media type.
+On initially seeing this,
+it didn't make any sense as to why or how this was happening.
+The REST endpoint was defined to produce a pdf, but why was it doing the same for the error?!
+
+It took a few runs through debugging each step to eventually notice
+https://github.com/spring-projects/spring-framework/blob/v5.1.20.RELEASE/spring-webmvc/src/main/java/org/springframework/web/servlet/mvc/method/RequestMappingInfoHandlerMapping.java#L112[RequestMappingInfoHandlerMapping.handleMatch(), window="blank"]
+was setting the `PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE` request attribute to be _application/pdf_.
+Which is used later to convert the JSON error response,
+resulting in the `HttpMediaTypeNotAcceptableException` being thrown,
+causing the _406_ status code to be returned.
+
+But where is the attribute being set?
+
+Further debugging runs revealed it was a result of
+https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/v1.32.1/instrumentation/spring/spring-webmvc/spring-webmvc-3.1/javaagent/src/main/java/org/springframework/web/servlet/v3_1/OpenTelemetryHandlerMappingFilter.java#L104[OpenTelemetryHandlerMappingFilter.findMapping(), window="blank"]
+calling `mapping.getHandler()`.
+Deep in the call stack it called `RequestMappingInfoHandlerMapping.handleMatch()`,
+setting the `PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE` request attribute.
+
+Wondering why this code was necessary,
+I came across https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/v1.32.1/instrumentation/spring/spring-webmvc/spring-webmvc-3.1/javaagent/src/main/java/io/opentelemetry/javaagent/instrumentation/spring/webmvc/v3_1/SpringWebMvcServerSpanNaming.java#L18[SpringWebMvcServerSpanNaming, window="blank"],
+which uses the `BEST_MATCHING_PATTERN_ATTRIBUTE` request attribute to name the span.
+`BEST_MATCHING_PATTERN_ATTRIBUTE` is also set by `RequestMappingInfoHandlerMapping.handleMatch()`.
+
+== Submitting the Issue
+
+Now understanding the sequence of code paths leading to the problem,
+it was time to document the findings and create a bug report.
+
+Creating the https://github.com/open-telemetry/opentelemetry-java-instrumentation/issues/10379[issue, window="blank"],
+I added all the information I'd collected while investigating the problem,
+as I wanted to provide the maintainers with as much information as possible.
+I included the reproducer,
+what I'd seen while debugging,
+and what I believed the root cause to be.
+
+When creating issues for open source projects,
+it's always better to err on the side of too much information than too little.
+Maintainers will appreciate the additional details and context you provide,
+as it will usually help them to understand the problem in greater detail.
+This is especially true if what you've found would be considered an edge case.
+When maintainers understand a problem,
+it makes resolving it a lot easier.
+
+== Worldwide Contributors
+
+I created the issue as my day was ending on a Thursday.
+My intention was to begin investigating possible resolutions to the issue the following day,
+as on the issue I said I was happy to help with a fix.
+
+However, when I began work the next day,
+my GitHub notifications popped with a pull request from one of the maintainers with a fix!
+I was surprised and impressed by the quick turnaround,
+as I had not realistically expected any movement on the issue until the following week.
+
+Having worked on remote teams for nearly 15 years,
+this experience highlights the advantages of remote and distributed teams across time zones.
+Although I had finished for the day,
+a maintainer in a different time zone was able to pick up the issue and work on a fix.
+With sufficient information and a reproducer,
+there was no need for a maintainer to ask questions,
+seek clarification,
+or request additional information from me.
+They were able to replicate the issue and work on a fix without any further input from me.
+
+== Importance of Reproducers
+
+This experience with the maintainers of https://github.com/open-telemetry/opentelemetry-java-instrumentation[OpenTelemetry Java Instrumentation, window="blank"]
+highlighted to me the importance of sufficient details on an issue,
+but also providing a small reproducer.
+Having a reproducer enables maintainers to jump into working on a fix without needing to spend time trying to replicate the problem.
+This is of critical importance for edge cases which are difficult to replicate.
+
+I also believe the issue would not have been resolved as quickly as it was
+without a reproducer and detailed information on what I found.
+Anything we, as users, can do to help maintainers understand and replicate an issue
+saves them time and effort in resolving it.
+Maintainers of open source projects often have the thankless task of prioritizing
+and resolving many issues at once.
+Anything we can do to reduce their time spent resolving issues is a good thing.
+
+If we can't take the time to try and understand the problem we're experiencing,
+and reproduce it in a small piece of code.
+How can we expect maintainers to expend any effort in resolving a problem for us?
+
+If there's one thing I hope you take away from this post,
+it's the importance of providing a small reproducer when reporting an issue.
+It's a small thing that can make a big difference in getting a problem resolved quickly.
+We, as users of open source,
+need to understand maintainers are often working on issues in their spare time.
+Anything we can do to help them is a good thing,
+and appreciated by maintainers.
