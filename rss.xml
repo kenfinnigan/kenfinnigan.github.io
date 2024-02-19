@@ -1,4 +1,300 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 06 Feb 2024 11:52:07 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Setting up an OPNSense Firewall]]></title><description><![CDATA[Over the years my home network has been powered by Ubiquiti hardware - nano HD APs, an in-wall AP, a Flex AP, an Outdoor Mesh, network switch, and a USG...]]></description><link>https://kenfinnigan.me/blog/opnsense-firewall-setup/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/opnsense-firewall-setup/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 06 Feb 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 19 Feb 2024 15:35:16 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Bug Reproducers in Open Source]]></title><description><![CDATA[I've worked in open source for over 15 years. During that time I've seen a lot of issue reports...]]></description><link>https://kenfinnigan.me/blog/bug-reproducers-in-open-source/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/bug-reproducers-in-open-source/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Mon, 19 Feb 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;ve worked in open source for over 15 years.
+During that time I&amp;#8217;ve seen a lot of issue reports, both as a user and as a maintainer.
+The experience of working and contributing to open source projects as a maintainer
+is invaluable.
+Being a maintainer for an open source project is often a thankless job,
+but it does provide insight into being a good open source citizen when raising
+issues with the projects you use.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Recently I had an experience of investigating and reporting a bug
+I came across with the &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation&quot; target=&quot;blank&quot;&gt;OpenTelemetry Java Instrumentation&lt;/a&gt; project.
+Here I explain my process from finding the initial problem,
+investigating the root issue,
+and finally creating a bug reproducer to help the maintainers fix the issue.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_the_problem&quot;&gt;The Problem&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;At &lt;a href=&quot;https://www.lumigo.io&quot; target=&quot;blank&quot;&gt;Lumigo&lt;/a&gt;,
+we extend the upstream &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation&quot; target=&quot;blank&quot;&gt;OpenTelemetry Java Instrumentation&lt;/a&gt;
+with additional functionality.
+To package the additions,
+we have a &lt;a href=&quot;https://github.com/lumigo-io/opentelemetry-java-distro&quot; target=&quot;blank&quot;&gt;custom distribution&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;While testing the distribution I came across a particularly odd situation where an application
+should have been responding with a &lt;em&gt;403&lt;/em&gt; http status code,
+as the user is unauthorized.
+However, the application responded with a &lt;em&gt;406&lt;/em&gt; status code.
+I spent some time reviewing our custom extensions to see if anything jumped out as being a likely culprit.
+No such luck.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Where the error occurred is not a simple or small piece of code.
+To help narrow down the issue,
+I decided to create a small reproducer to help isolate the problem as much as possible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_creating_a_reproducer&quot;&gt;Creating a Reproducer&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A reproducer should be the smallest piece of code to demonstrate a specific issue.
+Granted, it can be challenging to narrow down application code when you&amp;#8217;re not sure of the origin.
+And there are times where it is impossible to create a small reproducer without recreating the original application in full.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Thankfully in this case, I had some clues as to the problem.
+When the &lt;em&gt;406&lt;/em&gt; status code is returned, there is an exception raised as well.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;org.springframework.web.HttpMediaTypeNotAcceptableException:
+  Could not find acceptable representation&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As the error occurs when using Spring Boot, Spring Security, and a REST endpoint,
+I added the following dependencies in my &lt;code&gt;pom.xml&lt;/code&gt;:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&amp;lt;dependency&amp;gt;
+  &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;spring-boot-starter-actuator&amp;lt;/artifactId&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&amp;lt;dependency&amp;gt;
+  &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;spring-boot-starter-web&amp;lt;/artifactId&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&amp;lt;dependency&amp;gt;
+  &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;spring-boot-starter-security&amp;lt;/artifactId&amp;gt;
+&amp;lt;/dependency&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As we want custom security for the endpoint, we exclude the auto configuration for security:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
+@EnableAutoConfiguration
+public class SampleActuatorApplication {
+	public static void main(String[] args) {
+		SpringApplication.run(SampleActuatorApplication.class, args);
+	}
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To force all requests to the endpoint to be authenticated,
+we add the following security configuration:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+  @Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+			.authorizeRequests()
+			.antMatchers(&quot;/report/**&quot;).authenticated();
+	}
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;And lastly, the REST controller:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@RestController
+@RequestMapping
+public class SampleController {
+
+  @GetMapping(produces = &quot;application/pdf&quot;, path = {&quot;/report/{id}&quot;})
+  public ResponseEntity&amp;lt;byte []&amp;gt; getReport(
+      @AuthenticationPrincipal final User user,
+      @NotNull @PathVariable String id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .header(&quot;Content-Type&quot;, &quot;application/pdf&quot;)
+            .body(&quot;Here is my PDF&quot;.getBytes());
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The key point to note with the reproducer is the endpoint produces a result with the media type of &lt;em&gt;application/pdf&lt;/em&gt;.
+We will see shortly why this is important.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Reproducers are a great way for a developer to isolate a problem they&amp;#8217;re investigating,
+and critical for open source maintainers to recreate a problem quickly.
+Quick reproduction of a problem goes a long way to getting a problem fixed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Note&lt;/div&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+The reproducer for this problem is available &lt;a href=&quot;https://github.com/kenfinnigan/otel-spring-reproducer/tree/main&quot; target=&quot;blank&quot;&gt;here&lt;/a&gt;.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_investigating_the_cause&quot;&gt;Investigating the Cause&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With the reproducer in hand,
+I could then hit the REST endpoint with &lt;em&gt;curl&lt;/em&gt; and step debug through the code.
+Not just stepping through the code in the reproducer,
+but also the code of Spring itself,
+and the &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation&quot; target=&quot;blank&quot;&gt;OpenTelemetry Java Instrumentation&lt;/a&gt; code.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Unfortunately,
+the &lt;a href=&quot;https://bytebuddy.net/#/&quot; target=&quot;blank&quot;&gt;ByteBuddy&lt;/a&gt; instrumentation advice can&amp;#8217;t be stepped through,
+because it gets inlined with the code it instruments.
+In this particular situation though,
+there were instrumentation helper classes I could debug through to help me understand what was happening.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Stepping through the Spring Framework code handling the &lt;em&gt;403&lt;/em&gt; error,
+I noticed it was trying to convert the JSON error response into the &lt;em&gt;application/pdf&lt;/em&gt; media type.
+On initially seeing this,
+it didn&amp;#8217;t make any sense as to why or how this was happening.
+The REST endpoint was defined to produce a pdf, but why was it doing the same for the error?!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It took a few runs through debugging each step to eventually notice
+&lt;a href=&quot;https://github.com/spring-projects/spring-framework/blob/v5.1.20.RELEASE/spring-webmvc/src/main/java/org/springframework/web/servlet/mvc/method/RequestMappingInfoHandlerMapping.java#L112&quot; target=&quot;blank&quot;&gt;RequestMappingInfoHandlerMapping.handleMatch()&lt;/a&gt;
+was setting the &lt;code&gt;PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE&lt;/code&gt; request attribute to be &lt;em&gt;application/pdf&lt;/em&gt;.
+Which is used later to convert the JSON error response,
+resulting in the &lt;code&gt;HttpMediaTypeNotAcceptableException&lt;/code&gt; being thrown,
+causing the &lt;em&gt;406&lt;/em&gt; status code to be returned.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;But where is the attribute being set?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Further debugging runs revealed it was a result of
+&lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/v1.32.1/instrumentation/spring/spring-webmvc/spring-webmvc-3.1/javaagent/src/main/java/org/springframework/web/servlet/v3_1/OpenTelemetryHandlerMappingFilter.java#L104&quot; target=&quot;blank&quot;&gt;OpenTelemetryHandlerMappingFilter.findMapping()&lt;/a&gt;
+calling &lt;code&gt;mapping.getHandler()&lt;/code&gt;.
+Deep in the call stack it called &lt;code&gt;RequestMappingInfoHandlerMapping.handleMatch()&lt;/code&gt;,
+setting the &lt;code&gt;PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE&lt;/code&gt; request attribute.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Wondering why this code was necessary,
+I came across &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/v1.32.1/instrumentation/spring/spring-webmvc/spring-webmvc-3.1/javaagent/src/main/java/io/opentelemetry/javaagent/instrumentation/spring/webmvc/v3_1/SpringWebMvcServerSpanNaming.java#L18&quot; target=&quot;blank&quot;&gt;SpringWebMvcServerSpanNaming&lt;/a&gt;,
+which uses the &lt;code&gt;BEST_MATCHING_PATTERN_ATTRIBUTE&lt;/code&gt; request attribute to name the span.
+&lt;code&gt;BEST_MATCHING_PATTERN_ATTRIBUTE&lt;/code&gt; is also set by &lt;code&gt;RequestMappingInfoHandlerMapping.handleMatch()&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_submitting_the_issue&quot;&gt;Submitting the Issue&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Now understanding the sequence of code paths leading to the problem,
+it was time to document the findings and create a bug report.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Creating the &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation/issues/10379&quot; target=&quot;blank&quot;&gt;issue&lt;/a&gt;,
+I added all the information I&amp;#8217;d collected while investigating the problem,
+as I wanted to provide the maintainers with as much information as possible.
+I included the reproducer,
+what I&amp;#8217;d seen while debugging,
+and what I believed the root cause to be.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When creating issues for open source projects,
+it&amp;#8217;s always better to err on the side of too much information than too little.
+Maintainers will appreciate the additional details and context you provide,
+as it will usually help them to understand the problem in greater detail.
+This is especially true if what you&amp;#8217;ve found would be considered an edge case.
+When maintainers understand a problem,
+it makes resolving it a lot easier.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_worldwide_contributors&quot;&gt;Worldwide Contributors&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I created the issue as my day was ending on a Thursday.
+My intention was to begin investigating possible resolutions to the issue the following day,
+as on the issue I said I was happy to help with a fix.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;However, when I began work the next day,
+my GitHub notifications popped with a pull request from one of the maintainers with a fix!
+I was surprised and impressed by the quick turnaround,
+as I had not realistically expected any movement on the issue until the following week.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Having worked on remote teams for nearly 15 years,
+this experience highlights the advantages of remote and distributed teams across time zones.
+Although I had finished for the day,
+a maintainer in a different time zone was able to pick up the issue and work on a fix.
+With sufficient information and a reproducer,
+there was no need for a maintainer to ask questions,
+seek clarification,
+or request additional information from me.
+They were able to replicate the issue and work on a fix without any further input from me.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_importance_of_reproducers&quot;&gt;Importance of Reproducers&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This experience with the maintainers of &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation&quot; target=&quot;blank&quot;&gt;OpenTelemetry Java Instrumentation&lt;/a&gt;
+highlighted to me the importance of sufficient details on an issue,
+but also providing a small reproducer.
+Having a reproducer enables maintainers to jump into working on a fix without needing to spend time trying to replicate the problem.
+This is of critical importance for edge cases which are difficult to replicate.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I also believe the issue would not have been resolved as quickly as it was
+without a reproducer and detailed information on what I found.
+Anything we, as users, can do to help maintainers understand and replicate an issue
+saves them time and effort in resolving it.
+Maintainers of open source projects often have the thankless task of prioritizing
+and resolving many issues at once.
+Anything we can do to reduce their time spent resolving issues is a good thing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If we can&amp;#8217;t take the time to try and understand the problem we&amp;#8217;re experiencing,
+and reproduce it in a small piece of code.
+How can we expect maintainers to expend any effort in resolving a problem for us?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If there&amp;#8217;s one thing I hope you take away from this post,
+it&amp;#8217;s the importance of providing a small reproducer when reporting an issue.
+It&amp;#8217;s a small thing that can make a big difference in getting a problem resolved quickly.
+We, as users of open source,
+need to understand maintainers are often working on issues in their spare time.
+Anything we can do to help them is a good thing,
+and appreciated by maintainers.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Setting up an OPNSense Firewall]]></title><description><![CDATA[Over the years my home network has been powered by Ubiquiti hardware - nano HD APs, an in-wall AP, a Flex AP, an Outdoor Mesh, network switch, and a USG...]]></description><link>https://kenfinnigan.me/blog/opnsense-firewall-setup/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/opnsense-firewall-setup/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 06 Feb 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Over the years my home network has been powered by &lt;a href=&quot;https://www.ui.com/introduction&quot; target=&quot;blank&quot;&gt;Ubiquiti&lt;/a&gt; hardware - nano HD APs,
