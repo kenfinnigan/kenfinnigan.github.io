@@ -1,0 +1,178 @@
+= The Perils of Premature Optimization
+
+:page-date: 2024-06-09
+:page-summary: Throughout my career I've always heard colleagues talk of premature optimization being a bad thing...
+:source-highlighter: highlight.js
+
+Throughout my career I've always heard colleagues talk of premature optimization being a bad thing.
+There have been many blogs on the topic, like this one,
+over the years as well.
+Yet, I'd not had a situation where I'd written optimized code
+which later came back to bite me.
+
+In this post I will talk about such a situation from earlier this year.
+
+== The Original Optimized Code
+
+Late last year I was working with a colleague adding custom instrumentation for the
+https://github.com/open-telemetry/opentelemetry-java-instrumentation[OpenTelemetry Java agent, window="_blank"].
+We were extending the upstream AWS SDK v2 instrumentation to also capture the payload
+of a HTTP request or response.
+To not impact user code,
+such as modifying the class types being returned from the Apache HTTP Client,
+we instrument `SessionInputBufferImpl` directly.
+To capture input as it's read from the socket the `fillBuffer` method is instrumented on method exit.
+
+At this point in processing the socket content,
+the HTTP headers are still present on the socket's `InputStream`.
+As such,
+we need to find the point at which the HTTP headers end and the payload body commences.
+The separation is found when we find two consecutive sets of `\r\n` characters.
+
+Here is the original code to loop through the contents of `byte[]` in `fillBuffer`,
+finding the starting point of the payload:
+
+[source,java]
+----
+int bodyStartPos = -1;
+for (int i = 0;
+    // We check only if we have at least two characters left, otherwise there is not
+    // enough data in the buffer to contain an HTTP body anyhow.
+    i < len - 1;
+// We manually increment the position in the loop, as increments could be by
+// one or by two depending on what we find.
+) {
+
+  if ((char) buffer[i] != '\r') {
+    if ((char) buffer[i + 1] == '\r') {
+      // The first character is not '\r', but the second is, and we will check
+      // in the next iteration from there.
+      i += 1;
+    } else {
+      // Neither the next nor the following character are '\r', we can skip both
+      i += 2;
+    }
+  } else if ((char) buffer[i + 2] != '\r') {
+    // The first character is an '\r', but the character two positions further is not,
+    // so we likely found the beginning of the next header
+    i += 3;
+  } else if ((char) buffer[i + 1] == '\n' && (char) buffer[i + 3] == '\n') {
+    // We found the end of the headers segment
+    bodyStartPos = i + 4;
+    break;
+  }
+}
+----
+
+As we knew the structure of the characters we should see on the `InputStream` of the socket,
+we worked to minimize the number of iterations in the loop that would need to be performed.
+At the time we focused on writing efficient code,
+by removing unnecessary iterations.
+
+== What was the Problem?
+
+Early this year I was contacted by a customer seeing CPU utilization spike to _100%_ on all cores!
+As I'd not seen this from my own testing with the java agent,
+I was curious as to what was happening.
+
+They described a service where it would start fine,
+but after running for about 5 minutes the CPU utilization would spike and never abate.
+The CPU spike would result in a request taking 20 to 30 seconds to complete,
+instead of less than 5 seconds.
+There was nothing obvious I could think of causing the spike,
+so it would require more detailed investigation.
+
+The team running the service were not the developers,
+requiring a different approach to understand and replicate the problem.
+
+== The Investigation
+
+I first wanted to determine how to reproduce the issue,
+enabling me to experiment in my local environment and not in the customers.
+I found a distributed trace exhibiting the high response time,
+and the service graph had a service writing to an S3 bucket.
+
+I had the first clue!
+Next was to determine which instrumentation was being used at the time.
+Writing to S3 meant it was most likely using AWS SDK instrumentation,
+but it could have been either v1 or v2.
+Digging into the OpenTelemetry span data I found the `instrumentationScope`
+was our custom AWS SDK v2 instrumentation.
+
+Now I knew where it was going wrong,
+but I didn't have much information on why.
+
+I worked with the customer to capture profiling data when the CPU spikes.
+We used https://www.oracle.com/java/technologies/jdk-mission-control.html[JDK Mission Control]
+to capture recordings with _Java Flight Recorder (JFR)_.
+Analyzing the recordings we saw the `SessionInputBufferImpl` class was taking up
+about 98% of all memory used by the service.
+This was definitely an abnormal situation.
+
+With all the above information in hand I created a reproducer to upload arbitrary
+data as a PDF to an S3 bucket.
+Running the reproducer didn't initially trigger the CPU spike.
+I modified the process to spawn 20 threads,
+with each thread uploading content to an S3 bucket 50 times before exiting.
+Running the reproducer again,
+I saw the CPU spike after about 30 seconds of execution.
+
+With a means to verify whether the issue was resolved,
+I began investigating the instrumentation code.
+
+To narrow down where the issue lay,
+I brute forced it.
+I would comment out a part of the custom instrumentation,
+rebuild the java agent,
+and re-run the reproducer.
+If the CPU still spiked,
+that piece of code wasn't the issue.
+After going through all the instrumentation,
+I was down to the for loop shown earlier.
+Commenting out the for loop meant the CPU didn't spike!
+
+== De-optimized Code
+
+I spent time evaluating the checks in the loop to see if improvements could be made.
+After a while,
+I did see a way to simplify the number of checks in the loop,
+but it iterates over every character in the `byte[]`.
+I initially thought it would not be a good solution,
+but as I didn't have any other leads I figured it was worth a shot.
+
+Much to my surprise,
+I no longer saw any CPU spikes in the reproducer.
+And memory usage of the `SessionInputBufferImpl` class dropped to almost nothing.
+
+Here's the revised for loop:
+
+[source,java]
+----
+int bodyStartPos = -1;
+for (int i = 0;
+    // We check only if we have at least four characters left, otherwise there is not
+    // enough data in the buffer to contain an HTTP body anyhow.
+    i < len - 3;
+    i++
+) {
+
+  if ((char) buffer[i] == '\r' && (char) buffer[i + 1] == '\n'
+    && (char) buffer[i + 2] == '\r' && (char) buffer[i + 3] == '\n') {
+
+    // We found the end of the headers segment :-)
+    bodyStartPos = i + 4;
+    break;
+  }
+}
+----
+
+== Lesson Learned
+
+When writing the initial code I had naively thought less iterations would be faster.
+I failed to take into account the complexity of the checks within the loop.
+Clearly this is a case of being too clever for our own good when writing the code.
+
+This taught me an invaluable lesson.
+Don't optimize code unless you know there is a performance issue.
+If your instincts lead you down the wrong optimization path,
+the situation could end up being far worse than a simpler implementation.
