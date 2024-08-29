@@ -1,0 +1,168 @@
+= Shift Left Observability, more than Telemetry
+
+:page-date: 2024-08-29
+:page-summary: In the last few years, _Shift Left Observability_ has risen to prominence...
+
+In the last few years, _Shift Left Observability_ has risen to prominence.
+Developers seeing production telemetry of their service alongside their code
+is critical to their success.
+It also introduces observability practices into the full developer lifecycle,
+including observing CI/CD pipelines.
+Leading to improvements in the developer lifecycle task speed.
+
+In this post I want to talk about a key piece of shifting observability left.
+One I consider more important than the others.
+
+== A History of Shifting Left
+
+Larry Smith describes _Shift-Left Testing_ his https://www.drdobbs.com/shift-left-testing/184404768[2001 article, window="_blank"].
+He details how to utilize QA in earlier phases of development.
+Helping reduce bugs while improving development speed,
+remove rework in later stages.
+https://en.wikipedia.org/wiki/DevOps#DevSecOps,_shifting_security_left[DevSecOps, window="_blank"]
+uses the same philosophy to bring security further left in the DevOps process.
+DevSecOps seeks to find security issues in code,
+well before reaching production.
+
+https://www.jedi.be/[Patrick Debois, window="_blank"] coined the DevOps and DevSecOps terms around 2009.
+Some of the concepts underpinning these philosophies have been prevalent in the industry for a while.
+
+_Shift Left_ approaches, irrespective of what for,
+tend to focus on the technological aspect.
+Testing code for security flaws on check-in,
+bringing observability data into developers IDEs, etc.
+However, the larger benefit,
+in my mind,
+is developers including these aspects when they're planning and designing an application.
+
+What do I mean by that?
+
+Two decades ago,
+application developers would typically build an application in isolation.
+When it was complete,
+the application would be reviewed by a central security team.
+I saw many applications being rejected at this stage,
+requiring large time spent on resolving the discovered issues.
+In some cases,
+complete application rewrites were required.
+Retro-fitting the security changes into the existing application architecture was not possible.
+
+Security became an integral part of designing applications with the advent of cloud computing.
+It could no longer be bolted on at the end of application development.
+Careful thought and planning is required before writing a single line of code,
+to successfully incorporate security.
+
+I firmly believe developers knowing the importance of security,
+and how to implement it,
+reduces the number of security incidents of an application.
+In addition,
+total development time improves by removing effort caused by re-work.
+
+== Shift Left Observability
+
+We talked about the history of _Shift Left_,
+including DevSecOps and shifting security left.
+Now,
+let's discuss observability,
+another orthogonal concern of application development.
+
+As mentioned above,
+_Shift Left Observability_ has come to prominence over the last few years.
+There have been many articles on the topic,
+including https://thenewstack.io/shifting-left-observability-in-practice-an-overview/[Shifting Left Observability in Practice, window="_blank"] on https://thenewstack.io/[The New Stack, window="_blank"].
+Articles such as this focus on the technical aspects in the developers' lifecycle.
+They fail to bring observability further left into the application design phase.
+
+When I say _Application Observability Design_,
+I'm referring to the process of evaluating a service or application to determine its observability needs.
+Every service has different needs,
+negating a _one size fits all_ approach to observability.
+There may be services with similar needs for observability,
+but it's rare for them to be completely identical.
+
+We will come back to not including _Application Observability Design_ with _Shift Left Observability_.
+Let's briefly talk about OpenTelemetry.
+
+== OpenTelemetry
+
+https://opentelemetry.io/[OpenTelemetry, window="_blank"] is an extremely large open-source project.
+It consists of many sub-projects.
+A key goal of https://opentelemetry.io/[OpenTelemetry, window="_blank"] is
+a vendor neutral method of collecting and transmitting telemetry data for observability.
+Having contributed to a couple of sub-projects myself,
+I can attest to the dedication and commitment of those involved.
+They work continuously on a very challenging problem,
+and have made progress in a short period of time.
+
+https://opentelemetry.io/[OpenTelemetry, window="_blank"] also provides lots of instrumentations for
+frameworks across languages.
+Depending on the language,
+it's also possible for the instrumentations to be automatically applied.
+While this is fantastic,
+and simplifies the process of generating telemetry,
+it does introduce challenges.
+Which telemetry is the correct telemetry for any specific service?
+
+https://opentelemetry.io/[OpenTelemetry, window="_blank"] contributors use their judgment and experience
+in determining what telemetry data provides the most useful information.
+Their experiences may differ to a service you are building,
+creating a misalignment in generated telemetry.
+The information you need to correctly observe the service will not be present.
+
+To be clear,
+this is not the fault of the https://opentelemetry.io/[OpenTelemetry, window="_blank"] project.
+It's one of developer education,
+and ensuring the business allows developers the time they need for it.
+There is the need, however,
+to recognize all services are different.
+As such,
+their telemetry requirements will differ.
+Telemetry requirements will also depend on the organizational structure.
+Is it Ops or Dev supporting the service?
+Is there a mixture depending on incident severity?
+
+== What Telemetry to use?
+
+As part of the _Shift Left Observability_ approach,
+developers need to spend time thinking about how their service will be operated.
+Not only once their operating a service,
+but during initial design phases too.
+This information helps determine which telemetry data is necessary for operating a service with resiliency and scalability.
+When a developer takes advantage of pre-defined instrumentation libraries,
+it increases the risks of bloating the size of collected telemetry;
+increasing the costs of collection and storage,
+and complicating the telemetry for operational support of a service.
+
+Yes,
+there are many tools available for filtering and modifying telemetry streams,
+both open-source and commercial.
+However,
+it's not possible to effectively scale down the telemetry volume without knowing which telemetry data is needed.
+Evaluating the desired telemetry for service operation and debugging is critical.
+
+Will developers think of all the required telemetry from day one?
+Absolutely not.
+Additional telemetry will need to be added over time.
+However, it's a more efficient approach than capturing all possible telemetry data.
+
+Being mindful of telemetry volume and cost is critical.
+Both for observability data usefulness,
+and cost to the business.
+
+== Summary
+
+The _Shift Left Observability_ approach will continue bringing benefits to the developer lifecycle.
+A companion piece,
+not often associated with the approach,
+is _Application Observability Design_.
+Developers need to carefully consider the telemetry requirements of their service or application.
+Even when modifying an already existing service.
+_Application Observability Design_ isn't a great term to represent what developers should do,
+but it does emphasize the work that needs to happen.
+
+Whether it's utilizing SLOs/SLIs for a service,
+Golden metrics,
+RED metrics,
+or any other approach to defining a set of telemetry a service needs,
+defining the required telemetry data is a necessary step.
+Don't default to collecting everything possible.
