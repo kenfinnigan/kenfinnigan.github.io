@@ -1,4 +1,209 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 04 Aug 2024 15:04:41 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[The Perils of Premature Optimization]]></title><description><![CDATA[Throughout my career I've always heard colleagues talk of premature optimization being a bad thing...]]></description><link>https://kenfinnigan.me/blog/perils-of-premature-optimization/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/perils-of-premature-optimization/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sun, 09 Jun 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 29 Aug 2024 19:38:02 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Shift Left Observability, more than Telemetry]]></title><description><![CDATA[In the last few years, _Shift Left Observability_ has risen to prominence...]]></description><link>https://kenfinnigan.me/blog/shift-left-observability/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/shift-left-observability/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Thu, 29 Aug 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In the last few years, &lt;em&gt;Shift Left Observability&lt;/em&gt; has risen to prominence.
+Developers seeing production telemetry of their service alongside their code
+is critical to their success.
+It also introduces observability practices into the full developer lifecycle,
+including observing CI/CD pipelines.
+Leading to improvements in the developer lifecycle task speed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In this post I want to talk about a key piece of shifting observability left.
+One I consider more important than the others.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_a_history_of_shifting_left&quot;&gt;A History of Shifting Left&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Larry Smith describes &lt;em&gt;Shift-Left Testing&lt;/em&gt; his &lt;a href=&quot;https://www.drdobbs.com/shift-left-testing/184404768&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;2001 article&lt;/a&gt;.
+He details how to utilize QA in earlier phases of development.
+Helping reduce bugs while improving development speed,
+remove rework in later stages.
+&lt;a href=&quot;https://en.wikipedia.org/wiki/DevOps#DevSecOps,_shifting_security_left&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;DevSecOps&lt;/a&gt;
+uses the same philosophy to bring security further left in the DevOps process.
+DevSecOps seeks to find security issues in code,
+well before reaching production.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.jedi.be/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Patrick Debois&lt;/a&gt; coined the DevOps and DevSecOps terms around 2009.
+Some of the concepts underpinning these philosophies have been prevalent in the industry for a while.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;em&gt;Shift Left&lt;/em&gt; approaches, irrespective of what for,
+tend to focus on the technological aspect.
+Testing code for security flaws on check-in,
+bringing observability data into developers IDEs, etc.
+However, the larger benefit,
+in my mind,
+is developers including these aspects when they&amp;#8217;re planning and designing an application.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;What do I mean by that?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Two decades ago,
+application developers would typically build an application in isolation.
+When it was complete,
+the application would be reviewed by a central security team.
+I saw many applications being rejected at this stage,
+requiring large time spent on resolving the discovered issues.
+In some cases,
+complete application rewrites were required.
+Retro-fitting the security changes into the existing application architecture was not possible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Security became an integral part of designing applications with the advent of cloud computing.
+It could no longer be bolted on at the end of application development.
+Careful thought and planning is required before writing a single line of code,
+to successfully incorporate security.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I firmly believe developers knowing the importance of security,
+and how to implement it,
+reduces the number of security incidents of an application.
+In addition,
+total development time improves by removing effort caused by re-work.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_shift_left_observability&quot;&gt;Shift Left Observability&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We talked about the history of &lt;em&gt;Shift Left&lt;/em&gt;,
+including DevSecOps and shifting security left.
+Now,
+let&amp;#8217;s discuss observability,
+another orthogonal concern of application development.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As mentioned above,
+&lt;em&gt;Shift Left Observability&lt;/em&gt; has come to prominence over the last few years.
+There have been many articles on the topic,
+including &lt;a href=&quot;https://thenewstack.io/shifting-left-observability-in-practice-an-overview/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Shifting Left Observability in Practice&lt;/a&gt; on &lt;a href=&quot;https://thenewstack.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;The New Stack&lt;/a&gt;.
+Articles such as this focus on the technical aspects in the developers&apos; lifecycle.
+They fail to bring observability further left into the application design phase.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When I say &lt;em&gt;Application Observability Design&lt;/em&gt;,
+I&amp;#8217;m referring to the process of evaluating a service or application to determine its observability needs.
+Every service has different needs,
+negating a &lt;em&gt;one size fits all&lt;/em&gt; approach to observability.
+There may be services with similar needs for observability,
+but it&amp;#8217;s rare for them to be completely identical.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We will come back to not including &lt;em&gt;Application Observability Design&lt;/em&gt; with &lt;em&gt;Shift Left Observability&lt;/em&gt;.
+Let&amp;#8217;s briefly talk about OpenTelemetry.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_opentelemetry&quot;&gt;OpenTelemetry&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; is an extremely large open-source project.
+It consists of many sub-projects.
+A key goal of &lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; is
+a vendor neutral method of collecting and transmitting telemetry data for observability.
+Having contributed to a couple of sub-projects myself,
+I can attest to the dedication and commitment of those involved.
+They work continuously on a very challenging problem,
+and have made progress in a short period of time.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; also provides lots of instrumentations for
+frameworks across languages.
+Depending on the language,
+it&amp;#8217;s also possible for the instrumentations to be automatically applied.
+While this is fantastic,
+and simplifies the process of generating telemetry,
+it does introduce challenges.
+Which telemetry is the correct telemetry for any specific service?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; contributors use their judgment and experience
+in determining what telemetry data provides the most useful information.
+Their experiences may differ to a service you are building,
+creating a misalignment in generated telemetry.
+The information you need to correctly observe the service will not be present.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To be clear,
+this is not the fault of the &lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; project.
+It&amp;#8217;s one of developer education,
+and ensuring the business allows developers the time they need for it.
+There is the need, however,
+to recognize all services are different.
+As such,
+their telemetry requirements will differ.
+Telemetry requirements will also depend on the organizational structure.
+Is it Ops or Dev supporting the service?
+Is there a mixture depending on incident severity?&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_what_telemetry_to_use&quot;&gt;What Telemetry to use?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As part of the &lt;em&gt;Shift Left Observability&lt;/em&gt; approach,
+developers need to spend time thinking about how their service will be operated.
+Not only once their operating a service,
+but during initial design phases too.
+This information helps determine which telemetry data is necessary for operating a service with resiliency and scalability.
+When a developer takes advantage of pre-defined instrumentation libraries,
+it increases the risks of bloating the size of collected telemetry;
+increasing the costs of collection and storage,
+and complicating the telemetry for operational support of a service.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Yes,
+there are many tools available for filtering and modifying telemetry streams,
+both open-source and commercial.
+However,
+it&amp;#8217;s not possible to effectively scale down the telemetry volume without knowing which telemetry data is needed.
+Evaluating the desired telemetry for service operation and debugging is critical.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Will developers think of all the required telemetry from day one?
+Absolutely not.
+Additional telemetry will need to be added over time.
+However, it&amp;#8217;s a more efficient approach than capturing all possible telemetry data.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Being mindful of telemetry volume and cost is critical.
+Both for observability data usefulness,
+and cost to the business.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_summary&quot;&gt;Summary&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The &lt;em&gt;Shift Left Observability&lt;/em&gt; approach will continue bringing benefits to the developer lifecycle.
+A companion piece,
+not often associated with the approach,
+is &lt;em&gt;Application Observability Design&lt;/em&gt;.
+Developers need to carefully consider the telemetry requirements of their service or application.
+Even when modifying an already existing service.
+&lt;em&gt;Application Observability Design&lt;/em&gt; isn&amp;#8217;t a great term to represent what developers should do,
+but it does emphasize the work that needs to happen.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Whether it&amp;#8217;s utilizing SLOs/SLIs for a service,
+Golden metrics,
+RED metrics,
+or any other approach to defining a set of telemetry a service needs,
+defining the required telemetry data is a necessary step.
+Don&amp;#8217;t default to collecting everything possible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[The Perils of Premature Optimization]]></title><description><![CDATA[Throughout my career I've always heard colleagues talk of premature optimization being a bad thing...]]></description><link>https://kenfinnigan.me/blog/perils-of-premature-optimization/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/perils-of-premature-optimization/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sun, 09 Jun 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Throughout my career I&amp;#8217;ve always heard colleagues talk of premature optimization being a bad thing.
