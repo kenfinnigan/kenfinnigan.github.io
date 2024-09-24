@@ -1,4 +1,164 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 29 Aug 2024 19:38:02 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Shift Left Observability, more than Telemetry]]></title><description><![CDATA[In the last few years, _Shift Left Observability_ has risen to prominence...]]></description><link>https://kenfinnigan.me/blog/shift-left-observability/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/shift-left-observability/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Thu, 29 Aug 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 24 Sep 2024 16:59:42 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[The Feedback Chasm]]></title><description><![CDATA[There's a _Feedback Chasm_ between our current role and any future one...]]></description><link>https://kenfinnigan.me/blog/feedback-chasm/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/feedback-chasm/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 24 Sep 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There&amp;#8217;s a &lt;em&gt;Feedback Chasm&lt;/em&gt; between our current role and any future one.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We receive a variety of feedback from many people throughout our careers.
+Feedback from our current role
+is from an environment we&amp;#8217;re familiar and, hopefully, comfortable in.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In this post I talk about the &lt;em&gt;Feedback Chasm&lt;/em&gt; and why it&amp;#8217;s a problem.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_current_role_feedback&quot;&gt;Current Role Feedback&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Any role we&amp;#8217;re in, we receive feedback from many people.
+From managers, mentors, peers, and direct reports, to name a few.
+Hopefully feedback is given freely and openly.
+And more frequently than yearly performance reviews.
+With any feedback we receive,
+we are free to choose whether to act on that feedback, or not.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The feedback we receive is often targeted at our current role.
+How we&amp;#8217;re doing as a leader, manager, engineer, or whatever role we&amp;#8217;re in.
+What we need to do for promotions, raises,
+or other future roles in the same company.
+We may also receive feedback which is generally applicable to any role,
+but less frequently.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_future_role_feedback&quot;&gt;Future Role Feedback&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When interviewing for a new role at a new company,
+we don&amp;#8217;t consider the importance of feedback.
+We&amp;#8217;re focused on the interview itself,
+and whether we&amp;#8217;re a good fit for the team and company.
+We rely on our existing skills and experience from current and previous roles,
+hoping they&amp;#8217;re enough.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;What happens when our current skills are not enough?
+We don&amp;#8217;t get an offer,
+and we&amp;#8217;re often left wondering why.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Sometimes we do get feedback,
+but it can be vague and not actionable.
+We&amp;#8217;re left to our own devices to figure out what to do next.
+Are we lacking in certain skills?
+Do I need more technical or soft skills?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is the &lt;em&gt;Feedback Chasm&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_the_feedback_chasm&quot;&gt;The Feedback Chasm&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The feedback we receive for our current role,
+is often not the same feedback we need to land a future role.
+Feedback from interviewing for a new role is key to bridging the gap.
+Without this feedback,
+we&amp;#8217;re destined to never reach the next step in our careers.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Why do we not receive feedback when interviewing?
+There can be many reasons as to why.
+Sometimes it&amp;#8217;s a lack of time to distill the internal comments into shareable feedback.
+Other times companies do not want to give specific feedback,
+for fear of revealing too much information about their internal processes.
+It could also be a fear of lawsuits,
+or simply a lack of understanding of the importance of feedback for a candidate.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Without receiving feedback from the interviewing process,
+we won&amp;#8217;t know how to improve.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As candidates,
+interviewing requires a significant time investment.
+We spend several hours in interviews, and more outside of them.
+Preparing for interviews,
+writing interview notes,
+researching a company, and more.
+It&amp;#8217;s not unreasonable to expect a small amount of feedback for the time invested.
+Surely a few pieces of feedback could be provided in less than half an hour.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_jumping_the_feedback_chasm&quot;&gt;Jumping the Feedback Chasm&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;How can we reach the other side of the &lt;em&gt;Feedback Chasm&lt;/em&gt;?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;One approach is ensuring we have mentors outside our current company.
+They could be former colleagues, or people you&amp;#8217;ve met throughout your career.
+Attending conferences, online groups, or local user groups, there are many places to find a mentor.
+Even if they have not worked at the company you want to join,
+their feedback can be invaluable.
+What you want is for their feedback to differ from what you receive at any current role.
+The differing perspectives and opinions are key to growing beyond your current company and role.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;What else can we do?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Some companies will offer to connect you with employees directly to hear about the culture and work environment.
+This typically occurs once you&amp;#8217;ve had an interview or two already,
+so will not be of help in the early stages of the interview process.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;However, the largest benefit comes from the industry placing a higher importance on providing feedback to candidates.
+Without this feedback,
+we&amp;#8217;re destined to continue making it difficult for everyone to land their dream job.
+Granted,
+not all feedback we receive may be useful,
+or which we want to act on.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;But it&amp;#8217;s a better place than not knowing anything.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The &lt;em&gt;Feedback Chasm&lt;/em&gt; is a problem for the industry.
+We&amp;#8217;re increasing the likelihood of limiting people&amp;#8217;s potential for growth.
+Feedback is the engine driving our growth.
+What that engine propelling us,
+or being limited to small sets of feedback,
+we may not reach where we want to go.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We need to ensure we&amp;#8217;re getting feedback from many different avenues,
+both internally and externally.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;However, the largest pieces of potentially career changing feedback we receive,
+needs to come from the interview process itself.
+The industry must change it&amp;#8217;s approach to providing feedback,
+and give it freely.
+Candidates invest a large amount of time in the process with no guarantees.
+The company should want to provide feedback to help them improve,
+increasing the chance of them being a future employee.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Shift Left Observability, more than Telemetry]]></title><description><![CDATA[In the last few years, _Shift Left Observability_ has risen to prominence...]]></description><link>https://kenfinnigan.me/blog/shift-left-observability/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/shift-left-observability/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Thu, 29 Aug 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;In the last few years, &lt;em&gt;Shift Left Observability&lt;/em&gt; has risen to prominence.
