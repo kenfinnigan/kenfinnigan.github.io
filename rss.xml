@@ -1,4 +1,144 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 24 Sep 2024 17:12:15 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[The Feedback Chasm]]></title><description><![CDATA[There's a _Feedback Chasm_ between our current role and any future one...]]></description><link>https://kenfinnigan.me/blog/feedback-chasm/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/feedback-chasm/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 24 Sep 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 09 Oct 2024 23:16:48 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[The Coding Interview: Why They Don’t Tell the Whole Story]]></title><description><![CDATA[We’ve all been there: staring at an online code editor, heart hammering...]]></description><link>https://kenfinnigan.me/blog/coding-interview-myth/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/coding-interview-myth/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Wed, 09 Oct 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We’ve all been there: staring at an online code editor, heart hammering,
+trying to conjure a perfectly optimized algorithm while an interviewer(s) looks on expectantly.
+Coding interviews have become a standard practice for tech companies,
+but are they really the best way to assess a developer’s potential or their skills?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I’d argue they’re not even close.
+In fact, they might be doing more harm than good.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_the_pressure_cooker_fallacy&quot;&gt;The Pressure Cooker Fallacy&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Coding interviews are notorious for putting candidates under immense pressure.
+In these scenarios, developers are expected to solve complex problems with minimal preparation,
+and often without full context.
+You’re tasked with writing code under the watchful eyes of one or two interviewers,
+as they evaluate your every keystroke.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is hardly reflective of real-world software development.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Modern development is collaborative, iterative, and often involves plenty of discussion, debugging, and — let’s be real — Googling.
+The environment in a coding interview is a far cry from the day-to-day experience,
+where developers work in teams, take the time to fully understand problems, and build solutions with care.
+Writing clean, maintainable code in the real world is a thoughtful,
+measured process — nothing like the high-stress race to solve an algorithm in 30 minutes.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I appreciate the interviewer(s) is seeking to understand a candidates thought process,
+but this approach is unnatural for most people.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_rote_learning_vs_real_skills&quot;&gt;Rote Learning vs. Real Skills&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Many coding interview questions have become predictable,
+to the point where a quick search online will uncover a list of common problems and their optimal solutions.
+While it’s true that preparation is important for any interview,
+what we’re really testing here is how well candidates can memorize algorithms,
+rather than their ability to think critically or write maintainable code.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Yes, they might be able to churn out a sorting algorithm on the spot.
+But can they navigate a complex codebase, identify subtle bugs, and contribute to a system that needs to be maintained by a team over time?
+That’s the real test of a developer’s skill, and it’s largely absent from the coding interview process.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_the_art_of_the_merge_what_we_should_be_testing&quot;&gt;The Art of the Merge: What We Should Be Testing&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In the real world, developers don’t just write new code from scratch.
+They spend much of their time adding features to existing systems,
+reviewing code written by colleagues, and debugging issues that crop up in established projects.
+This is where we should focus our attention when evaluating candidates.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;olist arabic&quot;&gt;
+&lt;ol class=&quot;arabic&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;Code Reviews:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A more realistic evaluation would involve asking candidates to review a pull request.
+Can they offer constructive feedback?
+Do they recognize potential issues or suggest better alternatives?
+This is much closer to the collaborative process of building software in a team.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;olist arabic&quot;&gt;
+&lt;ol class=&quot;arabic&quot; start=&quot;2&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;Enhancing Existing Code:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Instead of giving a clean slate problem, ask the candidate to add a feature to an existing codebase.
+This mimics the everyday reality of a developer’s job, where they need to work within the constraints of an established architecture.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;olist arabic&quot;&gt;
+&lt;ol class=&quot;arabic&quot; start=&quot;3&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;Debugging:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Debugging is one of the most important and time-consuming aspects of software development.
+Rather than testing someone’s ability to write a complex algorithm in 30 minutes,
+it’s far more telling to see how they approach diagnosing and fixing a bug in a larger system.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Granted, these approaches can be more complex to implement for an interview,
+but the payoff is an improved approach to candidate evaluation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_experience_matters&quot;&gt;Experience Matters&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For recent graduates or developers with limited professional experience,
+coding interviews can still serve as a reasonable way to gauge their problem-solving skills and fundamental knowledge.
+But for more seasoned developers, these interviews fall short.
+A developer with years of experience should be evaluated based on their track record — the projects they’ve shipped,
+the systems they’ve worked on, and their public code contributions, if available.
+These give a far more nuanced picture of a developer’s capabilities than whether they can code FizzBuzz.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_a_better_path_forward&quot;&gt;A Better Path Forward&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There’s a smarter way to assess developer talent.
+Let’s consider moving away from the outdated model of high-pressure coding or whiteboard challenges and incorporate more realistic assessments.
+Code reviews, debugging exercises, and discussions about past projects give a better understanding of how a developer operates in the real world.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The myth that coding interviews are the ultimate test of a developer’s ability needs to be put to rest.
+What we should be looking for is the ability to collaborate,
+think critically, and produce maintainable, high-quality code.
+Skills that are much more representative of what a developer actually does on a daily basis.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Let’s move towards an interview process that reflects the collaborative, problem-solving nature of modern software development.
+After all, when was the last time you had to solve an algorithm problem in under 30 minutes while your boss stood over your shoulder?&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[The Feedback Chasm]]></title><description><![CDATA[There's a _Feedback Chasm_ between our current role and any future one...]]></description><link>https://kenfinnigan.me/blog/feedback-chasm/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/feedback-chasm/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 24 Sep 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;There&amp;#8217;s a &lt;em&gt;Feedback Chasm&lt;/em&gt; between our current role and any future one.&lt;/p&gt;
