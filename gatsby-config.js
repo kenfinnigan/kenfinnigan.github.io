@@ -30,6 +30,7 @@ module.exports = {
     socialLinks: {
       mastodon: `https://fosstodon.org/@kenfinnigan`,
       twitter: `https://twitter.com/kenfinnigan`,
+      blueSky: `https://bsky.app/profile/kenfinnigan.me`,
       linkedin: `https://linkedin.com/in/kenfinnigan`,
       github: `https://github.com/kenfinnigan`,
     },
