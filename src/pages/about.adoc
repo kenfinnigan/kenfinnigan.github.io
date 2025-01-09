@@ -6,10 +6,9 @@ image::portrait.png[Ken Finnigan]
 
 I'm an open source engineer
 with over 26 years experience with enterprises throughout the world.
-I'm currently taking a short break while figuring out what's next.
-I'm also helping https://www.commonhaus.org/[Commonhaus Foundation, window="_blank"]
+I'm currently helping https://www.commonhaus.org/[Commonhaus Foundation, window="_blank"]
 to build a forever home for open source projects.
-Previously, I was at Lumigo, Workday,
+Previously, I was at Workday,
 and at Red Hat for 11 years founding open source projects in middleware.
 
 I'm now, mostly, a stationary nomad after growing up in Sydney, Australia.
@@ -26,10 +25,11 @@ Sometimes you find some very interesting members of a family in the past!
 
 === Open Source
 
-I can be found contributing to open source projects: https://openslo.com/[OpenSLO, window="_blank"],
-https://github.com/open-telemetry/opentelemetry-java[OpenTelemetry, window="_blank"], and others.
+Projects I've contributed to include:
 
-Previously, I've contributed to https://github.com/quarkusio/quarkus[Quarkus, window="_blank"],
+https://github.com/open-telemetry/opentelemetry-java[OpenTelemetry, window="_blank"],
+https://openslo.com/[OpenSLO, window="_blank"],
+https://github.com/quarkusio/quarkus[Quarkus, window="_blank"],
 https://github.com/smallrye[SmallRye, window="_blank"],
 https://microprofile.io/[Eclipse MicroProfile, window="_blank"],
 https://github.com/thorntail[Thorntail, window="_blank"], https://github.com/liveoak-io[LiveOak, window="_blank"],
@@ -38,16 +38,13 @@ and https://github.com/seam[JBoss Seam, window="_blank"].
 
 === Author
 
-My most recent books are https://oreil.ly/HcjbR[Reactive Systems in Java, window="_blank"], and
-https://www.manning.com/books/kubernetes-native-microservices-with-quarkus-and-microprofile?utm_source=enterprisejavamicroservices&utm_medium=affiliate&utm_campaign=book_clingan_kubernetes_11_3_20&a_aid=enterprisejavamicroservices&a_bid=52b1302b[Kubernetes Native Microservices with Quarkus, and MicroProfile, window="_blank"].
+Books I've authored include:
 
-Previously, I've written the following books:
-
-https://www.manning.com/books/enterprise-java-microservices?utm_source=enterprisejavamicroservices&utm_medium=affiliate&utm_campaign=book_finnigan_enterprise_10_23_18&a_aid=enterprisejavamicroservices&a_bid=3ec69b50[Enterprise Java Microservices, window="_blank"]
-
-https://www.amazon.com/JBoss-Weld-CDI-Java-Platform/dp/1782160183[JBoss Weld CDI for Java Platform, window="_blank"]
-
-https://www.amazon.com/GateIn-Cookbook-Ken-Finnigan/dp/1849518629[GateIn Cookbook, window="_blank"]
+https://oreil.ly/HcjbR[Reactive Systems in Java, window="_blank"],
+https://www.manning.com/books/kubernetes-native-microservices-with-quarkus-and-microprofile?utm_source=enterprisejavamicroservices&utm_medium=affiliate&utm_campaign=book_clingan_kubernetes_11_3_20&a_aid=enterprisejavamicroservices&a_bid=52b1302b[Kubernetes Native Microservices with Quarkus, and MicroProfile, window="_blank"],
+https://www.manning.com/books/enterprise-java-microservices?utm_source=enterprisejavamicroservices&utm_medium=affiliate&utm_campaign=book_finnigan_enterprise_10_23_18&a_aid=enterprisejavamicroservices&a_bid=3ec69b50[Enterprise Java Microservices, window="_blank"],
+https://www.amazon.com/JBoss-Weld-CDI-Java-Platform/dp/1782160183[JBoss Weld CDI for Java Platform, window="_blank"],
+and https://www.amazon.com/GateIn-Cookbook-Ken-Finnigan/dp/1849518629[GateIn Cookbook, window="_blank"].
 
 === How to find me
 
