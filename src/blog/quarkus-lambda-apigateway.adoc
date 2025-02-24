@@ -1,0 +1,277 @@
+= Building a Quarkus AWS Lambda for API Gateway
+
+:page-date: 2025-02-25
+:page-summary: I recently set out to build an AWS Lambda function deployed behind an API Gateway...
+
+I recently set out to build an AWS Lambda function deployed behind an API Gateway.
+Given my familiarity with Quarkus,
+I chose it to take advantage of a serverless architecture for low-traffic services.
+
+Building services which wouldn't have much initial traffic,
+I decided to take advantage of the serverless approach with AWS Lambda.
+Using AWS for the lambdas,
+it was natural to expose the endpoints via an API Gateway.
+Creating a set of endpoints matching a RESTful structure,
+with each endpoint as a separate lambda.
+
+I thought I'd share my experience of building this,
+and the challenges I encountered along the way.
+
+== Project Setup
+
+I typically use the https://code.quarkus.io/[Quarkus Starter site, window="_blank"] to create new projects.
+Just ensure that your `pom.xml` includes the `quarkus-amazon-lambda` dependency:
+
+```xml
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-amazon-lambda</artifactId>
+</dependency>
+```
+
+I explored the different types of AWS Lambda that can be created with Quarkus:
+RESTful, HTTP/Servlet, Funqy, or Amazon SDK.
+I wanted to learn as much as I could about working with the Amazon SDK,
+so I chose it over the other available types for this project.
+
+== Creating the Lambda Function
+
+Next, we walk through the process of developing a *Create Customer* lambda.
+Imagine we're building a SaaS and need a way to create customers in a database.
+
+We create a new Java class, `CreateCustomer`,
+which implements the `RequestHandler`.
+We also need to define the request and response types for `RequestHandler`,
+which in this case is `APIGatewayV2HTTPEvent` and `APIGatewayV2HTTPResponse` respectively.
+As mentioned previously, I'm deploying the lambda behind the API Gateway and must use events which it understands.
+There are many different request events which can be used to trigger the lambda execution,
+including `KinesisFirehoseEvent`, `SQSEvent`, `S3Event`, etc.
+Which you choose will depend on the overall architecture and where the lambda fits the execution flow within that architecture.
+
+Here is class definition:
+
+```java
+@Named("createCustomer")
+public class CreateCustomer
+    implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
+}
+```
+
+Note the lambda has been given a CDI bean name of `createCustomer`.
+It's not strictly necessary in our case,
+as we only have one lambda in the final packaged archive.
+
+Now we need the method to handle the request the lambda will receive when deployed:
+
+```java
+@Override
+public APIGatewayV2HTTPResponse handleRequest
+    (APIGatewayV2HTTPEvent requestEvent, Context context) {
+}
+```
+
+We're implementing the `handleRequest` method from `RequestHandler`,
+with the request, `APIGatewayV2HTTPEvent`, and response, `APIGatewayV2HTTPResponse`, types we specified on the class.
+In addition,
+there is a lambda runtime context passed to the method.
+The context provides access to information about the lambda execution environment,
+including log names, function name and version, configured memory limit, and remaining execution time available for the lambda.
+
+One thing I did to prevent the API Gateway being misconfigured for the lambda,
+was to explicitly check the type of HTTP method used in the request:
+
+```java
+if (!requestEvent.getRequestContext().getHttp().getMethod().equals("POST")) {
+  return APIGatewayV2HTTPResponse.builder()
+      .withStatusCode(405)
+      .withBody("Method Not Allowed")
+      .build();
+}
+```
+
+Here we use the `requestEvent` to retrieve the HTTP method from the request context.
+Checking whether it's the expected `POST`,
+and returning a status of `405` if it's not.
+We have a lot of flexibility in how we implement the lambda.
+The response we're returning can be customized however we require.
+
+After confirming that the request uses the expected POST method,
+we retrieve the JSON body with requestEvent.getBody().
+Since our lambda needs a structured object,
+we convert this JSON string into a POJO (e.g., SignupRequest) using Jackson’s ObjectMapper.
+
+For example,
+let's presume we need an email address and a device id to uniquely identify the customer and create a record for them.
+We would need a pojo such as this:
+
+```java
+public class SignupRequest {
+    private String email;
+
+    private String deviceId;
+
+    // Getters, and Setters
+}
+```
+
+With a pojo defined, we can convert the request body string into the pojo with:
+
+```java
+objectMapper.readValue(requestEvent.getBody(), SignupRequest.class)
+```
+
+To have access to an object mapper,
+we inject it into our lambda:
+
+```java
+@Inject
+ObjectMapper objectMapper;
+```
+
+With the JSON request body now in a pojo,
+we are able to validate the presence and values of the fields we received.
+Returning responses with a `400` status code,
+if the values are not what we expected.
+Either because they were missing, empty, or invalid.
+
+Once we're happy the data we received can be processed and a customer created,
+we can store the data and return a response.
+This post won't cover this part,
+but I will explain how I integrated with DynamoDB in a future post.
+
+We will presume we have another pojo called `SignupResponse`,
+which will be the response object from the lambda.
+It is a customer id field on it,
+to identify the customer in any future request.
+
+With the customer created,
+we can return a valid response:
+
+```java
+return APIGatewayV2HTTPResponse.builder()
+    .withStatusCode(200)
+    .withBody(objectMapper.writeValueAsString(signupResponse))
+    .build();
+```
+
+Again we use the response builder to say we have a valid response,
+status code of `200`,
+where the response body will be a json representation of `signupResponse`.
+
+To verify we've correctly programmed the lambda to handle events from an API Gateway,
+we need to write tests!
+
+== Writing Tests
+
+We can use REST Assured with JUnit to test the lambda function.
+As we're not concerned with endpoint paths,
+the tests can access the default endpoint.
+The one tricky bit is understanding the response you get from the REST Assured call is an outer HTTP wrapper.
+The response that will actually be received in the test has the event response as the body.
+We will see exactly what that means shortly.
+
+Let's write a test verifying successful execution.
+
+Here's the test class with the annotation we need,
+and injecting an object mapper,
+just like the function:
+
+```java
+@QuarkusTest
+class CreateCustomerTest {
+    @Inject
+    ObjectMapper objectMapper;
+}
+```
+
+At the start of the test,
+we create a pojo to represent the request body we want to process in the lambda:
+
+```java
+SignupRequest body = new SignupRequest();
+body.setEmail("gary.sinise@gmail.com");
+```
+
+Now we create the request object representing what the API Gateway will pass to the lambda:
+
+```java
+APIGatewayV2HTTPEvent request =
+    APIGatewayV2HTTPEvent.builder()
+        .withRequestContext(
+            RequestContext.builder()
+                .withHttp(
+                    Http.builder()
+                        .withMethod("POST")
+                        .build()
+                )
+                .build()
+        )
+        .withBody(objectMapper.writeValueAsString(body))
+        .build();
+```
+
+The main points to note are setting the `RequestContext` to be an HTTP POST method,
+as we need this for the check in our lambda,
+and writing the `SignupRequest` pojo to JSON as the request body.
+
+With the request event created,
+we use REST Assured to call the lambda:
+
+```java
+Response response = given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(request)
+        .when()
+        .post()
+        .thenReturn();
+```
+
+Being sure to specify we're passing JSON as the content type,
+and accepting a response as JSON.
+
+With the response object in hand,
+we check whether the REST Assured execution succeeded:
+
+```java
+assertTrue(null != response);
+assertEquals(200, response.getStatusCode());
+```
+
+Then we extract the body from the response,
+convert it into the response object for the API Gateway,
+verify the status code,
+and lastly,
+convert and verify the data in the response:
+
+```java
+APIGatewayV2HTTPResponse out =
+    response.getBody().as(APIGatewayV2HTTPResponse.class);
+assertTrue(null != out);
+assertEquals(200, out.getStatusCode());
+
+SignupResponse signupResponse =
+    objectMapper.readValue(out.getBody(), SignupResponse.class);
+assertTrue(null != signupResponse);
+assertTrue(null != signupResponse.getCustomerId());
+```
+
+== Summary
+
+This post provides a step-by-step guide to building an AWS Lambda function using Quarkus for deployment behind an API Gateway.
+It covers everything from project setup to testing,
+using a "Create Customer" use case as a practical example.
+
+Key takeaways include:
+
+- Understand how to implement a lambda function using the Amazon SDK, converting JSON request bodies into POJOs, and constructing appropriate HTTP responses
+- Discover how to use REST Assured with JUnit to simulate API Gateway events and validate the function's behavior.
+- Appreciate the advantages of a serverless architecture for low-traffic applications, where each endpoint can be managed as an independent lambda.
+
+Next Steps for Readers:
+
+- Explore integrating with DynamoDB for data persistence in future projects.
+- Consider trying out other lambda approaches with Quarkus like RESTful, HTTP/Servlet, or Funqy to see what best fits your application's needs.
+- Dive into performance optimizations and advanced configurations for deploying Quarkus-based serverless applications on AWS.
+
+This guide not only demystifies the process for beginners but also opens doors for further exploration into more advanced serverless patterns and integrations.
