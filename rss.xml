@@ -1,4 +1,361 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 09 Jan 2025 01:28:14 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[The Coding Interview: Why They Don’t Tell the Whole Story]]></title><description><![CDATA[We’ve all been there: staring at an online code editor, heart hammering...]]></description><link>https://kenfinnigan.me/blog/coding-interview-myth/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/coding-interview-myth/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Wed, 09 Oct 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 25 Feb 2025 12:13:35 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Building a Quarkus AWS Lambda for API Gateway]]></title><description><![CDATA[I recently set out to build an AWS Lambda function deployed behind an API Gateway...]]></description><link>https://kenfinnigan.me/blog/quarkus-lambda-apigateway/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/quarkus-lambda-apigateway/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 25 Feb 2025 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I recently set out to build an AWS Lambda function deployed behind an API Gateway.
+Given my familiarity with Quarkus,
+I chose it to take advantage of a serverless architecture for low-traffic services.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Building services which wouldn&amp;#8217;t have much initial traffic,
+I decided to take advantage of the serverless approach with AWS Lambda.
+Using AWS for the lambdas,
+it was natural to expose the endpoints via an API Gateway.
+Creating a set of endpoints matching a RESTful structure,
+with each endpoint as a separate lambda.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I thought I&amp;#8217;d share my experience of building this,
+and the challenges I encountered along the way.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_project_setup&quot;&gt;Project Setup&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I typically use the &lt;a href=&quot;https://code.quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus Starter site&lt;/a&gt; to create new projects.
+Just ensure that your &lt;code&gt;pom.xml&lt;/code&gt; includes the &lt;code&gt;quarkus-amazon-lambda&lt;/code&gt; dependency:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&amp;lt;dependency&amp;gt;
+  &amp;lt;groupId&amp;gt;io.quarkus&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;quarkus-amazon-lambda&amp;lt;/artifactId&amp;gt;
+&amp;lt;/dependency&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I explored the different types of AWS Lambda that can be created with Quarkus:
+RESTful, HTTP/Servlet, Funqy, or Amazon SDK.
+I wanted to learn as much as I could about working with the Amazon SDK,
+so I chose it over the other available types for this project.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_creating_the_lambda_function&quot;&gt;Creating the Lambda Function&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Next, we walk through the process of developing a &lt;strong&gt;Create Customer&lt;/strong&gt; lambda.
+Imagine we&amp;#8217;re building a SaaS and need a way to create customers in a database.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We create a new Java class, &lt;code&gt;CreateCustomer&lt;/code&gt;,
+which implements the &lt;code&gt;RequestHandler&lt;/code&gt;.
+We also need to define the request and response types for &lt;code&gt;RequestHandler&lt;/code&gt;,
+which in this case is &lt;code&gt;APIGatewayV2HTTPEvent&lt;/code&gt; and &lt;code&gt;APIGatewayV2HTTPResponse&lt;/code&gt; respectively.
+As mentioned previously, I&amp;#8217;m deploying the lambda behind the API Gateway and must use events which it understands.
+There are many different request events which can be used to trigger the lambda execution,
+including &lt;code&gt;KinesisFirehoseEvent&lt;/code&gt;, &lt;code&gt;SQSEvent&lt;/code&gt;, &lt;code&gt;S3Event&lt;/code&gt;, etc.
+Which you choose will depend on the overall architecture and where the lambda fits the execution flow within that architecture.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Here is class definition:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Named(&quot;createCustomer&quot;)
+public class CreateCustomer
+    implements RequestHandler&amp;lt;APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse&amp;gt; {
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Note the lambda has been given a CDI bean name of &lt;code&gt;createCustomer&lt;/code&gt;.
+It&amp;#8217;s not strictly necessary in our case,
+as we only have one lambda in the final packaged archive.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Now we need the method to handle the request the lambda will receive when deployed:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Override
+public APIGatewayV2HTTPResponse handleRequest
+    (APIGatewayV2HTTPEvent requestEvent, Context context) {
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We&amp;#8217;re implementing the &lt;code&gt;handleRequest&lt;/code&gt; method from &lt;code&gt;RequestHandler&lt;/code&gt;,
+with the request, &lt;code&gt;APIGatewayV2HTTPEvent&lt;/code&gt;, and response, &lt;code&gt;APIGatewayV2HTTPResponse&lt;/code&gt;, types we specified on the class.
+In addition,
+there is a lambda runtime context passed to the method.
+The context provides access to information about the lambda execution environment,
+including log names, function name and version, configured memory limit, and remaining execution time available for the lambda.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;One thing I did to prevent the API Gateway being misconfigured for the lambda,
+was to explicitly check the type of HTTP method used in the request:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;if (!requestEvent.getRequestContext().getHttp().getMethod().equals(&quot;POST&quot;)) {
+  return APIGatewayV2HTTPResponse.builder()
+      .withStatusCode(405)
+      .withBody(&quot;Method Not Allowed&quot;)
+      .build();
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Here we use the &lt;code&gt;requestEvent&lt;/code&gt; to retrieve the HTTP method from the request context.
+Checking whether it&amp;#8217;s the expected &lt;code&gt;POST&lt;/code&gt;,
+and returning a status of &lt;code&gt;405&lt;/code&gt; if it&amp;#8217;s not.
+We have a lot of flexibility in how we implement the lambda.
+The response we&amp;#8217;re returning can be customized however we require.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;After confirming that the request uses the expected POST method,
+we retrieve the JSON body with requestEvent.getBody().
+Since our lambda needs a structured object,
+we convert this JSON string into a POJO (e.g., SignupRequest) using Jackson’s ObjectMapper.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For example,
+let&amp;#8217;s presume we need an email address and a device id to uniquely identify the customer and create a record for them.
+We would need a pojo such as this:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public class SignupRequest {
+    private String email;
+
+    private String deviceId;
+
+    // Getters, and Setters
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With a pojo defined, we can convert the request body string into the pojo with:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;objectMapper.readValue(requestEvent.getBody(), SignupRequest.class)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To have access to an object mapper,
+we inject it into our lambda:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Inject
+ObjectMapper objectMapper;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With the JSON request body now in a pojo,
+we are able to validate the presence and values of the fields we received.
+Returning responses with a &lt;code&gt;400&lt;/code&gt; status code,
+if the values are not what we expected.
+Either because they were missing, empty, or invalid.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Once we&amp;#8217;re happy the data we received can be processed and a customer created,
+we can store the data and return a response.
+This post won&amp;#8217;t cover this part,
+but I will explain how I integrated with DynamoDB in a future post.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We will presume we have another pojo called &lt;code&gt;SignupResponse&lt;/code&gt;,
+which will be the response object from the lambda.
+It is a customer id field on it,
+to identify the customer in any future request.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With the customer created,
+we can return a valid response:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;return APIGatewayV2HTTPResponse.builder()
+    .withStatusCode(200)
+    .withBody(objectMapper.writeValueAsString(signupResponse))
+    .build();&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Again we use the response builder to say we have a valid response,
+status code of &lt;code&gt;200&lt;/code&gt;,
+where the response body will be a json representation of &lt;code&gt;signupResponse&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To verify we&amp;#8217;ve correctly programmed the lambda to handle events from an API Gateway,
+we need to write tests!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_writing_tests&quot;&gt;Writing Tests&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We can use REST Assured with JUnit to test the lambda function.
+As we&amp;#8217;re not concerned with endpoint paths,
+the tests can access the default endpoint.
+The one tricky bit is understanding the response you get from the REST Assured call is an outer HTTP wrapper.
+The response that will actually be received in the test has the event response as the body.
+We will see exactly what that means shortly.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Let&amp;#8217;s write a test verifying successful execution.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Here&amp;#8217;s the test class with the annotation we need,
+and injecting an object mapper,
+just like the function:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@QuarkusTest
+class CreateCustomerTest {
+    @Inject
+    ObjectMapper objectMapper;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;At the start of the test,
+we create a pojo to represent the request body we want to process in the lambda:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;SignupRequest body = new SignupRequest();
+body.setEmail(&quot;gary.sinise@gmail.com&quot;);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Now we create the request object representing what the API Gateway will pass to the lambda:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;APIGatewayV2HTTPEvent request =
+    APIGatewayV2HTTPEvent.builder()
+        .withRequestContext(
+            RequestContext.builder()
+                .withHttp(
+                    Http.builder()
+                        .withMethod(&quot;POST&quot;)
+                        .build()
+                )
+                .build()
+        )
+        .withBody(objectMapper.writeValueAsString(body))
+        .build();&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The main points to note are setting the &lt;code&gt;RequestContext&lt;/code&gt; to be an HTTP POST method,
+as we need this for the check in our lambda,
+and writing the &lt;code&gt;SignupRequest&lt;/code&gt; pojo to JSON as the request body.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With the request event created,
+we use REST Assured to call the lambda:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;Response response = given()
+        .contentType(&quot;application/json&quot;)
+        .accept(&quot;application/json&quot;)
+        .body(request)
+        .when()
+        .post()
+        .thenReturn();&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Being sure to specify we&amp;#8217;re passing JSON as the content type,
+and accepting a response as JSON.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With the response object in hand,
+we check whether the REST Assured execution succeeded:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;assertTrue(null != response);
+assertEquals(200, response.getStatusCode());&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Then we extract the body from the response,
+convert it into the response object for the API Gateway,
+verify the status code,
+and lastly,
+convert and verify the data in the response:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;APIGatewayV2HTTPResponse out =
+    response.getBody().as(APIGatewayV2HTTPResponse.class);
+assertTrue(null != out);
+assertEquals(200, out.getStatusCode());
+
+SignupResponse signupResponse =
+    objectMapper.readValue(out.getBody(), SignupResponse.class);
+assertTrue(null != signupResponse);
+assertTrue(null != signupResponse.getCustomerId());&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_summary&quot;&gt;Summary&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This post provides a step-by-step guide to building an AWS Lambda function using Quarkus for deployment behind an API Gateway.
+It covers everything from project setup to testing,
+using a &quot;Create Customer&quot; use case as a practical example.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Key takeaways include:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Understand how to implement a lambda function using the Amazon SDK, converting JSON request bodies into POJOs, and constructing appropriate HTTP responses&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Discover how to use REST Assured with JUnit to simulate API Gateway events and validate the function&amp;#8217;s behavior.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Appreciate the advantages of a serverless architecture for low-traffic applications, where each endpoint can be managed as an independent lambda.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Next Steps for Readers:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Explore integrating with DynamoDB for data persistence in future projects.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Consider trying out other lambda approaches with Quarkus like RESTful, HTTP/Servlet, or Funqy to see what best fits your application&amp;#8217;s needs.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Dive into performance optimizations and advanced configurations for deploying Quarkus-based serverless applications on AWS.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This guide not only demystifies the process for beginners but also opens doors for further exploration into more advanced serverless patterns and integrations.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[The Coding Interview: Why They Don’t Tell the Whole Story]]></title><description><![CDATA[We’ve all been there: staring at an online code editor, heart hammering...]]></description><link>https://kenfinnigan.me/blog/coding-interview-myth/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/coding-interview-myth/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Wed, 09 Oct 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;We’ve all been there: staring at an online code editor, heart hammering,
