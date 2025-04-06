@@ -22,7 +22,7 @@
     "react-helmet": "^6.1.0"
   },
   "devDependencies": {
-    "prettier": "^3.5.2"
+    "prettier": "^3.5.3"
   },
   "overrides": {
     "react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825": {
