@@ -1,0 +1,224 @@
+= Quarkus AWS Lambda and DynamoDB
+
+:page-date: 2025-04-08
+:page-summary: Last time I wrote about building a Quarkus AWS Lambda function...
+
+Last time I wrote about building a Quarkus AWS Lambda function
+deployed behind an API Gateway.
+See the https://kenfinnigan.me/blog/quarkus-lambda-apigateway[previous post, window="_blank"] for all the details.
+Now I'm going further and adding DynamoDB into the mix.
+
+All the code from this and the previous post is available on https://github.com/kenfinnigan/aws-quarkus-lambda-dynamodb[GitHub, window="_blank"].
+
+== Project Setup for the Enhanced Client
+
+To interact with DynamoDB,
+we add the `quarkus-amazon-dynamodb-enhanced` dependency to the `pom.xml`:
+
+```xml
+<dependency>
+  <groupId>io.quarkiverse.amazonservices</groupId>
+  <artifactId>quarkus-amazon-dynamodb-enhanced</artifactId>
+</dependency>
+```
+
+We could've used the `quarkus-amazon-dynamodb` dependency instead,
+but I wanted to use the enhanced client.
+The enhanced client allows us to define relationships between tables and data classes within code,
+making it easier to use.
+The enhanced client is built on top of the low-level DynamoDB client,
+which means it has all the same capabilities as the low-level client.
+
+Full details of the enhanced client can be found https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/dynamodb-enhanced-client.html[here, window="_blank"].
+
+== Defining the Data Class
+
+The first step is to create a data class for a customer,
+for mapping to a DynamoDB table.
+Annotating the class with `@DynamoDbBean` tells the enhanced client to map the class to a DynamoDB table:
+
+```java
+@DynamoDbBean
+public class Customer {
+  public Customer() {
+  }
+}
+```
+
+Naming the data class `Customer`,
+the enhanced client will look for a table named `customer` in DynamoDB.
+
+Let's define a partition key for the table,
+a unique identifier for each customer:
+
+```java
+@DynamoDbPartitionKey
+@DynamoDbAttribute(PARTITION_KEY)
+public String getCustomerId() {
+  return customerId;
+}
+```
+
+We use the `@DynamoDbPartitionKey` annotation to define the partition key on the getter method.
+The `@DynamoDbAttribute` annotation is used to define the attribute name in the DynamoDB table.
+We've defined a few constants to use with annotations in the class and outside:
+
+```java
+public static final String CUSTOMER_TABLE_NAME = "customers";
+public static final String EMAIL_INDEX = "customer_email_index";
+public static final String PARTITION_KEY = "customer_id";
+```
+
+By default,
+the attribute name in the customer table would be expected to be `customerId`.
+However, we want to use `customer_id` instead,
+so we use the `@DynamoDbAttribute` annotation to specify the attribute name.
+
+To verify a customer doesn't already exist in the database,
+we need the ability to query the customer table by email.
+We can do this by creating a global secondary index on the `email` attribute:
+
+```java
+@DynamoDbSecondaryPartitionKey(indexNames = EMAIL_INDEX)
+public String getEmail() {
+  return email;
+}
+```
+
+== Using the Enhanced Client
+
+With the data class defined,
+we now use the enhanced client to interact with DynamoDB.
+We inject the enhanced client into our lambda:
+
+```java
+@Inject
+@NamedDynamoDbTable(Customer.CUSTOMER_TABLE_NAME)
+DynamoDbTable<Customer> customerTable;
+```
+
+As part of creating a new customer,
+we want to check if a customer already exists in the database.
+We don't want to create a new customer if we already have one!
+
+```java
+public Customer getCustomerByEmail(String email) {
+  QueryConditional queryConditional =
+    QueryConditional.keyEqualTo(
+      Key.builder().partitionValue(email).build()
+    );
+
+  return getItemFromStream(
+    customerTable
+      .index(Customer.EMAIL_INDEX)
+      .query(queryConditional)
+      .stream());
+}
+```
+
+We create a `QueryConditional` with a `Key` for the partition where the value matches the email address from the request.
+We use the enhanced client to specify the index to query against,
+and the query conditional to use.
+`getItemFromStream` is a utility method to get the first item from the stream of results.
+
+Once we've created a `Customer` object,
+we can use the enhanced client to save it to the database:
+
+```java
+customerTable.putItem(customer);
+```
+
+== Quarkus Dev Services
+
+With Quarkus Dev Services,
+we can run a local DynamoDB instance for testing.
+With Docker running,
+Quarkus will automatically start a local DynamoDB container when we run:
+
+```bash
+mvn quarkus:dev
+```
+
+There is no special configuration needed!
+
+== Writing Tests
+
+Expanding on the tests from the previous post,
+we need to set up the DynamoDB table before we can run the tests.
+We start by injecting the `DynamoDbClient` into our test class:
+
+```java
+@Inject
+DynamoDbClient dynamoDbClient;
+```
+
+Next,
+we create a setup method to create the table and indexes we need:
+
+```java
+@BeforeAll
+void setup() {
+  if (dynamoDbClient.listTables().tableNames().contains(Customer.CUSTOMER_TABLE_NAME)) {
+    return;
+  }
+
+  CreateTableRequest.Builder createTableRequestBuilder = CreateTableRequest.builder()
+    .tableName(Customer.CUSTOMER_TABLE_NAME)
+    .keySchema(
+        KeySchemaElement.builder()
+                .attributeName(Customer.PARTITION_KEY)
+                .keyType("HASH")
+                .build())
+    .billingMode("PAY_PER_REQUEST");
+
+  Collection<AttributeDefinition> attributeDefinitions = getAttributes().entrySet().stream()
+    .map(e -> AttributeDefinition.builder()
+            .attributeName(e.getKey())
+            .attributeType(e.getValue())
+            .build())
+    .toList();
+  createTableRequestBuilder.attributeDefinitions(attributeDefinitions);
+
+  if (getGlobalSecondaryIndexes() != null) {
+    createTableRequestBuilder.globalSecondaryIndexes(getGlobalSecondaryIndexes());
+  }
+
+  dynamoDbClient.createTable(createTableRequestBuilder.build());
+}
+```
+
+There's a lot going on here,
+so let's break it down:
+
+- We check if the table already exists before creating it. Not strictly necessary, but prevents accidental errors.
+- Create a builder for the table specifying the table name and partition key.
+- Define the list of attributes on the table, specifying the attribute name and type. The `getAttributes()` method is a utility method to return a map of attribute names and types.
+- Add the attributes to the table builder.
+- If we have any global secondary indexes defined, we add them to the table builder.
+- Finally, we call `createTable` on the `DynamoDbClient` to create the table.
+
+The tests we wrote in the previous post are still valid,
+with the table set up done,
+we can re-run our tests and verify the lambda function works as expected.
+
+```bash
+mvn test
+```
+
+== Summary
+
+In this follow-up post,
+we extended the previous post by integrating DynamoDB with a Quarkus AWS Lambda function.
+
+Key takeaways include:
+
+- Understanding how to set up the enhanced DynamoDB client in Quarkus
+- Mapping a data class to a DynamoDB table using annotations
+- Querying a DynamoDB table using the enhanced client
+- Leveraging Quarkus Dev Services for local testing with DynamoDB
+- Setting up a DynamoDB table for testing using the DynamoDB client
+
+Next Steps for Readers:
+
+- Try it Out! Check out the full code on https://github.com/kenfinnigan/aws-quarkus-lambda-dynamodb[GitHub, window="_blank"] and experiment with your own enhancements
+- Share your feedback or questions and join the conversation with other developers
