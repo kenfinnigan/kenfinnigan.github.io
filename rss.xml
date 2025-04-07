@@ -1,4 +1,316 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 25 Feb 2025 12:13:35 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Building a Quarkus AWS Lambda for API Gateway]]></title><description><![CDATA[I recently set out to build an AWS Lambda function deployed behind an API Gateway...]]></description><link>https://kenfinnigan.me/blog/quarkus-lambda-apigateway/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/quarkus-lambda-apigateway/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 25 Feb 2025 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 07 Apr 2025 23:46:27 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Quarkus AWS Lambda and DynamoDB]]></title><description><![CDATA[Last time I wrote about building a Quarkus AWS Lambda function...]]></description><link>https://kenfinnigan.me/blog/quarkus-lambda-dynamodb/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/quarkus-lambda-dynamodb/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 08 Apr 2025 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Last time I wrote about building a Quarkus AWS Lambda function
+deployed behind an API Gateway.
+See the &lt;a href=&quot;https://kenfinnigan.me/blog/quarkus-lambda-apigateway&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;previous post&lt;/a&gt; for all the details.
+Now I&amp;#8217;m going further and adding DynamoDB into the mix.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;All the code from this and the previous post is available on &lt;a href=&quot;https://github.com/kenfinnigan/aws-quarkus-lambda-dynamodb&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_project_setup_for_the_enhanced_client&quot;&gt;Project Setup for the Enhanced Client&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To interact with DynamoDB,
+we add the &lt;code&gt;quarkus-amazon-dynamodb-enhanced&lt;/code&gt; dependency to the &lt;code&gt;pom.xml&lt;/code&gt;:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&amp;lt;dependency&amp;gt;
+  &amp;lt;groupId&amp;gt;io.quarkiverse.amazonservices&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;quarkus-amazon-dynamodb-enhanced&amp;lt;/artifactId&amp;gt;
+&amp;lt;/dependency&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We could&amp;#8217;ve used the &lt;code&gt;quarkus-amazon-dynamodb&lt;/code&gt; dependency instead,
+but I wanted to use the enhanced client.
+The enhanced client allows us to define relationships between tables and data classes within code,
+making it easier to use.
+The enhanced client is built on top of the low-level DynamoDB client,
+which means it has all the same capabilities as the low-level client.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Full details of the enhanced client can be found &lt;a href=&quot;https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/dynamodb-enhanced-client.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_defining_the_data_class&quot;&gt;Defining the Data Class&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The first step is to create a data class for a customer,
+for mapping to a DynamoDB table.
+Annotating the class with &lt;code&gt;@DynamoDbBean&lt;/code&gt; tells the enhanced client to map the class to a DynamoDB table:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@DynamoDbBean
+public class Customer {
+  public Customer() {
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Naming the data class &lt;code&gt;Customer&lt;/code&gt;,
+the enhanced client will look for a table named &lt;code&gt;customer&lt;/code&gt; in DynamoDB.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Let&amp;#8217;s define a partition key for the table,
+a unique identifier for each customer:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@DynamoDbPartitionKey
+@DynamoDbAttribute(PARTITION_KEY)
+public String getCustomerId() {
+  return customerId;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We use the &lt;code&gt;@DynamoDbPartitionKey&lt;/code&gt; annotation to define the partition key on the getter method.
+The &lt;code&gt;@DynamoDbAttribute&lt;/code&gt; annotation is used to define the attribute name in the DynamoDB table.
+We&amp;#8217;ve defined a few constants to use with annotations in the class and outside:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public static final String CUSTOMER_TABLE_NAME = &quot;customers&quot;;
+public static final String EMAIL_INDEX = &quot;customer_email_index&quot;;
+public static final String PARTITION_KEY = &quot;customer_id&quot;;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;By default,
+the attribute name in the customer table would be expected to be &lt;code&gt;customerId&lt;/code&gt;.
+However, we want to use &lt;code&gt;customer_id&lt;/code&gt; instead,
+so we use the &lt;code&gt;@DynamoDbAttribute&lt;/code&gt; annotation to specify the attribute name.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To verify a customer doesn&amp;#8217;t already exist in the database,
+we need the ability to query the customer table by email.
+We can do this by creating a global secondary index on the &lt;code&gt;email&lt;/code&gt; attribute:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@DynamoDbSecondaryPartitionKey(indexNames = EMAIL_INDEX)
+public String getEmail() {
+  return email;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_using_the_enhanced_client&quot;&gt;Using the Enhanced Client&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With the data class defined,
+we now use the enhanced client to interact with DynamoDB.
+We inject the enhanced client into our lambda:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Inject
+@NamedDynamoDbTable(Customer.CUSTOMER_TABLE_NAME)
+DynamoDbTable&amp;lt;Customer&amp;gt; customerTable;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As part of creating a new customer,
+we want to check if a customer already exists in the database.
+We don&amp;#8217;t want to create a new customer if we already have one!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public Customer getCustomerByEmail(String email) {
+  QueryConditional queryConditional =
+    QueryConditional.keyEqualTo(
+      Key.builder().partitionValue(email).build()
+    );
+
+  return getItemFromStream(
+    customerTable
+      .index(Customer.EMAIL_INDEX)
+      .query(queryConditional)
+      .stream());
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We create a &lt;code&gt;QueryConditional&lt;/code&gt; with a &lt;code&gt;Key&lt;/code&gt; for the partition where the value matches the email address from the request.
+We use the enhanced client to specify the index to query against,
+and the query conditional to use.
+&lt;code&gt;getItemFromStream&lt;/code&gt; is a utility method to get the first item from the stream of results.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Once we&amp;#8217;ve created a &lt;code&gt;Customer&lt;/code&gt; object,
+we can use the enhanced client to save it to the database:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;customerTable.putItem(customer);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_quarkus_dev_services&quot;&gt;Quarkus Dev Services&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With Quarkus Dev Services,
+we can run a local DynamoDB instance for testing.
+With Docker running,
+Quarkus will automatically start a local DynamoDB container when we run:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mvn quarkus:dev&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There is no special configuration needed!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_writing_tests&quot;&gt;Writing Tests&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Expanding on the tests from the previous post,
+we need to set up the DynamoDB table before we can run the tests.
+We start by injecting the &lt;code&gt;DynamoDbClient&lt;/code&gt; into our test class:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Inject
+DynamoDbClient dynamoDbClient;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Next,
+we create a setup method to create the table and indexes we need:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@BeforeAll
+void setup() {
+  if (dynamoDbClient.listTables().tableNames().contains(Customer.CUSTOMER_TABLE_NAME)) {
+    return;
+  }
+
+  CreateTableRequest.Builder createTableRequestBuilder = CreateTableRequest.builder()
+    .tableName(Customer.CUSTOMER_TABLE_NAME)
+    .keySchema(
+        KeySchemaElement.builder()
+                .attributeName(Customer.PARTITION_KEY)
+                .keyType(&quot;HASH&quot;)
+                .build())
+    .billingMode(&quot;PAY_PER_REQUEST&quot;);
+
+  Collection&amp;lt;AttributeDefinition&amp;gt; attributeDefinitions = getAttributes().entrySet().stream()
+    .map(e -&amp;gt; AttributeDefinition.builder()
+            .attributeName(e.getKey())
+            .attributeType(e.getValue())
+            .build())
+    .toList();
+  createTableRequestBuilder.attributeDefinitions(attributeDefinitions);
+
+  if (getGlobalSecondaryIndexes() != null) {
+    createTableRequestBuilder.globalSecondaryIndexes(getGlobalSecondaryIndexes());
+  }
+
+  dynamoDbClient.createTable(createTableRequestBuilder.build());
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There&amp;#8217;s a lot going on here,
+so let&amp;#8217;s break it down:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;We check if the table already exists before creating it. Not strictly necessary, but prevents accidental errors.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Create a builder for the table specifying the table name and partition key.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Define the list of attributes on the table, specifying the attribute name and type. The &lt;code&gt;getAttributes()&lt;/code&gt; method is a utility method to return a map of attribute names and types.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Add the attributes to the table builder.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If we have any global secondary indexes defined, we add them to the table builder.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Finally, we call &lt;code&gt;createTable&lt;/code&gt; on the &lt;code&gt;DynamoDbClient&lt;/code&gt; to create the table.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The tests we wrote in the previous post are still valid,
+with the table set up done,
+we can re-run our tests and verify the lambda function works as expected.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mvn test&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_summary&quot;&gt;Summary&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In this follow-up post,
+we extended the previous post by integrating DynamoDB with a Quarkus AWS Lambda function.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Key takeaways include:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Understanding how to set up the enhanced DynamoDB client in Quarkus&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Mapping a data class to a DynamoDB table using annotations&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Querying a DynamoDB table using the enhanced client&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Leveraging Quarkus Dev Services for local testing with DynamoDB&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Setting up a DynamoDB table for testing using the DynamoDB client&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Next Steps for Readers:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Try it Out! Check out the full code on &lt;a href=&quot;https://github.com/kenfinnigan/aws-quarkus-lambda-dynamodb&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GitHub&lt;/a&gt; and experiment with your own enhancements&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Share your feedback or questions and join the conversation with other developers&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Building a Quarkus AWS Lambda for API Gateway]]></title><description><![CDATA[I recently set out to build an AWS Lambda function deployed behind an API Gateway...]]></description><link>https://kenfinnigan.me/blog/quarkus-lambda-apigateway/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/quarkus-lambda-apigateway/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 25 Feb 2025 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;I recently set out to build an AWS Lambda function deployed behind an API Gateway.
