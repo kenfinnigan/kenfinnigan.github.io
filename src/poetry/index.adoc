@@ -1,0 +1,29 @@
+:page-title: My Poetry
+:page-description: A collection of my poetry
+
+These are some poems I wrote, mostly 20 years ago.
+I have not updated them since, so they may be a bit dated.
+ +
+I hope you enjoy them!
+
+link:aussie/[Aussie]
+ +
+link:bosham/[Bosham]
+ +
+link:holy-grail/[Holy Grail]
+ +
+link:hot-and-cold/[Hot and Cold]
+ +
+link:ode-to-wimbledon/[Ode to Wimbledon]
+ +
+link:punished/[Punished]
+ +
+link:the-first-time/[The First Time]
+ +
+link:the-flock/[The Flock]
+ +
+link:the-question-of-life/[The Question of Life]
+ +
+link:the-wheel/[The Wheel]
+ +
+link:to-hell-and-back/[To Hell and Back]

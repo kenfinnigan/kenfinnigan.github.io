@@ -25,6 +25,10 @@ module.exports = {
         name: `Blog`,
         url: `/blog`,
       },
+      {
+        name: `Poetry`,
+        url: `/poetry`,
+      },
     ],
     siteUrl: `https://kenfinnigan.me/`,
     socialLinks: {
