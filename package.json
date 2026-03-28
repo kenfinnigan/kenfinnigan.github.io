@@ -17,8 +17,8 @@
     "gatsby-transformer-sharp": "^5.16.0",
     "gray-matter": "^4.0.3",
     "prop-types": "^15.8.1",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-helmet": "^6.1.0"
   },
   "devDependencies": {
@@ -27,7 +27,8 @@
   "overrides": {
     "react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825": {
       "react": "^18.2.0"
-    }
+    },
+    "msgpackr": "^1.11.2"
   },
   "keywords": [
     "gatsby"
