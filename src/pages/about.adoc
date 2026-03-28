@@ -2,10 +2,10 @@
 :page-title: About
 :page-description: software engineer, author, father, and hobby genealogist
 
-image::portrait.png[Ken Finnigan]
+image::ken-2024.jpg[Ken Finnigan, 40, 250]
 
 I'm an open source engineer
-with over 29 years experience with enterprises throughout the world.
+with 30 years experience with enterprises throughout the world.
 I'm currently helping https://www.commonhaus.org/[Commonhaus Foundation, window="_blank"]
 to build a forever home for open source projects.
 I've previously worked at Alteryx, Lumigo, Workday,
@@ -14,9 +14,9 @@ and at Red Hat for 11 years founding open source projects in middleware.
 I'm now, mostly, a stationary nomad after growing up in Sydney, Australia.
 I've lived in London, Brussels, Eindhoven, Dublin, to name a few.
 Currently I'm stationary in Boston, USA,
-with my wife of over 17 years, Erin, and our two boys.
+with my wife of over 17 years, Erin, and our two children.
 
-I'm a father of two boys that constantly keep me on my toes,
+I'm a father of a son and a daughter who constantly keep me on my toes,
 but also say the darndest things all the time!
 
 When I have some free time,
