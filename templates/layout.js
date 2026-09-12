@@ -5,6 +5,8 @@ const layout = ({
   pageDescription = "",
   seoTitle = pageTitle,
   seoDescription = pageDescription,
+  seoType = "website",
+  publishedTime,
   pathName,
   body,
 }) => `<!DOCTYPE html>
@@ -12,7 +14,7 @@ const layout = ({
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  ${seo({ title: seoTitle, description: seoDescription, pathName })}
+  ${seo({ title: seoTitle, description: seoDescription, pathName, type: seoType, publishedTime })}
   <link rel="stylesheet" href="/styles/site.css" />
 </head>
 <body class="ma0 avenir bg-near-white">

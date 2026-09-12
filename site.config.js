@@ -3,6 +3,8 @@ module.exports = {
   description: `Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.`,
   author: `Ken Finnigan`,
   siteUrl: `https://kenfinnigan.me`,
+  twitterHandle: `@kenfinnigan`,
+  defaultImage: `/images/ken-2024.jpg`,
   menuLinks: [
     { name: `About`, url: `/about/` },
     { name: `Blog`, url: `/blog/` },

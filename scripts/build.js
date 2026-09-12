@@ -160,6 +160,9 @@ const renderBlogPost = post =>
   layout({
     pageTitle: post.title,
     pageDescription: post.dateFormatted,
+    seoDescription: post.summary,
+    seoType: "article",
+    publishedTime: `${post.date}T00:00:00Z`,
     pathName: post.slug,
     body: `
   <article class="pa3 pa4-ns nested-copy-line-height">
@@ -201,6 +204,7 @@ const renderHome = latestPosts =>
 const renderTwitterMonth = month =>
   layout({
     pageTitle: month.title,
+    seoDescription: `Ken Finnigan's tweets from ${month.monthName} ${month.year}.`,
     // NB: the deployed site's canonical for twitter pages historically has no
     // trailing slash (an artifact of the old slug-derivation logic) even though
     // the actual URL directory does; preserved here for parity.

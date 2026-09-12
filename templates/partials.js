@@ -79,20 +79,28 @@ const footer = () => `
     </div>
   </footer>`
 
-const seo = ({ title, description, pathName }) => {
+const seo = ({ title, description, pathName, type = "website", publishedTime }) => {
   const metaDescription = description || site.description
   const canonical = pathName ? `${site.siteUrl}${pathName}` : null
+  const image = `${site.siteUrl}${site.defaultImage}`
   return `
     <title>${escapeHtml(site.author)} | ${escapeHtml(title)}</title>
     ${canonical ? `<link rel="canonical" href="${canonical}" />` : ""}
     <meta name="description" content="${escapeHtml(metaDescription)}" />
     <meta property="og:title" content="${escapeHtml(title)}" />
     <meta property="og:description" content="${escapeHtml(metaDescription)}" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:creator" content="${escapeHtml(site.author)}" />
+    <meta property="og:type" content="${type}" />
+    ${canonical ? `<meta property="og:url" content="${canonical}" />` : ""}
+    <meta property="og:site_name" content="${escapeHtml(site.title)}" />
+    <meta property="og:image" content="${image}" />
+    ${type === "article" && publishedTime ? `<meta property="article:published_time" content="${publishedTime}" />` : ""}
+    ${type === "article" ? `<meta property="article:author" content="${escapeHtml(site.author)}" />` : ""}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="${site.twitterHandle}" />
+    <meta name="twitter:creator" content="${site.twitterHandle}" />
     <meta name="twitter:title" content="${escapeHtml(title)}" />
-    <meta name="twitter:description" content="${escapeHtml(metaDescription)}" />`
+    <meta name="twitter:description" content="${escapeHtml(metaDescription)}" />
+    <meta name="twitter:image" content="${image}" />`
 }
 
 module.exports = { header, footer, seo, escapeHtml }
