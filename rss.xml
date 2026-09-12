@@ -1,32 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 28 Mar 2026 18:52:14 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Quarkus AWS Lambda and DynamoDB]]></title><description><![CDATA[Last time I wrote about building a Quarkus AWS Lambda function...]]></description><link>https://kenfinnigan.me/blog/quarkus-lambda-dynamodb/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/quarkus-lambda-dynamodb/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 08 Apr 2025 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Musings of a stationary nomad - RSS Feed]]></title><description><![CDATA[Personal blog of Ken Finnigan, stationary nomad in Pembroke, Massachusetts.]]></description><link>https://kenfinnigan.me</link><generator>custom-build-script</generator><lastBuildDate>Sat, 12 Sep 2026 02:25:53 GMT</lastBuildDate><author><![CDATA[Ken Finnigan]]></author><item><title><![CDATA[Quarkus AWS Lambda and DynamoDB]]></title><description><![CDATA[Last time I wrote about building a Quarkus AWS Lambda function...]]></description><link>https://kenfinnigan.me/blog/quarkus-lambda-dynamodb/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/quarkus-lambda-dynamodb/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 08 Apr 2025 00:00:00 GMT</pubDate><content:encoded>&lt;div id="preamble"&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Last time I wrote about building a Quarkus AWS Lambda function
 deployed behind an API Gateway.
-See the &lt;a href=&quot;https://kenfinnigan.me/blog/quarkus-lambda-apigateway&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;previous post&lt;/a&gt; for all the details.
+See the &lt;a href="https://kenfinnigan.me/blog/quarkus-lambda-apigateway" target="_blank" rel="noopener"&gt;previous post&lt;/a&gt; for all the details.
 Now I&amp;#8217;m going further and adding DynamoDB into the mix.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;All the code from this and the previous post is available on &lt;a href=&quot;https://github.com/kenfinnigan/aws-quarkus-lambda-dynamodb&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;All the code from this and the previous post is available on &lt;a href="https://github.com/kenfinnigan/aws-quarkus-lambda-dynamodb" target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_project_setup_for_the_enhanced_client&quot;&gt;Project Setup for the Enhanced Client&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_project_setup_for_the_enhanced_client"&gt;Project Setup for the Enhanced Client&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;To interact with DynamoDB,
 we add the &lt;code&gt;quarkus-amazon-dynamodb-enhanced&lt;/code&gt; dependency to the &lt;code&gt;pom.xml&lt;/code&gt;:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&amp;lt;dependency&amp;gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-xml" data-lang="xml"&gt;&amp;lt;dependency&amp;gt;
   &amp;lt;groupId&amp;gt;io.quarkiverse.amazonservices&amp;lt;/groupId&amp;gt;
   &amp;lt;artifactId&amp;gt;quarkus-amazon-dynamodb-enhanced&amp;lt;/artifactId&amp;gt;
 &amp;lt;/dependency&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;We could&amp;#8217;ve used the &lt;code&gt;quarkus-amazon-dynamodb&lt;/code&gt; dependency instead,
 but I wanted to use the enhanced client.
 The enhanced client allows us to define relationships between tables and data classes within code,
@@ -34,71 +34,71 @@ making it easier to use.
 The enhanced client is built on top of the low-level DynamoDB client,
 which means it has all the same capabilities as the low-level client.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Full details of the enhanced client can be found &lt;a href=&quot;https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/dynamodb-enhanced-client.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Full details of the enhanced client can be found &lt;a href="https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/dynamodb-enhanced-client.html" target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_defining_the_data_class&quot;&gt;Defining the Data Class&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_defining_the_data_class"&gt;Defining the Data Class&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;The first step is to create a data class for a customer,
 for mapping to a DynamoDB table.
 Annotating the class with &lt;code&gt;@DynamoDbBean&lt;/code&gt; tells the enhanced client to map the class to a DynamoDB table:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@DynamoDbBean
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@DynamoDbBean
 public class Customer {
   public Customer() {
   }
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Naming the data class &lt;code&gt;Customer&lt;/code&gt;,
 the enhanced client will look for a table named &lt;code&gt;customer&lt;/code&gt; in DynamoDB.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Let&amp;#8217;s define a partition key for the table,
 a unique identifier for each customer:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@DynamoDbPartitionKey
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@DynamoDbPartitionKey
 @DynamoDbAttribute(PARTITION_KEY)
 public String getCustomerId() {
   return customerId;
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;We use the &lt;code&gt;@DynamoDbPartitionKey&lt;/code&gt; annotation to define the partition key on the getter method.
 The &lt;code&gt;@DynamoDbAttribute&lt;/code&gt; annotation is used to define the attribute name in the DynamoDB table.
 We&amp;#8217;ve defined a few constants to use with annotations in the class and outside:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public static final String CUSTOMER_TABLE_NAME = &quot;customers&quot;;
-public static final String EMAIL_INDEX = &quot;customer_email_index&quot;;
-public static final String PARTITION_KEY = &quot;customer_id&quot;;&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;public static final String CUSTOMER_TABLE_NAME = "customers";
+public static final String EMAIL_INDEX = "customer_email_index";
+public static final String PARTITION_KEY = "customer_id";&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;By default,
 the attribute name in the customer table would be expected to be &lt;code&gt;customerId&lt;/code&gt;.
 However, we want to use &lt;code&gt;customer_id&lt;/code&gt; instead,
 so we use the &lt;code&gt;@DynamoDbAttribute&lt;/code&gt; annotation to specify the attribute name.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;To verify a customer doesn&amp;#8217;t already exist in the database,
 we need the ability to query the customer table by email.
 We can do this by creating a global secondary index on the &lt;code&gt;email&lt;/code&gt; attribute:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@DynamoDbSecondaryPartitionKey(indexNames = EMAIL_INDEX)
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@DynamoDbSecondaryPartitionKey(indexNames = EMAIL_INDEX)
 public String getEmail() {
   return email;
 }&lt;/code&gt;&lt;/pre&gt;
@@ -106,29 +106,29 @@ public String getEmail() {
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_using_the_enhanced_client&quot;&gt;Using the Enhanced Client&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_using_the_enhanced_client"&gt;Using the Enhanced Client&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;With the data class defined,
 we now use the enhanced client to interact with DynamoDB.
 We inject the enhanced client into our lambda:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Inject
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@Inject
 @NamedDynamoDbTable(Customer.CUSTOMER_TABLE_NAME)
 DynamoDbTable&amp;lt;Customer&amp;gt; customerTable;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;As part of creating a new customer,
 we want to check if a customer already exists in the database.
 We don&amp;#8217;t want to create a new customer if we already have one!&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public Customer getCustomerByEmail(String email) {
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;public Customer getCustomerByEmail(String email) {
   QueryConditional queryConditional =
     QueryConditional.keyEqualTo(
       Key.builder().partitionValue(email).build()
@@ -142,63 +142,63 @@ We don&amp;#8217;t want to create a new customer if we already have one!&lt;/p&g
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;We create a &lt;code&gt;QueryConditional&lt;/code&gt; with a &lt;code&gt;Key&lt;/code&gt; for the partition where the value matches the email address from the request.
 We use the enhanced client to specify the index to query against,
 and the query conditional to use.
 &lt;code&gt;getItemFromStream&lt;/code&gt; is a utility method to get the first item from the stream of results.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Once we&amp;#8217;ve created a &lt;code&gt;Customer&lt;/code&gt; object,
 we can use the enhanced client to save it to the database:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;customerTable.putItem(customer);&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;customerTable.putItem(customer);&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_quarkus_dev_services&quot;&gt;Quarkus Dev Services&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_quarkus_dev_services"&gt;Quarkus Dev Services&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;With Quarkus Dev Services,
 we can run a local DynamoDB instance for testing.
 With Docker running,
 Quarkus will automatically start a local DynamoDB container when we run:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mvn quarkus:dev&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-bash" data-lang="bash"&gt;mvn quarkus:dev&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;There is no special configuration needed!&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_writing_tests&quot;&gt;Writing Tests&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_writing_tests"&gt;Writing Tests&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Expanding on the tests from the previous post,
 we need to set up the DynamoDB table before we can run the tests.
 We start by injecting the &lt;code&gt;DynamoDbClient&lt;/code&gt; into our test class:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Inject
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@Inject
 DynamoDbClient dynamoDbClient;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Next,
 we create a setup method to create the table and indexes we need:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@BeforeAll
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@BeforeAll
 void setup() {
   if (dynamoDbClient.listTables().tableNames().contains(Customer.CUSTOMER_TABLE_NAME)) {
     return;
@@ -209,9 +209,9 @@ void setup() {
     .keySchema(
         KeySchemaElement.builder()
                 .attributeName(Customer.PARTITION_KEY)
-                .keyType(&quot;HASH&quot;)
+                .keyType("HASH")
                 .build())
-    .billingMode(&quot;PAY_PER_REQUEST&quot;);
+    .billingMode("PAY_PER_REQUEST");
 
   Collection&amp;lt;AttributeDefinition&amp;gt; attributeDefinitions = getAttributes().entrySet().stream()
     .map(e -&amp;gt; AttributeDefinition.builder()
@@ -229,11 +229,11 @@ void setup() {
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;There&amp;#8217;s a lot going on here,
 so let&amp;#8217;s break it down:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
+&lt;div class="ulist"&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;We check if the table already exists before creating it. Not strictly necessary, but prevents accidental errors.&lt;/p&gt;
@@ -255,29 +255,29 @@ so let&amp;#8217;s break it down:&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;The tests we wrote in the previous post are still valid,
 with the table set up done,
 we can re-run our tests and verify the lambda function works as expected.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mvn test&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-bash" data-lang="bash"&gt;mvn test&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_summary&quot;&gt;Summary&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_summary"&gt;Summary&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;In this follow-up post,
 we extended the previous post by integrating DynamoDB with a Quarkus AWS Lambda function.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Key takeaways include:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
+&lt;div class="ulist"&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Understanding how to set up the enhanced DynamoDB client in Quarkus&lt;/p&gt;
@@ -296,13 +296,13 @@ we extended the previous post by integrating DynamoDB with a Quarkus AWS Lambda 
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Next Steps for Readers:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
+&lt;div class="ulist"&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;Try it Out! Check out the full code on &lt;a href=&quot;https://github.com/kenfinnigan/aws-quarkus-lambda-dynamodb&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GitHub&lt;/a&gt; and experiment with your own enhancements&lt;/p&gt;
+&lt;p&gt;Try it Out! Check out the full code on &lt;a href="https://github.com/kenfinnigan/aws-quarkus-lambda-dynamodb" target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt; and experiment with your own enhancements&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Share your feedback or questions and join the conversation with other developers&lt;/p&gt;
@@ -310,14 +310,14 @@ we extended the previous post by integrating DynamoDB with a Quarkus AWS Lambda 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Building a Quarkus AWS Lambda for API Gateway]]></title><description><![CDATA[I recently set out to build an AWS Lambda function deployed behind an API Gateway...]]></description><link>https://kenfinnigan.me/blog/quarkus-lambda-apigateway/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/quarkus-lambda-apigateway/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 25 Feb 2025 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Building a Quarkus AWS Lambda for API Gateway]]></title><description><![CDATA[I recently set out to build an AWS Lambda function deployed behind an API Gateway...]]></description><link>https://kenfinnigan.me/blog/quarkus-lambda-apigateway/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/quarkus-lambda-apigateway/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 25 Feb 2025 00:00:00 GMT</pubDate><content:encoded>&lt;div id="preamble"&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I recently set out to build an AWS Lambda function deployed behind an API Gateway.
 Given my familiarity with Quarkus,
 I chose it to take advantage of a serverless architecture for low-traffic services.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Building services which wouldn&amp;#8217;t have much initial traffic,
 I decided to take advantage of the serverless approach with AWS Lambda.
 Using AWS for the lambdas,
@@ -325,28 +325,28 @@ it was natural to expose the endpoints via an API Gateway.
 Creating a set of endpoints matching a RESTful structure,
 with each endpoint as a separate lambda.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I thought I&amp;#8217;d share my experience of building this,
 and the challenges I encountered along the way.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_project_setup&quot;&gt;Project Setup&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I typically use the &lt;a href=&quot;https://code.quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus Starter site&lt;/a&gt; to create new projects.
+&lt;div class="sect1"&gt;
+&lt;h2 id="_project_setup"&gt;Project Setup&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;I typically use the &lt;a href="https://code.quarkus.io/" target="_blank" rel="noopener"&gt;Quarkus Starter site&lt;/a&gt; to create new projects.
 Just ensure that your &lt;code&gt;pom.xml&lt;/code&gt; includes the &lt;code&gt;quarkus-amazon-lambda&lt;/code&gt; dependency:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&amp;lt;dependency&amp;gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-xml" data-lang="xml"&gt;&amp;lt;dependency&amp;gt;
   &amp;lt;groupId&amp;gt;io.quarkus&amp;lt;/groupId&amp;gt;
   &amp;lt;artifactId&amp;gt;quarkus-amazon-lambda&amp;lt;/artifactId&amp;gt;
 &amp;lt;/dependency&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I explored the different types of AWS Lambda that can be created with Quarkus:
 RESTful, HTTP/Servlet, Funqy, or Amazon SDK.
 I wanted to learn as much as I could about working with the Amazon SDK,
@@ -354,14 +354,14 @@ so I chose it over the other available types for this project.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_creating_the_lambda_function&quot;&gt;Creating the Lambda Function&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_creating_the_lambda_function"&gt;Creating the Lambda Function&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Next, we walk through the process of developing a &lt;strong&gt;Create Customer&lt;/strong&gt; lambda.
 Imagine we&amp;#8217;re building a SaaS and need a way to create customers in a database.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;We create a new Java class, &lt;code&gt;CreateCustomer&lt;/code&gt;,
 which implements the &lt;code&gt;RequestHandler&lt;/code&gt;.
 We also need to define the request and response types for &lt;code&gt;RequestHandler&lt;/code&gt;,
@@ -371,34 +371,34 @@ There are many different request events which can be used to trigger the lambda 
 including &lt;code&gt;KinesisFirehoseEvent&lt;/code&gt;, &lt;code&gt;SQSEvent&lt;/code&gt;, &lt;code&gt;S3Event&lt;/code&gt;, etc.
 Which you choose will depend on the overall architecture and where the lambda fits the execution flow within that architecture.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Here is class definition:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Named(&quot;createCustomer&quot;)
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@Named("createCustomer")
 public class CreateCustomer
     implements RequestHandler&amp;lt;APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse&amp;gt; {
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Note the lambda has been given a CDI bean name of &lt;code&gt;createCustomer&lt;/code&gt;.
 It&amp;#8217;s not strictly necessary in our case,
 as we only have one lambda in the final packaged archive.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Now we need the method to handle the request the lambda will receive when deployed:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Override
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@Override
 public APIGatewayV2HTTPResponse handleRequest
     (APIGatewayV2HTTPEvent requestEvent, Context context) {
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;We&amp;#8217;re implementing the &lt;code&gt;handleRequest&lt;/code&gt; method from &lt;code&gt;RequestHandler&lt;/code&gt;,
 with the request, &lt;code&gt;APIGatewayV2HTTPEvent&lt;/code&gt;, and response, &lt;code&gt;APIGatewayV2HTTPResponse&lt;/code&gt;, types we specified on the class.
 In addition,
@@ -406,41 +406,41 @@ there is a lambda runtime context passed to the method.
 The context provides access to information about the lambda execution environment,
 including log names, function name and version, configured memory limit, and remaining execution time available for the lambda.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;One thing I did to prevent the API Gateway being misconfigured for the lambda,
 was to explicitly check the type of HTTP method used in the request:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;if (!requestEvent.getRequestContext().getHttp().getMethod().equals(&quot;POST&quot;)) {
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;if (!requestEvent.getRequestContext().getHttp().getMethod().equals("POST")) {
   return APIGatewayV2HTTPResponse.builder()
       .withStatusCode(405)
-      .withBody(&quot;Method Not Allowed&quot;)
+      .withBody("Method Not Allowed")
       .build();
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Here we use the &lt;code&gt;requestEvent&lt;/code&gt; to retrieve the HTTP method from the request context.
 Checking whether it&amp;#8217;s the expected &lt;code&gt;POST&lt;/code&gt;,
 and returning a status of &lt;code&gt;405&lt;/code&gt; if it&amp;#8217;s not.
 We have a lot of flexibility in how we implement the lambda.
 The response we&amp;#8217;re returning can be customized however we require.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;After confirming that the request uses the expected POST method,
 we retrieve the JSON body with requestEvent.getBody().
 Since our lambda needs a structured object,
 we convert this JSON string into a POJO (e.g., SignupRequest) using Jackson’s ObjectMapper.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;For example,
 let&amp;#8217;s presume we need an email address and a device id to uniquely identify the customer and create a record for them.
 We would need a pojo such as this:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public class SignupRequest {
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;public class SignupRequest {
     private String email;
 
     private String deviceId;
@@ -449,70 +449,70 @@ We would need a pojo such as this:&lt;/p&gt;
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;With a pojo defined, we can convert the request body string into the pojo with:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;objectMapper.readValue(requestEvent.getBody(), SignupRequest.class)&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;objectMapper.readValue(requestEvent.getBody(), SignupRequest.class)&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;To have access to an object mapper,
 we inject it into our lambda:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Inject
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@Inject
 ObjectMapper objectMapper;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;With the JSON request body now in a pojo,
 we are able to validate the presence and values of the fields we received.
 Returning responses with a &lt;code&gt;400&lt;/code&gt; status code,
 if the values are not what we expected.
 Either because they were missing, empty, or invalid.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Once we&amp;#8217;re happy the data we received can be processed and a customer created,
 we can store the data and return a response.
 This post won&amp;#8217;t cover this part,
 but I will explain how I integrated with DynamoDB in a future post.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;We will presume we have another pojo called &lt;code&gt;SignupResponse&lt;/code&gt;,
 which will be the response object from the lambda.
 It is a customer id field on it,
 to identify the customer in any future request.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;With the customer created,
 we can return a valid response:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;return APIGatewayV2HTTPResponse.builder()
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;return APIGatewayV2HTTPResponse.builder()
     .withStatusCode(200)
     .withBody(objectMapper.writeValueAsString(signupResponse))
     .build();&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Again we use the response builder to say we have a valid response,
 status code of &lt;code&gt;200&lt;/code&gt;,
 where the response body will be a json representation of &lt;code&gt;signupResponse&lt;/code&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;To verify we&amp;#8217;ve correctly programmed the lambda to handle events from an API Gateway,
 we need to write tests!&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_writing_tests&quot;&gt;Writing Tests&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_writing_tests"&gt;Writing Tests&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;We can use REST Assured with JUnit to test the lambda function.
 As we&amp;#8217;re not concerned with endpoint paths,
 the tests can access the default endpoint.
@@ -520,45 +520,45 @@ The one tricky bit is understanding the response you get from the REST Assured c
 The response that will actually be received in the test has the event response as the body.
 We will see exactly what that means shortly.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Let&amp;#8217;s write a test verifying successful execution.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Here&amp;#8217;s the test class with the annotation we need,
 and injecting an object mapper,
 just like the function:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@QuarkusTest
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@QuarkusTest
 class CreateCustomerTest {
     @Inject
     ObjectMapper objectMapper;
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;At the start of the test,
 we create a pojo to represent the request body we want to process in the lambda:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;SignupRequest body = new SignupRequest();
-body.setEmail(&quot;gary.sinise@gmail.com&quot;);&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;SignupRequest body = new SignupRequest();
+body.setEmail("gary.sinise@gmail.com");&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Now we create the request object representing what the API Gateway will pass to the lambda:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;APIGatewayV2HTTPEvent request =
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;APIGatewayV2HTTPEvent request =
     APIGatewayV2HTTPEvent.builder()
         .withRequestContext(
             RequestContext.builder()
                 .withHttp(
                     Http.builder()
-                        .withMethod(&quot;POST&quot;)
+                        .withMethod("POST")
                         .build()
                 )
                 .build()
@@ -567,50 +567,50 @@ body.setEmail(&quot;gary.sinise@gmail.com&quot;);&lt;/code&gt;&lt;/pre&gt;
         .build();&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;The main points to note are setting the &lt;code&gt;RequestContext&lt;/code&gt; to be an HTTP POST method,
 as we need this for the check in our lambda,
 and writing the &lt;code&gt;SignupRequest&lt;/code&gt; pojo to JSON as the request body.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;With the request event created,
 we use REST Assured to call the lambda:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;Response response = given()
-        .contentType(&quot;application/json&quot;)
-        .accept(&quot;application/json&quot;)
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;Response response = given()
+        .contentType("application/json")
+        .accept("application/json")
         .body(request)
         .when()
         .post()
         .thenReturn();&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Being sure to specify we&amp;#8217;re passing JSON as the content type,
 and accepting a response as JSON.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;With the response object in hand,
 we check whether the REST Assured execution succeeded:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;assertTrue(null != response);
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;assertTrue(null != response);
 assertEquals(200, response.getStatusCode());&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Then we extract the body from the response,
 convert it into the response object for the API Gateway,
 verify the status code,
 and lastly,
 convert and verify the data in the response:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;APIGatewayV2HTTPResponse out =
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;APIGatewayV2HTTPResponse out =
     response.getBody().as(APIGatewayV2HTTPResponse.class);
 assertTrue(null != out);
 assertEquals(200, out.getStatusCode());
@@ -623,18 +623,18 @@ assertTrue(null != signupResponse.getCustomerId());&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_summary&quot;&gt;Summary&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_summary"&gt;Summary&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;This post provides a step-by-step guide to building an AWS Lambda function using Quarkus for deployment behind an API Gateway.
 It covers everything from project setup to testing,
-using a &quot;Create Customer&quot; use case as a practical example.&lt;/p&gt;
+using a "Create Customer" use case as a practical example.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Key takeaways include:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
+&lt;div class="ulist"&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Understand how to implement a lambda function using the Amazon SDK, converting JSON request bodies into POJOs, and constructing appropriate HTTP responses&lt;/p&gt;
@@ -647,10 +647,10 @@ using a &quot;Create Customer&quot; use case as a practical example.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Next Steps for Readers:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
+&lt;div class="ulist"&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Explore integrating with DynamoDB for data persistence in future projects.&lt;/p&gt;
@@ -663,122 +663,122 @@ using a &quot;Create Customer&quot; use case as a practical example.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;This guide not only demystifies the process for beginners but also opens doors for further exploration into more advanced serverless patterns and integrations.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content:encoded></item><item><title><![CDATA[The Coding Interview: Why They Don’t Tell the Whole Story]]></title><description><![CDATA[We’ve all been there: staring at an online code editor, heart hammering...]]></description><link>https://kenfinnigan.me/blog/coding-interview-myth/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/coding-interview-myth/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Wed, 09 Oct 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[The Coding Interview: Why They Don’t Tell the Whole Story]]></title><description><![CDATA[We’ve all been there: staring at an online code editor, heart hammering...]]></description><link>https://kenfinnigan.me/blog/coding-interview-myth/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/coding-interview-myth/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Wed, 09 Oct 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id="preamble"&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;We’ve all been there: staring at an online code editor, heart hammering,
 trying to conjure a perfectly optimized algorithm while an interviewer(s) looks on expectantly.
 Coding interviews have become a standard practice for tech companies,
 but are they really the best way to assess a developer’s potential or their skills?&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I’d argue they’re not even close.
 In fact, they might be doing more harm than good.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_the_pressure_cooker_fallacy&quot;&gt;The Pressure Cooker Fallacy&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_the_pressure_cooker_fallacy"&gt;The Pressure Cooker Fallacy&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Coding interviews are notorious for putting candidates under immense pressure.
 In these scenarios, developers are expected to solve complex problems with minimal preparation,
 and often without full context.
 You’re tasked with writing code under the watchful eyes of one or two interviewers,
 as they evaluate your every keystroke.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;This is hardly reflective of real-world software development.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Modern development is collaborative, iterative, and often involves plenty of discussion, debugging, and — let’s be real — Googling.
 The environment in a coding interview is a far cry from the day-to-day experience,
 where developers work in teams, take the time to fully understand problems, and build solutions with care.
 Writing clean, maintainable code in the real world is a thoughtful,
 measured process — nothing like the high-stress race to solve an algorithm in 30 minutes.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I appreciate the interviewer(s) is seeking to understand a candidates thought process,
 but this approach is unnatural for most people.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_rote_learning_vs_real_skills&quot;&gt;Rote Learning vs. Real Skills&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_rote_learning_vs_real_skills"&gt;Rote Learning vs. Real Skills&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Many coding interview questions have become predictable,
 to the point where a quick search online will uncover a list of common problems and their optimal solutions.
 While it’s true that preparation is important for any interview,
 what we’re really testing here is how well candidates can memorize algorithms,
 rather than their ability to think critically or write maintainable code.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Yes, they might be able to churn out a sorting algorithm on the spot.
 But can they navigate a complex codebase, identify subtle bugs, and contribute to a system that needs to be maintained by a team over time?
 That’s the real test of a developer’s skill, and it’s largely absent from the coding interview process.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_the_art_of_the_merge_what_we_should_be_testing&quot;&gt;The Art of the Merge: What We Should Be Testing&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_the_art_of_the_merge_what_we_should_be_testing"&gt;The Art of the Merge: What We Should Be Testing&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;In the real world, developers don’t just write new code from scratch.
 They spend much of their time adding features to existing systems,
 reviewing code written by colleagues, and debugging issues that crop up in established projects.
 This is where we should focus our attention when evaluating candidates.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;olist arabic&quot;&gt;
-&lt;ol class=&quot;arabic&quot;&gt;
+&lt;div class="olist arabic"&gt;
+&lt;ol class="arabic"&gt;
 &lt;li&gt;
 &lt;p&gt;Code Reviews:&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;A more realistic evaluation would involve asking candidates to review a pull request.
 Can they offer constructive feedback?
 Do they recognize potential issues or suggest better alternatives?
 This is much closer to the collaborative process of building software in a team.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;olist arabic&quot;&gt;
-&lt;ol class=&quot;arabic&quot; start=&quot;2&quot;&gt;
+&lt;div class="olist arabic"&gt;
+&lt;ol class="arabic" start="2"&gt;
 &lt;li&gt;
 &lt;p&gt;Enhancing Existing Code:&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Instead of giving a clean slate problem, ask the candidate to add a feature to an existing codebase.
 This mimics the everyday reality of a developer’s job, where they need to work within the constraints of an established architecture.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;olist arabic&quot;&gt;
-&lt;ol class=&quot;arabic&quot; start=&quot;3&quot;&gt;
+&lt;div class="olist arabic"&gt;
+&lt;ol class="arabic" start="3"&gt;
 &lt;li&gt;
 &lt;p&gt;Debugging:&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Debugging is one of the most important and time-consuming aspects of software development.
 Rather than testing someone’s ability to write a complex algorithm in 30 minutes,
 it’s far more telling to see how they approach diagnosing and fixing a bug in a larger system.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Granted, these approaches can be more complex to implement for an interview,
 but the payoff is an improved approach to candidate evaluation.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_experience_matters&quot;&gt;Experience Matters&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_experience_matters"&gt;Experience Matters&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;For recent graduates or developers with limited professional experience,
 coding interviews can still serve as a reasonable way to gauge their problem-solving skills and fundamental knowledge.
 But for more seasoned developers, these interviews fall short.
@@ -788,44 +788,44 @@ These give a far more nuanced picture of a developer’s capabilities than wheth
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_a_better_path_forward&quot;&gt;A Better Path Forward&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_a_better_path_forward"&gt;A Better Path Forward&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;There’s a smarter way to assess developer talent.
 Let’s consider moving away from the outdated model of high-pressure coding or whiteboard challenges and incorporate more realistic assessments.
 Code reviews, debugging exercises, and discussions about past projects give a better understanding of how a developer operates in the real world.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;The myth that coding interviews are the ultimate test of a developer’s ability needs to be put to rest.
 What we should be looking for is the ability to collaborate,
 think critically, and produce maintainable, high-quality code.
 Skills that are much more representative of what a developer actually does on a daily basis.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Let’s move towards an interview process that reflects the collaborative, problem-solving nature of modern software development.
 After all, when was the last time you had to solve an algorithm problem in under 30 minutes while your boss stood over your shoulder?&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content:encoded></item><item><title><![CDATA[The Feedback Chasm]]></title><description><![CDATA[There's a _Feedback Chasm_ between our current role and any future one...]]></description><link>https://kenfinnigan.me/blog/feedback-chasm/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/feedback-chasm/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 24 Sep 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[The Feedback Chasm]]></title><description><![CDATA[There's a _Feedback Chasm_ between our current role and any future one...]]></description><link>https://kenfinnigan.me/blog/feedback-chasm/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/feedback-chasm/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 24 Sep 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id="preamble"&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;There&amp;#8217;s a &lt;em&gt;Feedback Chasm&lt;/em&gt; between our current role and any future one.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;We receive a variety of feedback from many people throughout our careers.
 Feedback from our current role
 is from an environment we&amp;#8217;re familiar and, hopefully, comfortable in.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;In this post I talk about the &lt;em&gt;Feedback Chasm&lt;/em&gt; and why it&amp;#8217;s a problem.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_current_role_feedback&quot;&gt;Current Role Feedback&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_current_role_feedback"&gt;Current Role Feedback&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Any role we&amp;#8217;re in, we receive feedback from many people.
 From managers, mentors, peers, and direct reports, to name a few.
 Hopefully feedback is given freely and openly.
@@ -833,7 +833,7 @@ And more frequently than yearly performance reviews.
 With any feedback we receive,
 we are free to choose whether to act on that feedback, or not.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;The feedback we receive is often targeted at our current role.
 How we&amp;#8217;re doing as a leader, manager, engineer, or whatever role we&amp;#8217;re in.
 What we need to do for promotions, raises,
@@ -843,10 +843,10 @@ but less frequently.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_future_role_feedback&quot;&gt;Future Role Feedback&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_future_role_feedback"&gt;Future Role Feedback&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;When interviewing for a new role at a new company,
 we don&amp;#8217;t consider the importance of feedback.
 We&amp;#8217;re focused on the interview itself,
@@ -854,34 +854,34 @@ and whether we&amp;#8217;re a good fit for the team and company.
 We rely on our existing skills and experience from current and previous roles,
 hoping they&amp;#8217;re enough.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;What happens when our current skills are not enough?
 We don&amp;#8217;t get an offer,
 and we&amp;#8217;re often left wondering why.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Sometimes we do get feedback,
 but it can be vague and not actionable.
 We&amp;#8217;re left to our own devices to figure out what to do next.
 Are we lacking in certain skills?
 Do I need more technical or soft skills?&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;This is the &lt;em&gt;Feedback Chasm&lt;/em&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_the_feedback_chasm&quot;&gt;The Feedback Chasm&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_the_feedback_chasm"&gt;The Feedback Chasm&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;The feedback we receive for our current role,
 is often not the same feedback we need to land a future role.
 Feedback from interviewing for a new role is key to bridging the gap.
 Without this feedback,
 we&amp;#8217;re destined to never reach the next step in our careers.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Why do we not receive feedback when interviewing?
 There can be many reasons as to why.
 Sometimes it&amp;#8217;s a lack of time to distill the internal comments into shareable feedback.
@@ -890,11 +890,11 @@ for fear of revealing too much information about their internal processes.
 It could also be a fear of lawsuits,
 or simply a lack of understanding of the importance of feedback for a candidate.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Without receiving feedback from the interviewing process,
 we won&amp;#8217;t know how to improve.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;As candidates,
 interviewing requires a significant time investment.
 We spend several hours in interviews, and more outside of them.
@@ -906,13 +906,13 @@ Surely a few pieces of feedback could be provided in less than half an hour.&lt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_jumping_the_feedback_chasm&quot;&gt;Jumping the Feedback Chasm&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_jumping_the_feedback_chasm"&gt;Jumping the Feedback Chasm&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;How can we reach the other side of the &lt;em&gt;Feedback Chasm&lt;/em&gt;?&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;One approach is ensuring we have mentors outside our current company.
 They could be former colleagues, or people you&amp;#8217;ve met throughout your career.
 Attending conferences, online groups, or local user groups, there are many places to find a mentor.
@@ -921,15 +921,15 @@ their feedback can be invaluable.
 What you want is for their feedback to differ from what you receive at any current role.
 The differing perspectives and opinions are key to growing beyond your current company and role.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;What else can we do?&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Some companies will offer to connect you with employees directly to hear about the culture and work environment.
 This typically occurs once you&amp;#8217;ve had an interview or two already,
 so will not be of help in the early stages of the interview process.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;However, the largest benefit comes from the industry placing a higher importance on providing feedback to candidates.
 Without this feedback,
 we&amp;#8217;re destined to continue making it difficult for everyone to land their dream job.
@@ -937,15 +937,15 @@ Granted,
 not all feedback we receive may be useful,
 or which we want to act on.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;But it&amp;#8217;s a better place than not knowing anything.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_conclusion"&gt;Conclusion&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;The &lt;em&gt;Feedback Chasm&lt;/em&gt; is a problem for the industry.
 We&amp;#8217;re increasing the likelihood of limiting people&amp;#8217;s potential for growth.
 Feedback is the engine driving our growth.
@@ -953,11 +953,11 @@ What that engine propelling us,
 or being limited to small sets of feedback,
 we may not reach where we want to go.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;We need to ensure we&amp;#8217;re getting feedback from many different avenues,
 both internally and externally.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;However, the largest pieces of potentially career changing feedback we receive,
 needs to come from the interview process itself.
 The industry must change it&amp;#8217;s approach to providing feedback,
@@ -967,9 +967,9 @@ The company should want to provide feedback to help them improve,
 increasing the chance of them being a future employee.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Shift Left Observability, more than Telemetry]]></title><description><![CDATA[In the last few years, _Shift Left Observability_ has risen to prominence...]]></description><link>https://kenfinnigan.me/blog/shift-left-observability/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/shift-left-observability/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Thu, 29 Aug 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Shift Left Observability, more than Telemetry]]></title><description><![CDATA[In the last few years, _Shift Left Observability_ has risen to prominence...]]></description><link>https://kenfinnigan.me/blog/shift-left-observability/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/shift-left-observability/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Thu, 29 Aug 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id="preamble"&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;In the last few years, &lt;em&gt;Shift Left Observability&lt;/em&gt; has risen to prominence.
 Developers seeing production telemetry of their service alongside their code
 is critical to their success.
@@ -977,30 +977,30 @@ It also introduces observability practices into the full developer lifecycle,
 including observing CI/CD pipelines.
 Leading to improvements in the developer lifecycle task speed.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;In this post I want to talk about a key piece of shifting observability left.
 One I consider more important than the others.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_a_history_of_shifting_left&quot;&gt;A History of Shifting Left&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Larry Smith describes &lt;em&gt;Shift-Left Testing&lt;/em&gt; his &lt;a href=&quot;https://www.drdobbs.com/shift-left-testing/184404768&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;2001 article&lt;/a&gt;.
+&lt;div class="sect1"&gt;
+&lt;h2 id="_a_history_of_shifting_left"&gt;A History of Shifting Left&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Larry Smith describes &lt;em&gt;Shift-Left Testing&lt;/em&gt; his &lt;a href="https://www.drdobbs.com/shift-left-testing/184404768" target="_blank" rel="noopener"&gt;2001 article&lt;/a&gt;.
 He details how to utilize QA in earlier phases of development.
 Helping reduce bugs while improving development speed,
 remove rework in later stages.
-&lt;a href=&quot;https://en.wikipedia.org/wiki/DevOps#DevSecOps,_shifting_security_left&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;DevSecOps&lt;/a&gt;
+&lt;a href="https://en.wikipedia.org/wiki/DevOps#DevSecOps,_shifting_security_left" target="_blank" rel="noopener"&gt;DevSecOps&lt;/a&gt;
 uses the same philosophy to bring security further left in the DevOps process.
 DevSecOps seeks to find security issues in code,
 well before reaching production.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.jedi.be/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Patrick Debois&lt;/a&gt; coined the DevOps and DevSecOps terms around 2009.
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;a href="https://www.jedi.be/" target="_blank" rel="noopener"&gt;Patrick Debois&lt;/a&gt; coined the DevOps and DevSecOps terms around 2009.
 Some of the concepts underpinning these philosophies have been prevalent in the industry for a while.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;&lt;em&gt;Shift Left&lt;/em&gt; approaches, irrespective of what for,
 tend to focus on the technological aspect.
 Testing code for security flaws on check-in,
@@ -1009,10 +1009,10 @@ However, the larger benefit,
 in my mind,
 is developers including these aspects when they&amp;#8217;re planning and designing an application.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;What do I mean by that?&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Two decades ago,
 application developers would typically build an application in isolation.
 When it was complete,
@@ -1023,13 +1023,13 @@ In some cases,
 complete application rewrites were required.
 Retro-fitting the security changes into the existing application architecture was not possible.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Security became an integral part of designing applications with the advent of cloud computing.
 It could no longer be bolted on at the end of application development.
 Careful thought and planning is required before writing a single line of code,
 to successfully incorporate security.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I firmly believe developers knowing the importance of security,
 and how to implement it,
 reduces the number of security incidents of an application.
@@ -1038,25 +1038,25 @@ total development time improves by removing effort caused by re-work.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_shift_left_observability&quot;&gt;Shift Left Observability&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_shift_left_observability"&gt;Shift Left Observability&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;We talked about the history of &lt;em&gt;Shift Left&lt;/em&gt;,
 including DevSecOps and shifting security left.
 Now,
 let&amp;#8217;s discuss observability,
 another orthogonal concern of application development.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;As mentioned above,
 &lt;em&gt;Shift Left Observability&lt;/em&gt; has come to prominence over the last few years.
 There have been many articles on the topic,
-including &lt;a href=&quot;https://thenewstack.io/shifting-left-observability-in-practice-an-overview/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Shifting Left Observability in Practice&lt;/a&gt; on &lt;a href=&quot;https://thenewstack.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;The New Stack&lt;/a&gt;.
-Articles such as this focus on the technical aspects in the developers&apos; lifecycle.
+including &lt;a href="https://thenewstack.io/shifting-left-observability-in-practice-an-overview/" target="_blank" rel="noopener"&gt;Shifting Left Observability in Practice&lt;/a&gt; on &lt;a href="https://thenewstack.io/" target="_blank" rel="noopener"&gt;The New Stack&lt;/a&gt;.
+Articles such as this focus on the technical aspects in the developers' lifecycle.
 They fail to bring observability further left into the application design phase.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;When I say &lt;em&gt;Application Observability Design&lt;/em&gt;,
 I&amp;#8217;m referring to the process of evaluating a service or application to determine its observability needs.
 Every service has different needs,
@@ -1064,27 +1064,27 @@ negating a &lt;em&gt;one size fits all&lt;/em&gt; approach to observability.
 There may be services with similar needs for observability,
 but it&amp;#8217;s rare for them to be completely identical.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;We will come back to not including &lt;em&gt;Application Observability Design&lt;/em&gt; with &lt;em&gt;Shift Left Observability&lt;/em&gt;.
 Let&amp;#8217;s briefly talk about OpenTelemetry.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_opentelemetry&quot;&gt;OpenTelemetry&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; is an extremely large open-source project.
+&lt;div class="sect1"&gt;
+&lt;h2 id="_opentelemetry"&gt;OpenTelemetry&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;a href="https://opentelemetry.io/" target="_blank" rel="noopener"&gt;OpenTelemetry&lt;/a&gt; is an extremely large open-source project.
 It consists of many sub-projects.
-A key goal of &lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; is
+A key goal of &lt;a href="https://opentelemetry.io/" target="_blank" rel="noopener"&gt;OpenTelemetry&lt;/a&gt; is
 a vendor neutral method of collecting and transmitting telemetry data for observability.
 Having contributed to a couple of sub-projects myself,
 I can attest to the dedication and commitment of those involved.
 They work continuously on a very challenging problem,
 and have made progress in a short period of time.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; also provides lots of instrumentations for
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;a href="https://opentelemetry.io/" target="_blank" rel="noopener"&gt;OpenTelemetry&lt;/a&gt; also provides lots of instrumentations for
 frameworks across languages.
 Depending on the language,
 it&amp;#8217;s also possible for the instrumentations to be automatically applied.
@@ -1093,16 +1093,16 @@ and simplifies the process of generating telemetry,
 it does introduce challenges.
 Which telemetry is the correct telemetry for any specific service?&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; contributors use their judgment and experience
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;a href="https://opentelemetry.io/" target="_blank" rel="noopener"&gt;OpenTelemetry&lt;/a&gt; contributors use their judgment and experience
 in determining what telemetry data provides the most useful information.
 Their experiences may differ to a service you are building,
 creating a misalignment in generated telemetry.
 The information you need to correctly observe the service will not be present.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;To be clear,
-this is not the fault of the &lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; project.
+this is not the fault of the &lt;a href="https://opentelemetry.io/" target="_blank" rel="noopener"&gt;OpenTelemetry&lt;/a&gt; project.
 It&amp;#8217;s one of developer education,
 and ensuring the business allows developers the time they need for it.
 There is the need, however,
@@ -1115,10 +1115,10 @@ Is there a mixture depending on incident severity?&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_what_telemetry_to_use&quot;&gt;What Telemetry to use?&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_what_telemetry_to_use"&gt;What Telemetry to use?&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;As part of the &lt;em&gt;Shift Left Observability&lt;/em&gt; approach,
 developers need to spend time thinking about how their service will be operated.
 Not only once their operating a service,
@@ -1129,7 +1129,7 @@ it increases the risks of bloating the size of collected telemetry;
 increasing the costs of collection and storage,
 and complicating the telemetry for operational support of a service.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Yes,
 there are many tools available for filtering and modifying telemetry streams,
 both open-source and commercial.
@@ -1137,23 +1137,23 @@ However,
 it&amp;#8217;s not possible to effectively scale down the telemetry volume without knowing which telemetry data is needed.
 Evaluating the desired telemetry for service operation and debugging is critical.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Will developers think of all the required telemetry from day one?
 Absolutely not.
 Additional telemetry will need to be added over time.
 However, it&amp;#8217;s a more efficient approach than capturing all possible telemetry data.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Being mindful of telemetry volume and cost is critical.
 Both for observability data usefulness,
 and cost to the business.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_summary&quot;&gt;Summary&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_summary"&gt;Summary&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;The &lt;em&gt;Shift Left Observability&lt;/em&gt; approach will continue bringing benefits to the developer lifecycle.
 A companion piece,
 not often associated with the approach,
@@ -1163,7 +1163,7 @@ Even when modifying an already existing service.
 &lt;em&gt;Application Observability Design&lt;/em&gt; isn&amp;#8217;t a great term to represent what developers should do,
 but it does emphasize the work that needs to happen.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Whether it&amp;#8217;s utilizing SLOs/SLIs for a service,
 Golden metrics,
 RED metrics,
@@ -1172,26 +1172,26 @@ defining the required telemetry data is a necessary step.
 Don&amp;#8217;t default to collecting everything possible.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content:encoded></item><item><title><![CDATA[The Perils of Premature Optimization]]></title><description><![CDATA[Throughout my career I've always heard colleagues talk of premature optimization being a bad thing...]]></description><link>https://kenfinnigan.me/blog/perils-of-premature-optimization/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/perils-of-premature-optimization/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sun, 09 Jun 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[The Perils of Premature Optimization]]></title><description><![CDATA[Throughout my career I've always heard colleagues talk of premature optimization being a bad thing...]]></description><link>https://kenfinnigan.me/blog/perils-of-premature-optimization/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/perils-of-premature-optimization/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sun, 09 Jun 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id="preamble"&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Throughout my career I&amp;#8217;ve always heard colleagues talk of premature optimization being a bad thing.
 There have been many blogs on the topic, like this one,
 over the years as well.
 Yet, I&amp;#8217;d not had a situation where I&amp;#8217;d written optimized code
 which later came back to bite me.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;In this post I will talk about such a situation from earlier this year.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_the_original_optimized_code&quot;&gt;The Original Optimized Code&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_the_original_optimized_code"&gt;The Original Optimized Code&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Late last year I was working with a colleague adding custom instrumentation for the
-&lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry Java agent&lt;/a&gt;.
+&lt;a href="https://github.com/open-telemetry/opentelemetry-java-instrumentation" target="_blank" rel="noopener"&gt;OpenTelemetry Java agent&lt;/a&gt;.
 We were extending the upstream AWS SDK v2 instrumentation to also capture the payload
 of a HTTP request or response.
 To not impact user code,
@@ -1199,20 +1199,20 @@ such as modifying the class types being returned from the Apache HTTP Client,
 we instrument &lt;code&gt;SessionInputBufferImpl&lt;/code&gt; directly.
 To capture input as it&amp;#8217;s read from the socket the &lt;code&gt;fillBuffer&lt;/code&gt; method is instrumented on method exit.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;At this point in processing the socket content,
 the HTTP headers are still present on the socket&amp;#8217;s &lt;code&gt;InputStream&lt;/code&gt;.
 As such,
 we need to find the point at which the HTTP headers end and the payload body commences.
 The separation is found when we find two consecutive sets of &lt;code&gt;\r\n&lt;/code&gt; characters.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Here is the original code to loop through the contents of &lt;code&gt;byte[]&lt;/code&gt; in &lt;code&gt;fillBuffer&lt;/code&gt;,
 finding the starting point of the payload:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;int bodyStartPos = -1;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;int bodyStartPos = -1;
 for (int i = 0;
     // We check only if we have at least two characters left, otherwise there is not
     // enough data in the buffer to contain an HTTP body anyhow.
@@ -1221,20 +1221,20 @@ for (int i = 0;
 // one or by two depending on what we find.
 ) {
 
-  if ((char) buffer[i] != &apos;\r&apos;) {
-    if ((char) buffer[i + 1] == &apos;\r&apos;) {
-      // The first character is not &apos;\r&apos;, but the second is, and we will check
+  if ((char) buffer[i] != '\r') {
+    if ((char) buffer[i + 1] == '\r') {
+      // The first character is not '\r', but the second is, and we will check
       // in the next iteration from there.
       i += 1;
     } else {
-      // Neither the next nor the following character are &apos;\r&apos;, we can skip both
+      // Neither the next nor the following character are '\r', we can skip both
       i += 2;
     }
-  } else if ((char) buffer[i + 2] != &apos;\r&apos;) {
-    // The first character is an &apos;\r&apos;, but the character two positions further is not,
+  } else if ((char) buffer[i + 2] != '\r') {
+    // The first character is an '\r', but the character two positions further is not,
     // so we likely found the beginning of the next header
     i += 3;
-  } else if ((char) buffer[i + 1] == &apos;\n&apos; &amp;amp;&amp;amp; (char) buffer[i + 3] == &apos;\n&apos;) {
+  } else if ((char) buffer[i + 1] == '\n' &amp;amp;&amp;amp; (char) buffer[i + 3] == '\n') {
     // We found the end of the headers segment
     bodyStartPos = i + 4;
     break;
@@ -1242,7 +1242,7 @@ for (int i = 0;
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;As we knew the structure of the characters we should see on the &lt;code&gt;InputStream&lt;/code&gt; of the socket,
 we worked to minimize the number of iterations in the loop that would need to be performed.
 At the time we focused on writing efficient code,
@@ -1250,15 +1250,15 @@ by removing unnecessary iterations.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_what_was_the_problem&quot;&gt;What was the Problem?&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_what_was_the_problem"&gt;What was the Problem?&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Early this year I was contacted by a customer seeing CPU utilization spike to &lt;em&gt;100%&lt;/em&gt; on all cores!
 As I&amp;#8217;d not seen this from my own testing with the java agent,
 I was curious as to what was happening.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;They described a service where it would start fine,
 but after running for about 5 minutes the CPU utilization would spike and never abate.
 The CPU spike would result in a request taking 20 to 30 seconds to complete,
@@ -1266,22 +1266,22 @@ instead of less than 5 seconds.
 There was nothing obvious I could think of causing the spike,
 so it would require more detailed investigation.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;The team running the service were not the developers,
 requiring a different approach to understand and replicate the problem.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_the_investigation&quot;&gt;The Investigation&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_the_investigation"&gt;The Investigation&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I first wanted to determine how to reproduce the issue,
 enabling me to experiment in my local environment and not in the customers.
 I found a distributed trace exhibiting the high response time,
 and the service graph had a service writing to an S3 bucket.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I had the first clue!
 Next was to determine which instrumentation was being used at the time.
 Writing to S3 meant it was most likely using AWS SDK instrumentation,
@@ -1289,19 +1289,19 @@ but it could have been either v1 or v2.
 Digging into the OpenTelemetry span data I found the &lt;code&gt;instrumentationScope&lt;/code&gt;
 was our custom AWS SDK v2 instrumentation.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Now I knew where it was going wrong,
 but I didn&amp;#8217;t have much information on why.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I worked with the customer to capture profiling data when the CPU spikes.
-We used &lt;a href=&quot;https://www.oracle.com/java/technologies/jdk-mission-control.html&quot;&gt;JDK Mission Control&lt;/a&gt;
+We used &lt;a href="https://www.oracle.com/java/technologies/jdk-mission-control.html"&gt;JDK Mission Control&lt;/a&gt;
 to capture recordings with &lt;em&gt;Java Flight Recorder (JFR)&lt;/em&gt;.
 Analyzing the recordings we saw the &lt;code&gt;SessionInputBufferImpl&lt;/code&gt; class was taking up
 about 98% of all memory used by the service.
 This was definitely an abnormal situation.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;With all the above information in hand I created a reproducer to upload arbitrary
 data as a PDF to an S3 bucket.
 Running the reproducer didn&amp;#8217;t initially trigger the CPU spike.
@@ -1310,11 +1310,11 @@ with each thread uploading content to an S3 bucket 50 times before exiting.
 Running the reproducer again,
 I saw the CPU spike after about 30 seconds of execution.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;With a means to verify whether the issue was resolved,
 I began investigating the instrumentation code.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;To narrow down where the issue lay,
 I brute forced it.
 I would comment out a part of the custom instrumentation,
@@ -1328,10 +1328,10 @@ Commenting out the for loop meant the CPU didn&amp;#8217;t spike!&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_de_optimized_code&quot;&gt;De-optimized Code&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_de_optimized_code"&gt;De-optimized Code&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I spent time evaluating the checks in the loop to see if improvements could be made.
 After a while,
 I did see a way to simplify the number of checks in the loop,
@@ -1339,17 +1339,17 @@ but it iterates over every character in the &lt;code&gt;byte[]&lt;/code&gt;.
 I initially thought it would not be a good solution,
 but as I didn&amp;#8217;t have any other leads I figured it was worth a shot.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Much to my surprise,
 I no longer saw any CPU spikes in the reproducer.
 And memory usage of the &lt;code&gt;SessionInputBufferImpl&lt;/code&gt; class dropped to almost nothing.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Here&amp;#8217;s the revised for loop:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;int bodyStartPos = -1;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;int bodyStartPos = -1;
 for (int i = 0;
     // We check only if we have at least four characters left, otherwise there is not
     // enough data in the buffer to contain an HTTP body anyhow.
@@ -1357,8 +1357,8 @@ for (int i = 0;
     i++
 ) {
 
-  if ((char) buffer[i] == &apos;\r&apos; &amp;amp;&amp;amp; (char) buffer[i + 1] == &apos;\n&apos;
-    &amp;amp;&amp;amp; (char) buffer[i + 2] == &apos;\r&apos; &amp;amp;&amp;amp; (char) buffer[i + 3] == &apos;\n&apos;) {
+  if ((char) buffer[i] == '\r' &amp;amp;&amp;amp; (char) buffer[i + 1] == '\n'
+    &amp;amp;&amp;amp; (char) buffer[i + 2] == '\r' &amp;amp;&amp;amp; (char) buffer[i + 3] == '\n') {
 
     // We found the end of the headers segment :-)
     bodyStartPos = i + 4;
@@ -1369,24 +1369,24 @@ for (int i = 0;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_lesson_learned&quot;&gt;Lesson Learned&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_lesson_learned"&gt;Lesson Learned&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;When writing the initial code I had naively thought less iterations would be faster.
 I failed to take into account the complexity of the checks within the loop.
 Clearly this is a case of being too clever for our own good when writing the code.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;This taught me an invaluable lesson.
 Don&amp;#8217;t optimize code unless you know there is a performance issue.
 If your instincts lead you down the wrong optimization path,
 the situation could end up being far worse than a simpler implementation.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Bug Reproducers in Open Source]]></title><description><![CDATA[I've worked in open source for over 15 years. During that time I've seen a lot of issue reports...]]></description><link>https://kenfinnigan.me/blog/bug-reproducers-in-open-source/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/bug-reproducers-in-open-source/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Mon, 19 Feb 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Bug Reproducers in Open Source]]></title><description><![CDATA[I've worked in open source for over 15 years. During that time I've seen a lot of issue reports...]]></description><link>https://kenfinnigan.me/blog/bug-reproducers-in-open-source/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/bug-reproducers-in-open-source/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Mon, 19 Feb 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id="preamble"&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I&amp;#8217;ve worked in open source for over 15 years.
 During that time I&amp;#8217;ve seen a lot of issue reports, both as a user and as a maintainer.
 The experience of working and contributing to open source projects as a maintainer
@@ -1395,26 +1395,26 @@ Being a maintainer for an open source project is often a thankless job,
 but it does provide insight into being a good open source citizen when raising
 issues with the projects you use.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Recently I had an experience of investigating and reporting a bug
-I came across with the &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation&quot; target=&quot;blank&quot;&gt;OpenTelemetry Java Instrumentation&lt;/a&gt; project.
+I came across with the &lt;a href="https://github.com/open-telemetry/opentelemetry-java-instrumentation" target="blank"&gt;OpenTelemetry Java Instrumentation&lt;/a&gt; project.
 Here I explain my process from finding the initial problem,
 investigating the root issue,
 and finally creating a bug reproducer to help the maintainers fix the issue.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_the_problem&quot;&gt;The Problem&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;At &lt;a href=&quot;https://www.lumigo.io&quot; target=&quot;blank&quot;&gt;Lumigo&lt;/a&gt;,
-we extend the upstream &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation&quot; target=&quot;blank&quot;&gt;OpenTelemetry Java Instrumentation&lt;/a&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_the_problem"&gt;The Problem&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;At &lt;a href="https://www.lumigo.io" target="blank"&gt;Lumigo&lt;/a&gt;,
+we extend the upstream &lt;a href="https://github.com/open-telemetry/opentelemetry-java-instrumentation" target="blank"&gt;OpenTelemetry Java Instrumentation&lt;/a&gt;
 with additional functionality.
 To package the additions,
-we have a &lt;a href=&quot;https://github.com/lumigo-io/opentelemetry-java-distro&quot; target=&quot;blank&quot;&gt;custom distribution&lt;/a&gt;.&lt;/p&gt;
+we have a &lt;a href="https://github.com/lumigo-io/opentelemetry-java-distro" target="blank"&gt;custom distribution&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;While testing the distribution I came across a particularly odd situation where an application
 should have been responding with a &lt;em&gt;403&lt;/em&gt; http status code,
 as the user is unauthorized.
@@ -1422,38 +1422,38 @@ However, the application responded with a &lt;em&gt;406&lt;/em&gt; status code.
 I spent some time reviewing our custom extensions to see if anything jumped out as being a likely culprit.
 No such luck.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Where the error occurred is not a simple or small piece of code.
 To help narrow down the issue,
 I decided to create a small reproducer to help isolate the problem as much as possible.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_creating_a_reproducer&quot;&gt;Creating a Reproducer&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_creating_a_reproducer"&gt;Creating a Reproducer&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;A reproducer should be the smallest piece of code to demonstrate a specific issue.
 Granted, it can be challenging to narrow down application code when you&amp;#8217;re not sure of the origin.
 And there are times where it is impossible to create a small reproducer without recreating the original application in full.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Thankfully in this case, I had some clues as to the problem.
 When the &lt;em&gt;406&lt;/em&gt; status code is returned, there is an exception raised as well.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;org.springframework.web.HttpMediaTypeNotAcceptableException:
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-bash" data-lang="bash"&gt;org.springframework.web.HttpMediaTypeNotAcceptableException:
   Could not find acceptable representation&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;As the error occurs when using Spring Boot, Spring Security, and a REST endpoint,
 I added the following dependencies in my &lt;code&gt;pom.xml&lt;/code&gt;:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&amp;lt;dependency&amp;gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-xml" data-lang="xml"&gt;&amp;lt;dependency&amp;gt;
   &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
   &amp;lt;artifactId&amp;gt;spring-boot-starter-actuator&amp;lt;/artifactId&amp;gt;
 &amp;lt;/dependency&amp;gt;
@@ -1467,12 +1467,12 @@ I added the following dependencies in my &lt;code&gt;pom.xml&lt;/code&gt;:&lt;/p
 &amp;lt;/dependency&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;As we want custom security for the endpoint, we exclude the auto configuration for security:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @EnableAutoConfiguration
 public class SampleActuatorApplication {
 	public static void main(String[] args) {
@@ -1481,134 +1481,134 @@ public class SampleActuatorApplication {
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;To force all requests to the endpoint to be authenticated,
 we add the following security configuration:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Configuration
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-			.antMatchers(&quot;/report/**&quot;).authenticated();
+			.antMatchers("/report/**").authenticated();
 	}
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;And lastly, the REST controller:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@RestController
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@RestController
 @RequestMapping
 public class SampleController {
 
-  @GetMapping(produces = &quot;application/pdf&quot;, path = {&quot;/report/{id}&quot;})
+  @GetMapping(produces = "application/pdf", path = {"/report/{id}"})
   public ResponseEntity&amp;lt;byte []&amp;gt; getReport(
       @AuthenticationPrincipal final User user,
       @NotNull @PathVariable String id) {
     return ResponseEntity
             .status(HttpStatus.OK)
-            .header(&quot;Content-Type&quot;, &quot;application/pdf&quot;)
-            .body(&quot;Here is my PDF&quot;.getBytes());
+            .header("Content-Type", "application/pdf")
+            .body("Here is my PDF".getBytes());
   }
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;The key point to note with the reproducer is the endpoint produces a result with the media type of &lt;em&gt;application/pdf&lt;/em&gt;.
 We will see shortly why this is important.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Reproducers are a great way for a developer to isolate a problem they&amp;#8217;re investigating,
 and critical for open source maintainers to recreate a problem quickly.
 Quick reproduction of a problem goes a long way to getting a problem fixed.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;div class="admonitionblock note"&gt;
 &lt;table&gt;
 &lt;tr&gt;
-&lt;td class=&quot;icon&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Note&lt;/div&gt;
+&lt;td class="icon"&gt;
+&lt;div class="title"&gt;Note&lt;/div&gt;
 &lt;/td&gt;
-&lt;td class=&quot;content&quot;&gt;
-The reproducer for this problem is available &lt;a href=&quot;https://github.com/kenfinnigan/otel-spring-reproducer/tree/main&quot; target=&quot;blank&quot;&gt;here&lt;/a&gt;.
+&lt;td class="content"&gt;
+The reproducer for this problem is available &lt;a href="https://github.com/kenfinnigan/otel-spring-reproducer/tree/main" target="blank"&gt;here&lt;/a&gt;.
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_investigating_the_cause&quot;&gt;Investigating the Cause&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_investigating_the_cause"&gt;Investigating the Cause&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;With the reproducer in hand,
 I could then hit the REST endpoint with &lt;em&gt;curl&lt;/em&gt; and step debug through the code.
 Not just stepping through the code in the reproducer,
 but also the code of Spring itself,
-and the &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation&quot; target=&quot;blank&quot;&gt;OpenTelemetry Java Instrumentation&lt;/a&gt; code.&lt;/p&gt;
+and the &lt;a href="https://github.com/open-telemetry/opentelemetry-java-instrumentation" target="blank"&gt;OpenTelemetry Java Instrumentation&lt;/a&gt; code.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Unfortunately,
-the &lt;a href=&quot;https://bytebuddy.net/#/&quot; target=&quot;blank&quot;&gt;ByteBuddy&lt;/a&gt; instrumentation advice can&amp;#8217;t be stepped through,
+the &lt;a href="https://bytebuddy.net/#/" target="blank"&gt;ByteBuddy&lt;/a&gt; instrumentation advice can&amp;#8217;t be stepped through,
 because it gets inlined with the code it instruments.
 In this particular situation though,
 there were instrumentation helper classes I could debug through to help me understand what was happening.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Stepping through the Spring Framework code handling the &lt;em&gt;403&lt;/em&gt; error,
 I noticed it was trying to convert the JSON error response into the &lt;em&gt;application/pdf&lt;/em&gt; media type.
 On initially seeing this,
 it didn&amp;#8217;t make any sense as to why or how this was happening.
 The REST endpoint was defined to produce a pdf, but why was it doing the same for the error?!&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;It took a few runs through debugging each step to eventually notice
-&lt;a href=&quot;https://github.com/spring-projects/spring-framework/blob/v5.1.20.RELEASE/spring-webmvc/src/main/java/org/springframework/web/servlet/mvc/method/RequestMappingInfoHandlerMapping.java#L112&quot; target=&quot;blank&quot;&gt;RequestMappingInfoHandlerMapping.handleMatch()&lt;/a&gt;
+&lt;a href="https://github.com/spring-projects/spring-framework/blob/v5.1.20.RELEASE/spring-webmvc/src/main/java/org/springframework/web/servlet/mvc/method/RequestMappingInfoHandlerMapping.java#L112" target="blank"&gt;RequestMappingInfoHandlerMapping.handleMatch()&lt;/a&gt;
 was setting the &lt;code&gt;PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE&lt;/code&gt; request attribute to be &lt;em&gt;application/pdf&lt;/em&gt;.
 Which is used later to convert the JSON error response,
 resulting in the &lt;code&gt;HttpMediaTypeNotAcceptableException&lt;/code&gt; being thrown,
 causing the &lt;em&gt;406&lt;/em&gt; status code to be returned.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;But where is the attribute being set?&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Further debugging runs revealed it was a result of
-&lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/v1.32.1/instrumentation/spring/spring-webmvc/spring-webmvc-3.1/javaagent/src/main/java/org/springframework/web/servlet/v3_1/OpenTelemetryHandlerMappingFilter.java#L104&quot; target=&quot;blank&quot;&gt;OpenTelemetryHandlerMappingFilter.findMapping()&lt;/a&gt;
+&lt;a href="https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/v1.32.1/instrumentation/spring/spring-webmvc/spring-webmvc-3.1/javaagent/src/main/java/org/springframework/web/servlet/v3_1/OpenTelemetryHandlerMappingFilter.java#L104" target="blank"&gt;OpenTelemetryHandlerMappingFilter.findMapping()&lt;/a&gt;
 calling &lt;code&gt;mapping.getHandler()&lt;/code&gt;.
 Deep in the call stack it called &lt;code&gt;RequestMappingInfoHandlerMapping.handleMatch()&lt;/code&gt;,
 setting the &lt;code&gt;PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE&lt;/code&gt; request attribute.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Wondering why this code was necessary,
-I came across &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/v1.32.1/instrumentation/spring/spring-webmvc/spring-webmvc-3.1/javaagent/src/main/java/io/opentelemetry/javaagent/instrumentation/spring/webmvc/v3_1/SpringWebMvcServerSpanNaming.java#L18&quot; target=&quot;blank&quot;&gt;SpringWebMvcServerSpanNaming&lt;/a&gt;,
+I came across &lt;a href="https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/v1.32.1/instrumentation/spring/spring-webmvc/spring-webmvc-3.1/javaagent/src/main/java/io/opentelemetry/javaagent/instrumentation/spring/webmvc/v3_1/SpringWebMvcServerSpanNaming.java#L18" target="blank"&gt;SpringWebMvcServerSpanNaming&lt;/a&gt;,
 which uses the &lt;code&gt;BEST_MATCHING_PATTERN_ATTRIBUTE&lt;/code&gt; request attribute to name the span.
 &lt;code&gt;BEST_MATCHING_PATTERN_ATTRIBUTE&lt;/code&gt; is also set by &lt;code&gt;RequestMappingInfoHandlerMapping.handleMatch()&lt;/code&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_submitting_the_issue&quot;&gt;Submitting the Issue&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_submitting_the_issue"&gt;Submitting the Issue&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Now understanding the sequence of code paths leading to the problem,
 it was time to document the findings and create a bug report.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Creating the &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation/issues/10379&quot; target=&quot;blank&quot;&gt;issue&lt;/a&gt;,
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Creating the &lt;a href="https://github.com/open-telemetry/opentelemetry-java-instrumentation/issues/10379" target="blank"&gt;issue&lt;/a&gt;,
 I added all the information I&amp;#8217;d collected while investigating the problem,
 as I wanted to provide the maintainers with as much information as possible.
 I included the reproducer,
 what I&amp;#8217;d seen while debugging,
 and what I believed the root cause to be.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;When creating issues for open source projects,
 it&amp;#8217;s always better to err on the side of too much information than too little.
 Maintainers will appreciate the additional details and context you provide,
@@ -1619,21 +1619,21 @@ it makes resolving it a lot easier.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_worldwide_contributors&quot;&gt;Worldwide Contributors&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_worldwide_contributors"&gt;Worldwide Contributors&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I created the issue as my day was ending on a Thursday.
 My intention was to begin investigating possible resolutions to the issue the following day,
 as on the issue I said I was happy to help with a fix.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;However, when I began work the next day,
 my GitHub notifications popped with a pull request from one of the maintainers with a fix!
 I was surprised and impressed by the quick turnaround,
 as I had not realistically expected any movement on the issue until the following week.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Having worked on remote teams for nearly 15 years,
 this experience highlights the advantages of remote and distributed teams across time zones.
 Although I had finished for the day,
@@ -1646,17 +1646,17 @@ They were able to replicate the issue and work on a fix without any further inpu
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_importance_of_reproducers&quot;&gt;Importance of Reproducers&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This experience with the maintainers of &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java-instrumentation&quot; target=&quot;blank&quot;&gt;OpenTelemetry Java Instrumentation&lt;/a&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_importance_of_reproducers"&gt;Importance of Reproducers&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;This experience with the maintainers of &lt;a href="https://github.com/open-telemetry/opentelemetry-java-instrumentation" target="blank"&gt;OpenTelemetry Java Instrumentation&lt;/a&gt;
 highlighted to me the importance of sufficient details on an issue,
 but also providing a small reproducer.
 Having a reproducer enables maintainers to jump into working on a fix without needing to spend time trying to replicate the problem.
 This is of critical importance for edge cases which are difficult to replicate.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I also believe the issue would not have been resolved as quickly as it was
 without a reproducer and detailed information on what I found.
 Anything we, as users, can do to help maintainers understand and replicate an issue
@@ -1665,12 +1665,12 @@ Maintainers of open source projects often have the thankless task of prioritizin
 and resolving many issues at once.
 Anything we can do to reduce their time spent resolving issues is a good thing.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;If we can&amp;#8217;t take the time to try and understand the problem we&amp;#8217;re experiencing,
 and reproduce it in a small piece of code.
 How can we expect maintainers to expend any effort in resolving a problem for us?&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;If there&amp;#8217;s one thing I hope you take away from this post,
 it&amp;#8217;s the importance of providing a small reproducer when reporting an issue.
 It&amp;#8217;s a small thing that can make a big difference in getting a problem resolved quickly.
@@ -1680,14 +1680,14 @@ Anything we can do to help them is a good thing,
 and appreciated by maintainers.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Setting up an OPNSense Firewall]]></title><description><![CDATA[Over the years my home network has been powered by Ubiquiti hardware - nano HD APs, an in-wall AP, a Flex AP, an Outdoor Mesh, network switch, and a USG...]]></description><link>https://kenfinnigan.me/blog/opnsense-firewall-setup/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/opnsense-firewall-setup/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 06 Feb 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Over the years my home network has been powered by &lt;a href=&quot;https://www.ui.com/introduction&quot; target=&quot;blank&quot;&gt;Ubiquiti&lt;/a&gt; hardware - nano HD APs,
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Setting up an OPNSense Firewall]]></title><description><![CDATA[Over the years my home network has been powered by Ubiquiti hardware - nano HD APs, an in-wall AP, a Flex AP, an Outdoor Mesh, network switch, and a USG...]]></description><link>https://kenfinnigan.me/blog/opnsense-firewall-setup/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/opnsense-firewall-setup/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Tue, 06 Feb 2024 00:00:00 GMT</pubDate><content:encoded>&lt;div id="preamble"&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Over the years my home network has been powered by &lt;a href="https://www.ui.com/introduction" target="blank"&gt;Ubiquiti&lt;/a&gt; hardware - nano HD APs,
 an in-wall AP, a Flex AP, an Outdoor Mesh, network switch, and a USG.
 For the most part I&amp;#8217;ve been very happy with the hardware, but I&amp;#8217;ve had issues with the USG a few times.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;There have been occasions where upgrading the USG lead it to stop working, either requiring a factory reset and re-import of settings, or needing to rebuild the internal database.
 Though I was able to ssh into the USG and rebuild the database, it was always a pain.
 I often wouldn&amp;#8217;t know there was an issue until one of my kids complained about the internet not working.
@@ -1695,115 +1695,115 @@ Also, there were times where I felt the USG was underpowered, and restricted the
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_what_to_choose&quot;&gt;What to choose?&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_what_to_choose"&gt;What to choose?&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I&amp;#8217;d put off doing anything about it for probably a year or more.
 Yeah I know, the typical guy in IT putting off doing anything about their own environment!
 In late 2022 I finally began looking at options for a replacement,
-both from &lt;a href=&quot;https://www.ui.com/introduction&quot; target=&quot;blank&quot;&gt;Ubiquiti&lt;/a&gt; and other alternatives that would still work with the existing APs I have.
+both from &lt;a href="https://www.ui.com/introduction" target="blank"&gt;Ubiquiti&lt;/a&gt; and other alternatives that would still work with the existing APs I have.
 I happened to be talking about it with a friend and colleague,
-&lt;a href=&quot;https://www.linkedin.com/in/alghanmi/&quot; target=&quot;blank&quot;&gt;Rami&lt;/a&gt;,
+&lt;a href="https://www.linkedin.com/in/alghanmi/" target="blank"&gt;Rami&lt;/a&gt;,
 who lives and breathes infrastructure and networking,
-and he suggested I look into &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt;.&lt;/p&gt;
+and he suggested I look into &lt;a href="https://opnsense.org/" target="blank"&gt;OPNsense&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I vaguely recalled having heard of &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt;,
-&lt;a href=&quot;https://www.pfsense.org/&quot; target=&quot;blank&quot;&gt;pfsense&lt;/a&gt;,
+&lt;div class="paragraph"&gt;
+&lt;p&gt;I vaguely recalled having heard of &lt;a href="https://opnsense.org/" target="blank"&gt;OPNsense&lt;/a&gt;,
+&lt;a href="https://www.pfsense.org/" target="blank"&gt;pfsense&lt;/a&gt;,
 and similar firewalls over the years but hadn&amp;#8217;t delved deep their capabilities or how to set them up.
-&lt;a href=&quot;https://www.linkedin.com/in/alghanmi/&quot; target=&quot;blank&quot;&gt;Rami&lt;/a&gt; admitted there is more up front config required
-with &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; than an &lt;strong&gt;off the shelf&lt;/strong&gt; solution,
+&lt;a href="https://www.linkedin.com/in/alghanmi/" target="blank"&gt;Rami&lt;/a&gt; admitted there is more up front config required
+with &lt;a href="https://opnsense.org/" target="blank"&gt;OPNsense&lt;/a&gt; than an &lt;strong&gt;off the shelf&lt;/strong&gt; solution,
 but it provided a great deal more control over how it worked as well.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_what_about_the_hardware&quot;&gt;What about the hardware?&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;As &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; is a piece of software,
+&lt;div class="sect1"&gt;
+&lt;h2 id="_what_about_the_hardware"&gt;What about the hardware?&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;As &lt;a href="https://opnsense.org/" target="blank"&gt;OPNsense&lt;/a&gt; is a piece of software,
 it still needs hardware to run on.
-While chatting about it with &lt;a href=&quot;https://www.linkedin.com/in/alghanmi/&quot; target=&quot;blank&quot;&gt;Rami&lt;/a&gt;,
-he suggested I look at the &lt;a href=&quot;https://www.hardkernel.com/shop/odroid-h3-plus/&quot; target=&quot;blank&quot;&gt;ODROID-H3+&lt;/a&gt;.
-I was using a small Raspberry Pi device to run &lt;a href=&quot;https://pi-hole.net/&quot; target=&quot;blank&quot;&gt;pihole&lt;/a&gt;,
+While chatting about it with &lt;a href="https://www.linkedin.com/in/alghanmi/" target="blank"&gt;Rami&lt;/a&gt;,
+he suggested I look at the &lt;a href="https://www.hardkernel.com/shop/odroid-h3-plus/" target="blank"&gt;ODROID-H3+&lt;/a&gt;.
+I was using a small Raspberry Pi device to run &lt;a href="https://pi-hole.net/" target="blank"&gt;pihole&lt;/a&gt;,
 but it was pre-assembled and I&amp;#8217;d never really done any device building before.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;After reading through the details of the &lt;a href=&quot;https://www.hardkernel.com/shop/odroid-h3-plus/&quot; target=&quot;blank&quot;&gt;ODROID-H3+&lt;/a&gt;,
+&lt;div class="paragraph"&gt;
+&lt;p&gt;After reading through the details of the &lt;a href="https://www.hardkernel.com/shop/odroid-h3-plus/" target="blank"&gt;ODROID-H3+&lt;/a&gt;,
 most of the &lt;strong&gt;work&lt;/strong&gt; was already done and it was just putting pieces together,
 which I could totally do!
-Here is the list of components I purchased from &lt;a href=&quot;https://www.hardkernel.com/&quot; target=&quot;blank&quot;&gt;HARDKERNEL&lt;/a&gt;:&lt;/p&gt;
+Here is the list of components I purchased from &lt;a href="https://www.hardkernel.com/" target="blank"&gt;HARDKERNEL&lt;/a&gt;:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
+&lt;div class="ulist"&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;1 x &lt;a href=&quot;https://www.hardkernel.com/shop/odroid-h3-plus/&quot; target=&quot;blank&quot;&gt;ODROID-H3+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;1 x &lt;a href="https://www.hardkernel.com/shop/odroid-h3-plus/" target="blank"&gt;ODROID-H3+&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;2 x &lt;a href=&quot;https://www.hardkernel.com/shop/samsung-16gb-ddr4-pc4-25600-so-dimm/&quot; target=&quot;blank&quot;&gt;16GB DDR4 memory&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;2 x &lt;a href="https://www.hardkernel.com/shop/samsung-16gb-ddr4-pc4-25600-so-dimm/" target="blank"&gt;16GB DDR4 memory&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;1 x &lt;a href=&quot;https://www.hardkernel.com/shop/128gb-emmc-module-h2-2/&quot; target=&quot;blank&quot;&gt;128GB eMMC module&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;1 x &lt;a href="https://www.hardkernel.com/shop/128gb-emmc-module-h2-2/" target="blank"&gt;128GB eMMC module&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;1 x &lt;a href=&quot;https://www.hardkernel.com/shop/92x92x25mm-dc-cooling-fan-w-pwm-speed-sensor-tacho-2/&quot; target=&quot;blank&quot;&gt;Fan&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;1 x &lt;a href="https://www.hardkernel.com/shop/92x92x25mm-dc-cooling-fan-w-pwm-speed-sensor-tacho-2/" target="blank"&gt;Fan&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;1 x &lt;a href=&quot;https://www.hardkernel.com/shop/odroid-h3-case-type-2/&quot; target=&quot;blank&quot;&gt;Type 2 case&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;1 x &lt;a href="https://www.hardkernel.com/shop/odroid-h3-case-type-2/" target="blank"&gt;Type 2 case&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;1 x &lt;a href=&quot;https://www.hardkernel.com/shop/15v-4a-power-supply-us-plug/&quot;&gt;15V/4A US power plug&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;1 x &lt;a href="https://www.hardkernel.com/shop/15v-4a-power-supply-us-plug/"&gt;15V/4A US power plug&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;img src=&quot;/images/odroid-h3-plus.png&quot; alt=&quot;ODROID-H3+&quot; width=&quot;450&quot;&gt;
+&lt;div class="imageblock"&gt;
+&lt;div class="content"&gt;
+&lt;img src="/images/odroid-h3-plus.png" alt="ODROID-H3+" width="450"&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Once everything had arrived, it was construction time!
 Above is a photo of all the components laid out ready to be put together.
 The hardest part of the construction was getting the pieces of the case in the right position so they all connected correctly at the end!
 It took a couple of attempts to get that sorted,
 but then it came together nicely into the completed unit seen below.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;img src=&quot;/images/odroid-h3-plus-case.png&quot; alt=&quot;ODROID-H3+ in case&quot; width=&quot;450&quot;&gt;
+&lt;div class="imageblock"&gt;
+&lt;div class="content"&gt;
+&lt;img src="/images/odroid-h3-plus-case.png" alt="ODROID-H3+ in case" width="450"&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_opnsense_installation&quot;&gt;OPNsense installation&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;With the hardware ready, now it was time to install &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; and get it running.
-After loading the &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; installation onto a USB stick,
+&lt;div class="sect1"&gt;
+&lt;h2 id="_opnsense_installation"&gt;OPNsense installation&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;With the hardware ready, now it was time to install &lt;a href="https://opnsense.org/" target="blank"&gt;OPNsense&lt;/a&gt; and get it running.
+After loading the &lt;a href="https://opnsense.org/" target="blank"&gt;OPNsense&lt;/a&gt; installation onto a USB stick,
 I used the &lt;em&gt;dvd&lt;/em&gt; installation type, I plugged it in and booted up the device.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I chose to install FreeBSD with the ZFS file system to have journaling enabled.
 I don&amp;#8217;t know whether it&amp;#8217;s necessary, but seemed like a logical approach.
 When the installation of the operating system had completed,
 it was unable to find any network interfaces.
 At this point I was questioning whether I had made the correct decision to build a firewall myself as opposed to buying a pre-packaged solution!&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;As the &lt;a href=&quot;https://www.hardkernel.com/shop/odroid-h3-plus/&quot; target=&quot;blank&quot;&gt;ODROID-H3+&lt;/a&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;As the &lt;a href="https://www.hardkernel.com/shop/odroid-h3-plus/" target="blank"&gt;ODROID-H3+&lt;/a&gt;
 uses a Realtek RTL8125B network card, FreeBSD was unable to recognize it.
-Luckily I found reference to the problem on a &lt;a href=&quot;https://cyberdean.fr/blog/realtek-driver-free-bsd/&quot; target=&quot;blank&quot;&gt;blog&lt;/a&gt;,
+Luckily I found reference to the problem on a &lt;a href="https://cyberdean.fr/blog/realtek-driver-free-bsd/" target="blank"&gt;blog&lt;/a&gt;,
 with handy information on how to resolve it.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I first ran &lt;code&gt;pciconf -vl&lt;/code&gt; to verify the network cards were present but the driver was &lt;code&gt;none&lt;/code&gt;.
-Then I found a driver package for the network card from &lt;a href=&quot;https://www.freshports.org/net/realtek-re-kmod/&quot; target=&quot;blank&quot;&gt;FreshPorts&lt;/a&gt;,
+Then I found a driver package for the network card from &lt;a href="https://www.freshports.org/net/realtek-re-kmod/" target="blank"&gt;FreshPorts&lt;/a&gt;,
 which I downloaded and put onto another USB.
 Here are the steps I took to install the network driver:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
+&lt;div class="ulist"&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;code&gt;mkdir /mnt/usbstick&lt;/code&gt;&lt;/p&gt;
@@ -1813,7 +1813,7 @@ Here are the steps I took to install the network driver:&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;code&gt;mount -t msdosfs /dev/da1p2 /mnt/usbstick&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&quot;ulist&quot;&gt;
+&lt;div class="ulist"&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;code&gt;da1&lt;/code&gt; is the USB stick, and &lt;code&gt;p2&lt;/code&gt; was the first partition&lt;/p&gt;
@@ -1823,7 +1823,7 @@ Here are the steps I took to install the network driver:&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;code&gt;pkg add /mnt/usbstick/realtek-re-kmod-v196.04.txz&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&quot;ulist&quot;&gt;
+&lt;div class="ulist"&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;At the time I installed the driver it was &lt;code&gt;v196&lt;/code&gt;&lt;/p&gt;
@@ -1833,7 +1833,7 @@ Here are the steps I took to install the network driver:&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;code&gt;umount /mnt/usbstick&lt;/code&gt; and &lt;code&gt;rm -rf /mnt/usbstick&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&quot;ulist&quot;&gt;
+&lt;div class="ulist"&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Unmount the USB stick and remove the directory created for it&lt;/p&gt;
@@ -1843,22 +1843,22 @@ Here are the steps I took to install the network driver:&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;To load the driver into the operating system we need to edit &lt;code&gt;/boot/loader.conf.local&lt;/code&gt; and add the following:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if_re_load=&quot;YES&quot;
-if_re_name=&quot;/boot/modules/if_re.ko&quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlight"&gt;&lt;code&gt;if_re_load="YES"
+if_re_name="/boot/modules/if_re.ko"&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;With the change in place, &lt;code&gt;reboot&lt;/code&gt; the device.
 Once booted, run &lt;code&gt;kldstat&lt;/code&gt; to ensure that &lt;code&gt;if_re.ko&lt;/code&gt; is loaded successfully.
 Lastly, run &lt;code&gt;ifconfig -a&lt;/code&gt; to verify the NIC is now present.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;With the network card now detected, we can assign the interfaces with &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt;.
+&lt;div class="paragraph"&gt;
+&lt;p&gt;With the network card now detected, we can assign the interfaces with &lt;a href="https://opnsense.org/" target="blank"&gt;OPNsense&lt;/a&gt;.
 In my case, I assigned &lt;code&gt;re0&lt;/code&gt; as the WAN (the internet), and &lt;code&gt;re1&lt;/code&gt; as the LAN (internal network).
 Then set the IP address for the LAN and it&amp;#8217;s respective IP range,
 which can be customized to your preferences.
@@ -1866,29 +1866,29 @@ One possible choice is an IP address of &lt;code&gt;192.168.0.1&lt;/code&gt; for
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_opnsense_set_up&quot;&gt;OPNsense set up&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;A neat trick that &lt;a href=&quot;https://www.linkedin.com/in/alghanmi/&quot; target=&quot;blank&quot;&gt;Rami&lt;/a&gt; told me was to set up the firewall inside your network!
+&lt;div class="sect1"&gt;
+&lt;h2 id="_opnsense_set_up"&gt;OPNsense set up&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;A neat trick that &lt;a href="https://www.linkedin.com/in/alghanmi/" target="blank"&gt;Rami&lt;/a&gt; told me was to set up the firewall inside your network!
 Doing this means not interrupting the existing internet in your house until you&amp;#8217;re ready,
 which is critical when you have kids that can&amp;#8217;t live without internet,
 and it doesn&amp;#8217;t expose an unsecured and un-configured firewall to potential attack.
 In this set up, the WAN of the device connects to your main internal network to get its internet.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;To be able to access the &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; UI from your main home network,
+&lt;div class="paragraph"&gt;
+&lt;p&gt;To be able to access the &lt;a href="https://opnsense.org/" target="blank"&gt;OPNsense&lt;/a&gt; UI from your main home network,
 as it&amp;#8217;s on the WAN side of the firewall, we need to run &lt;code&gt;pfctl -d&lt;/code&gt; after every reboot to disable the firewall.
 As the device isn&amp;#8217;t performing any protection for us yet, there&amp;#8217;s no issue in disabling the firewall while we finish the set up.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I also installed &lt;a href=&quot;https://tailscale.com/&quot; target=&quot;blank&quot;&gt;Tailscale&lt;/a&gt; by following &lt;a href=&quot;https://tailscale.com/kb/1097/install-opnsense/&quot; target=&quot;blank&quot;&gt;these instructions&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;I also installed &lt;a href="https://tailscale.com/" target="blank"&gt;Tailscale&lt;/a&gt; by following &lt;a href="https://tailscale.com/kb/1097/install-opnsense/" target="blank"&gt;these instructions&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;There are a couple of key things you want to verify in the UI before continuing much further.
 Go to System &amp;#8594; Settings &amp;#8594; Administration and verify the following:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
+&lt;div class="ulist"&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;HTTPS enabled for web protocol&lt;/p&gt;
@@ -1901,22 +1901,22 @@ Go to System &amp;#8594; Settings &amp;#8594; Administration and verify the foll
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I then created an administrator account and disabled the root user,
-by following &lt;a href=&quot;https://homenetworkguy.com/how-to/disable-root-user-opnsense/&quot; target=&quot;blank&quot;&gt;these instructions&lt;/a&gt;,
+by following &lt;a href="https://homenetworkguy.com/how-to/disable-root-user-opnsense/" target="blank"&gt;these instructions&lt;/a&gt;,
 to increase security.
 I also enabled multi-factor authentication for the administrator account,
-based on &lt;a href=&quot;https://homenetworkguy.com/how-to/enable-multi-factor-authentication-in-opnsense/&quot; target=&quot;blank&quot;&gt;this&lt;/a&gt;.&lt;/p&gt;
+based on &lt;a href="https://homenetworkguy.com/how-to/enable-multi-factor-authentication-in-opnsense/" target="blank"&gt;this&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;To finish the set up of &lt;a href=&quot;https://tailscale.com/&quot; target=&quot;blank&quot;&gt;Tailscale&lt;/a&gt;,
+&lt;div class="paragraph"&gt;
+&lt;p&gt;To finish the set up of &lt;a href="https://tailscale.com/" target="blank"&gt;Tailscale&lt;/a&gt;,
 head to Interfaces &amp;#8594; Assignments in the UI.
 There should already be an interface named &lt;strong&gt;tailscale&lt;/strong&gt; in the New Interface section,
 click on the plus icon.
 We need to enable the interface, and also prevent it from being removed.
-Give the interface a name, set the IPv4 config to static, and set the IPv4 address to the one from &lt;a href=&quot;https://tailscale.com/&quot; target=&quot;blank&quot;&gt;Tailscale&lt;/a&gt;.&lt;/p&gt;
+Give the interface a name, set the IPv4 config to static, and set the IPv4 address to the one from &lt;a href="https://tailscale.com/" target="blank"&gt;Tailscale&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Next I set up the VLANs.
 I wanted a separate VLAN for any server or device, another for personal computers and phones, another for work devices, and another for IoT devices.
 When creating the interface for a VLAN change the IP address to have &lt;code&gt;/24&lt;/code&gt;, as &lt;code&gt;/32&lt;/code&gt; is the default.
@@ -1924,7 +1924,7 @@ If the default remains, it won&amp;#8217;t think there are any IP addresses avai
 When all your desired VLANs have been created,
 head to Services &amp;#8594; DHCPv4 in the UI and for each VLAN enable DHCP and set the desired IP range.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;By default, access to the internet is disallowed from all VLANs,
 and all VLANs can communicate with each other and the parent, which is the main LAN.
 In the UI, go to Firewalls &amp;#8594; Rules.
@@ -1932,30 +1932,30 @@ For each interface name, set your preferred firewall rules.
 In my case, I allowed all VLANs to access the internet,
 but disallowed the IoT VLAN from talking with any other VLAN.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;That&amp;#8217;s the basic set up for the &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; firewall.
+&lt;div class="paragraph"&gt;
+&lt;p&gt;That&amp;#8217;s the basic set up for the &lt;a href="https://opnsense.org/" target="blank"&gt;OPNsense&lt;/a&gt; firewall.
 With all the above done, I took the next step and replaced the existing USG device with the new firewall!&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_opnsense_and_bonjour_printer&quot;&gt;OPNsense and Bonjour printer&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_opnsense_and_bonjour_printer"&gt;OPNsense and Bonjour printer&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;As all things do, it worked, to an extent.
 All usual devices worked as expected with the new firewall, but there were a few exceptions that needed to be handled.
 The first of which was the printer.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;To enable printers to use the Bonjour protocol to communicate,
-we need to install an mDNS repeater into &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt;.
+we need to install an mDNS repeater into &lt;a href="https://opnsense.org/" target="blank"&gt;OPNsense&lt;/a&gt;.
 You may ask why I want to use Bonjour for printer communication,
 we have several iPhones and Macs in the house,
 which makes it just easier if we do.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The instructions for setting up mDNS with &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt;
-are covered &lt;a href=&quot;https://docs.opnsense.org/manual/how-tos/multicast-dns.html&quot; target=&quot;blank&quot;&gt;here&lt;/a&gt; in detail.
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The instructions for setting up mDNS with &lt;a href="https://opnsense.org/" target="blank"&gt;OPNsense&lt;/a&gt;
+are covered &lt;a href="https://docs.opnsense.org/manual/how-tos/multicast-dns.html" target="blank"&gt;here&lt;/a&gt; in detail.
 First step is to install the plugin through the UI.
 Once the plugin is installed, enable the service and select which network VLANs should be enabled.
 In my case, I enabled it for the main LAN and the VLAN where all our personal devices are connected,
@@ -1963,23 +1963,23 @@ including the printer itself.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_opnsense_and_a_nintendo_switch&quot;&gt;OPNsense and a Nintendo Switch&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_opnsense_and_a_nintendo_switch"&gt;OPNsense and a Nintendo Switch&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;There was still one device that was having trouble connecting to online play,
 my son&amp;#8217;s Nintendo Switch!
 Looking at the internet settings of the Nintendo Switch,
 it was showing a NAT type of &lt;strong&gt;D&lt;/strong&gt; when at least a &lt;strong&gt;C&lt;/strong&gt; is recommended for best online play.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I found a great &lt;a href=&quot;https://blog.jamie.ie/posts/switch-opnsense/&quot; target=&quot;blank&quot;&gt;resource&lt;/a&gt; explaining what was needed to improve it!
+&lt;div class="paragraph"&gt;
+&lt;p&gt;I found a great &lt;a href="https://blog.jamie.ie/posts/switch-opnsense/" target="blank"&gt;resource&lt;/a&gt; explaining what was needed to improve it!
 Under Services &amp;#8594; DHCPv4, find the VLAN which the Nintendo Switch is connecting to and add a new static DHCP mapping rule
 with the MAC and IP of the Nintendo Switch.
 Then in Firewall &amp;#8594; NAT &amp;#8594; Outbound, change &lt;strong&gt;Automatic&lt;/strong&gt; to &lt;strong&gt;Hybrid&lt;/strong&gt; and save the changes.
 Next, create a new rule with the following properties:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
+&lt;div class="ulist"&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Set &lt;strong&gt;Interface&lt;/strong&gt; to &lt;em&gt;WAN&lt;/em&gt;&lt;/p&gt;
@@ -2003,24 +2003,24 @@ Next, create a new rule with the following properties:&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_a_year_of_experiences&quot;&gt;A year of experiences&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;After having used &lt;a href=&quot;https://opnsense.org/&quot; target=&quot;blank&quot;&gt;OPNsense&lt;/a&gt; for a year now,
+&lt;div class="sect1"&gt;
+&lt;h2 id="_a_year_of_experiences"&gt;A year of experiences&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;After having used &lt;a href="https://opnsense.org/" target="blank"&gt;OPNsense&lt;/a&gt; for a year now,
 and performed many minor and several major upgrades in that time,
 I am impressed with how well the software performs and how smooth the upgrades are.
 There have been several times where I&amp;#8217;ve needed to customize specific configuration for various reasons,
 but once I got the hang of the UI and how things are set up, I&amp;#8217;ve found it very easy to navigate.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;There was definitely a learning curve, especially in resolving the issues around network cards not being found, etc.
 But I feel the experience was a great learning one, and worth it in the long run.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Writing more often]]></title><description><![CDATA[Since starting this blog shortly before the pandemic began, I've been very inconsistent in my writing...]]></description><link>https://kenfinnigan.me/blog/writing-more/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/writing-more/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sun, 31 Dec 2023 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Writing more often]]></title><description><![CDATA[Since starting this blog shortly before the pandemic began, I've been very inconsistent in my writing...]]></description><link>https://kenfinnigan.me/blog/writing-more/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/writing-more/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sun, 31 Dec 2023 00:00:00 GMT</pubDate><content:encoded>&lt;div id="preamble"&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Since starting this blog shortly before the pandemic began,
 I&amp;#8217;ve been very inconsistent in my writing.
 Having been an author or co-author of a number of books in the last decade or so,
@@ -2029,16 +2029,16 @@ And the only way I can do that is to write more often.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_why_write_more_now&quot;&gt;Why write more now?&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_why_write_more_now"&gt;Why write more now?&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Recently I&amp;#8217;ve been thinking about what I want to spend my time on in the future,
 and I&amp;#8217;m still working on what exactly that might be.
 However, I do know that I enjoy writing, &lt;strong&gt;mostly&lt;/strong&gt;,
 and I would like to increase my writing while also improving how I write.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I don&amp;#8217;t know whether I&amp;#8217;ll write another book,
 maybe at some point,
 but I do want to write more consistently.
@@ -2047,66 +2047,66 @@ only time can answer that question.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_what_will_i_write_about&quot;&gt;What will I write about?&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_what_will_i_write_about"&gt;What will I write about?&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Right now I&amp;#8217;m not 100% sure what I&amp;#8217;ll write about.
 I will likely start with OpenTelemetry,
 as it&amp;#8217;s an area I&amp;#8217;ve been focused on for a few years.
 I could write about the process of writing instrumentation for OpenTelemetry,
 especially in relation to the Java SDK.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I&amp;#8217;d be interested in hearing from you about what you&amp;#8217;d like to read about.
 If you have any ideas, please let me know.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Life at Lumigo]]></title><description><![CDATA[I've been at Lumigo for 6 weeks now, and it's been an eye-opening experience...]]></description><link>https://kenfinnigan.me/blog/life-at-lumigo/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/life-at-lumigo/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sat, 24 Jun 2023 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I&amp;#8217;ve been at &lt;a href=&quot;https://www.lumigo.io&quot; target=&quot;blank&quot;&gt;Lumigo&lt;/a&gt; for 6 weeks now, and it&amp;#8217;s been an eye-opening experience on a personal level.
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Life at Lumigo]]></title><description><![CDATA[I've been at Lumigo for 6 weeks now, and it's been an eye-opening experience...]]></description><link>https://kenfinnigan.me/blog/life-at-lumigo/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/life-at-lumigo/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sat, 24 Jun 2023 00:00:00 GMT</pubDate><content:encoded>&lt;div id="preamble"&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;I&amp;#8217;ve been at &lt;a href="https://www.lumigo.io" target="blank"&gt;Lumigo&lt;/a&gt; for 6 weeks now, and it&amp;#8217;s been an eye-opening experience on a personal level.
 Though there wasn&amp;#8217;t much opportunity at Workday for coding on a daily basis,
 I didn&amp;#8217;t realize how much my coding skills had atrophied in only 18 months.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_non_coding_architect&quot;&gt;&quot;Non-coding&quot; Architect&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_non_coding_architect"&gt;"Non-coding" Architect&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I&amp;#8217;ve always told myself I never wanted to be an &lt;em&gt;Ivory Tower Architect&lt;/em&gt;,
 and even more so an architect who doesn&amp;#8217;t code.
 If you&amp;#8217;re not in the trenches with the rest of the team on a regular basis,
 how can you possibly know what&amp;#8217;s going on?
 And more importantly, how will you achieve buy-in for any changes if you&amp;#8217;re not feeling their pain with them?&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;While reflecting on this realization,
 I thought back to the blog Charity Majors wrote on
-&lt;a href=&quot;https://charity.wtf/2023/03/09/architects-anti-patterns-and-organizational-fuckery/&quot; target=&quot;blank&quot;&gt;ARCHITECTS, ANTI-PATTERNS, AND ORGANIZATIONAL FUCKERY&lt;/a&gt; in March.
+&lt;a href="https://charity.wtf/2023/03/09/architects-anti-patterns-and-organizational-fuckery/" target="blank"&gt;ARCHITECTS, ANTI-PATTERNS, AND ORGANIZATIONAL FUCKERY&lt;/a&gt; in March.
 Charity stated: &lt;strong&gt;&lt;em&gt;The role itself can also be one that does not set up the people who hold it for a successful career in the long run, if they are not careful. It can be a one-way street to being obsolete.&lt;/em&gt;&lt;/strong&gt;
 That&amp;#8217;s exactly what I felt, I was becoming obsolete.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_how_do_i_do_this_again&quot;&gt;How do I do this again?&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_how_do_i_do_this_again"&gt;How do I do this again?&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;In the many years of being a software engineer, this was my biggest fear,
 losing the ability to code!
-Those first couple of weeks at &lt;a href=&quot;https://www.lumigo.io&quot; target=&quot;blank&quot;&gt;Lumigo&lt;/a&gt; were really tough.
+Those first couple of weeks at &lt;a href="https://www.lumigo.io" target="blank"&gt;Lumigo&lt;/a&gt; were really tough.
 It really kicked my imposter syndrome into high gear!&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I experienced everything from: How do you create a Helm chart?
 How do I use &lt;code&gt;kubectl&lt;/code&gt;?
 And many more problems doing tasks that 18 months ago I wouldn&amp;#8217;t have to think about.
 I knew it, and I did it.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I can&amp;#8217;t give enough thanks to everyone at &lt;a href=&quot;https://www.lumigo.io&quot; target=&quot;blank&quot;&gt;Lumigo&lt;/a&gt; for being
+&lt;div class="paragraph"&gt;
+&lt;p&gt;I can&amp;#8217;t give enough thanks to everyone at &lt;a href="https://www.lumigo.io" target="blank"&gt;Lumigo&lt;/a&gt; for being
 patient with me as I began my ramp-up with them.
 As the weeks have continued, remembering how to do these every day tasks has come back bit by bit.
 It&amp;#8217;s a very humbling experience to realize that the ability to code is most definitely a perishable skill!
@@ -2114,10 +2114,10 @@ Like with any muscle, if it&amp;#8217;s not used frequently enough it atrophies.
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_i_love_coding&quot;&gt;I love coding!&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_i_love_coding"&gt;I love coding!&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I would be lying if I said I&amp;#8217;m completely back to where I was 18 months ago,
 but I&amp;#8217;m getting there more and more every day.
 I&amp;#8217;m extremely lucky to have been given this opportunity to get back into the trenches and code again.
@@ -2125,24 +2125,24 @@ On a personal level,
 I&amp;#8217;ve realized coding is something I truly love doing,
 and I&amp;#8217;m not ready to give it up just yet.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;That&amp;#8217;s not to say I did&amp;#8217;t enjoy the other aspects of being an architect,
 but not at the expense of giving up the time I spend coding.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_the_future_with_lumigo&quot;&gt;The future with Lumigo&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I&amp;#8217;m really excited about the future with &lt;a href=&quot;https://www.lumigo.io&quot; target=&quot;blank&quot;&gt;Lumigo&lt;/a&gt;.
+&lt;div class="sect1"&gt;
+&lt;h2 id="_the_future_with_lumigo"&gt;The future with Lumigo&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;I&amp;#8217;m really excited about the future with &lt;a href="https://www.lumigo.io" target="blank"&gt;Lumigo&lt;/a&gt;.
 There are so many interesting problems to solve,
 and it&amp;#8217;s definitely exciting to be at a startup again.
 I&amp;#8217;m also enjoying being back in the
-&lt;a href=&quot;https://opentelemetry.io/docs/instrumentation/java/&quot; target=&quot;blank&quot;&gt;OpenTelemetry Java&lt;/a&gt; community again,
+&lt;a href="https://opentelemetry.io/docs/instrumentation/java/" target="blank"&gt;OpenTelemetry Java&lt;/a&gt; community again,
 and in time I will also be contributing to open source too.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Though my current title is &lt;em&gt;OpenTelemetry Architect&lt;/em&gt;,
 the role is focused on building out the SDKs for OpenTelemetry,
 and ensuring developers have a great experience using them.
@@ -2150,127 +2150,127 @@ I don&amp;#8217;t expect my new role to fall into the &lt;em&gt;Ivory Tower Arch
 but I&amp;#8217;ll be keeping a close eye on it.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content:encoded></item><item><title><![CDATA[The new journey!]]></title><description><![CDATA[I'm now almost two months into my new journey, and it's time to provide an update!...]]></description><link>https://kenfinnigan.me/blog/the-new-journey/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/the-new-journey/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Thu, 23 Dec 2021 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[The new journey!]]></title><description><![CDATA[I'm now almost two months into my new journey, and it's time to provide an update!...]]></description><link>https://kenfinnigan.me/blog/the-new-journey/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/the-new-journey/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Thu, 23 Dec 2021 00:00:00 GMT</pubDate><content:encoded>&lt;div id="preamble"&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I&amp;#8217;m now almost two months into my new journey, and it&amp;#8217;s time to provide an update!&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_where_am_i_now&quot;&gt;Where am I now?&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For those of you who have not already heard, I&amp;#8217;m now at &lt;a href=&quot;https://www.workday.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Workday&lt;/a&gt;.
+&lt;div class="sect1"&gt;
+&lt;h2 id="_where_am_i_now"&gt;Where am I now?&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;For those of you who have not already heard, I&amp;#8217;m now at &lt;a href="https://www.workday.com/" target="_blank" rel="noopener"&gt;Workday&lt;/a&gt;.
 My current role focuses on observability for the service teams developing SaaS applications and their related components.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;At the moment,
 I&amp;#8217;m investigating and learning about SLOs and SLIs.
 As part of the work,
-I&amp;#8217;m exploring &lt;a href=&quot;https://openslo.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenSLO&lt;/a&gt; and
-&lt;a href=&quot;https://sloth.dev/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Sloth&lt;/a&gt;.&lt;/p&gt;
+I&amp;#8217;m exploring &lt;a href="https://openslo.com/" target="_blank" rel="noopener"&gt;OpenSLO&lt;/a&gt; and
+&lt;a href="https://sloth.dev/" target="_blank" rel="noopener"&gt;Sloth&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_the_first_two_months&quot;&gt;The first two months&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_the_first_two_months"&gt;The first two months&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;It&amp;#8217;s been an exhausting but also exciting first couple of months.
 There are many things I have learned about the existing observability systems and the current plans for improvements.
 However, there are also many things I have yet to learn.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;A tricky aspect of my learning journey to date is finding context for previous decisions.
 Context is crucial to understanding previous decisions and the current state of a system based on those decisions.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I&amp;#8217;ve enjoyed the opportunity to meet so many amazing people in such a short time,
 both within the group I&amp;#8217;m in and across the whole organization.
-It&amp;#8217;s been wonderful experiencing how &lt;a href=&quot;https://www.workday.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Workday&lt;/a&gt; does
-&lt;a href=&quot;https://www.workday.com/en-us/company/about-workday/belonging-and-diversity.html?wdid=enus_ws_bdsol_wdnotice_wd_wd_web_19.1037&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;value inclusion&lt;/a&gt;.&lt;/p&gt;
+It&amp;#8217;s been wonderful experiencing how &lt;a href="https://www.workday.com/" target="_blank" rel="noopener"&gt;Workday&lt;/a&gt; does
+&lt;a href="https://www.workday.com/en-us/company/about-workday/belonging-and-diversity.html?wdid=enus_ws_bdsol_wdnotice_wd_wd_web_19.1037" target="_blank" rel="noopener"&gt;value inclusion&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_what_will_the_future_bring&quot;&gt;What will the future bring?&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_what_will_the_future_bring"&gt;What will the future bring?&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;For now, continued learning and growth! Interspersed with the occasional rabbit hole of information I end up in.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I&amp;#8217;m still contributing to open source, though less on the code side at present.
-Two projects of present interest are &lt;a href=&quot;https://github.com/cncf/tag-observability&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;CNCF TAG for Observability&lt;/a&gt; and &lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt;,
+Two projects of present interest are &lt;a href="https://github.com/cncf/tag-observability" target="_blank" rel="noopener"&gt;CNCF TAG for Observability&lt;/a&gt; and &lt;a href="https://opentelemetry.io/" target="_blank" rel="noopener"&gt;OpenTelemetry&lt;/a&gt;,
 though I anticipate additional projects soon.
 These two projects, in their way, are great for learning and utilizing the various parts of observability.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I look forward to continuing my journey into observability and its many varied aspects.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Last day at Red Hat]]></title><description><![CDATA[After nearly 11 years at Red Hat it's time to move onto a new challenge...]]></description><link>https://kenfinnigan.me/blog/redhat-last-day/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/redhat-last-day/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Fri, 15 Oct 2021 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;After nearly 11 years at &lt;a href=&quot;https://www.redhat.com/en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Red Hat&lt;/a&gt; it&amp;#8217;s time to move onto a new challenge.
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Last day at Red Hat]]></title><description><![CDATA[After nearly 11 years at Red Hat it's time to move onto a new challenge...]]></description><link>https://kenfinnigan.me/blog/redhat-last-day/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/redhat-last-day/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Fri, 15 Oct 2021 00:00:00 GMT</pubDate><content:encoded>&lt;div id="preamble"&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;After nearly 11 years at &lt;a href="https://www.redhat.com/en" target="_blank" rel="noopener"&gt;Red Hat&lt;/a&gt; it&amp;#8217;s time to move onto a new challenge.
 With so many incredible memories over my time at Red Hat it was a tough decision to make.
 Especially when thinking about the amazing people I&amp;#8217;ve worked with in the past,
 work with today, and have met over the years.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_red_hat_experiences&quot;&gt;Red Hat experiences&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_red_hat_experiences"&gt;Red Hat experiences&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;When I first joined Red Hat it was actually Amentra,
 as I started in the consulting organization which was later renamed to Red Hat Consulting.
 After almost a year of being a consultant, I wanted to get back to engineering and innovating.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect2&quot;&gt;
-&lt;h3 id=&quot;_gatein_and_portletbridge&quot;&gt;GateIn and PortletBridge&lt;/h3&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I was lucky enough to have an opportunity to join the &lt;a href=&quot;https://gatein.jboss.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GateIn&lt;/a&gt; portal project.
-My focus was on &lt;a href=&quot;https://portletbridge.jboss.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;PortletBridge&lt;/a&gt;,
+&lt;div class="sect2"&gt;
+&lt;h3 id="_gatein_and_portletbridge"&gt;GateIn and PortletBridge&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;I was lucky enough to have an opportunity to join the &lt;a href="https://gatein.jboss.org/" target="_blank" rel="noopener"&gt;GateIn&lt;/a&gt; portal project.
+My focus was on &lt;a href="https://portletbridge.jboss.org/" target="_blank" rel="noopener"&gt;PortletBridge&lt;/a&gt;,
 a library enabling the use of JSF components in portlets.
-Most of the work involved working with the &lt;a href=&quot;https://richfaces.jboss.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;RichFaces&lt;/a&gt; project
+Most of the work involved working with the &lt;a href="https://richfaces.jboss.org/" target="_blank" rel="noopener"&gt;RichFaces&lt;/a&gt; project
 to fix and verify as many components as possible worked in portlets.
 If memory serves,
 we were able to get it from about 70-80 components working to all 100+ components.
 There were many challenges as JSF and Portlets had very different lifecycles!
 One of my proudest moments was implementing a CDI scope for portlets,
-with some guidance from &lt;a href=&quot;https://twitter.com/julienviet?lang=en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Julient Viet&lt;/a&gt;,
+with some guidance from &lt;a href="https://twitter.com/julienviet?lang=en" target="_blank" rel="noopener"&gt;Julient Viet&lt;/a&gt;,
 which later was added to the PortletBridge specification in the JCP.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect2&quot;&gt;
-&lt;h3 id=&quot;_liveoak&quot;&gt;LiveOak&lt;/h3&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect2"&gt;
+&lt;h3 id="_liveoak"&gt;LiveOak&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;When the popularity of portals waned,
-I was privileged, and honored, to work side by side with &lt;a href=&quot;https://twitter.com/bobmcwhirter?lang=en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Bob McWhirter&lt;/a&gt;
-to define an architecture for an MBaaS (Mobile backend as a service) built on top of &lt;a href=&quot;https://netty.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Netty&lt;/a&gt;.
-We called the project &lt;a href=&quot;https://github.com/liveoak-io&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;LiveOak&lt;/a&gt;.
+I was privileged, and honored, to work side by side with &lt;a href="https://twitter.com/bobmcwhirter?lang=en" target="_blank" rel="noopener"&gt;Bob McWhirter&lt;/a&gt;
+to define an architecture for an MBaaS (Mobile backend as a service) built on top of &lt;a href="https://netty.io/" target="_blank" rel="noopener"&gt;Netty&lt;/a&gt;.
+We called the project &lt;a href="https://github.com/liveoak-io" target="_blank" rel="noopener"&gt;LiveOak&lt;/a&gt;.
 It was some of the most challenging engineering work I&amp;#8217;ve ever done,
 but also extremely fulfilling to see it come together.
 We had some great ideas around representing everything as an URL addressable resource,
 even databases!&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;We worked on LiveOak for a couple of years until Red Hat bought FeedHenry.
 It was a very sad day for me when LiveOak was shuttered,
 I really felt it had a chance to be something big.
 After LiveOak,
 I explored a few different things to work on.
 I ended up shifting to Developer Tooling for a short while working on WebIDEs,
-and an &quot;all-in-one&quot; installer to provide all the necessary tools for developing with containers.&lt;/p&gt;
+and an "all-in-one" installer to provide all the necessary tools for developing with containers.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect2&quot;&gt;
-&lt;h3 id=&quot;_wildfly_swarm&quot;&gt;WildFly Swarm&lt;/h3&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;An opportunity came up to work with &lt;a href=&quot;https://twitter.com/bobmcwhirter?lang=en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Bob McWhirter&lt;/a&gt; again
-for a new take on &lt;a href=&quot;https://www.wildfly.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;WildFly&lt;/a&gt; targeted at microservices.
-Thus &lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;WildFly Swarm&lt;/a&gt; was born.
+&lt;div class="sect2"&gt;
+&lt;h3 id="_wildfly_swarm"&gt;WildFly Swarm&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;An opportunity came up to work with &lt;a href="https://twitter.com/bobmcwhirter?lang=en" target="_blank" rel="noopener"&gt;Bob McWhirter&lt;/a&gt; again
+for a new take on &lt;a href="https://www.wildfly.org/" target="_blank" rel="noopener"&gt;WildFly&lt;/a&gt; targeted at microservices.
+Thus &lt;a href="https://thorntail.io/" target="_blank" rel="noopener"&gt;WildFly Swarm&lt;/a&gt; was born.
 For at least the first 6 months,
 I can&amp;#8217;t remember exactly how long,
 it was only Bob and I working on it.
@@ -2278,168 +2278,168 @@ We had a great time bouncing ideas off each other and exploring different avenue
 Over time interest in microservices and uber jars grew, and so did the project.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect2&quot;&gt;
-&lt;h3 id=&quot;_microprofile_and_smallrye&quot;&gt;MicroProfile and SmallRye&lt;/h3&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;It was exciting to be involved in forming &lt;a href=&quot;https://microprofile.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MicroProfile&lt;/a&gt; in 2016, along with IBM, Tomitribe, Payara, and London Java Community (LJC).
-&lt;a href=&quot;https://microprofile.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MicroProfile&lt;/a&gt; was a great opportunity to learn more about microservices
+&lt;div class="sect2"&gt;
+&lt;h3 id="_microprofile_and_smallrye"&gt;MicroProfile and SmallRye&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;It was exciting to be involved in forming &lt;a href="https://microprofile.io/" target="_blank" rel="noopener"&gt;MicroProfile&lt;/a&gt; in 2016, along with IBM, Tomitribe, Payara, and London Java Community (LJC).
+&lt;a href="https://microprofile.io/" target="_blank" rel="noopener"&gt;MicroProfile&lt;/a&gt; was a great opportunity to learn more about microservices
 developed for the cloud and what they need above and beyond Java to be successful.
 We made some misteps over the years,
 but hopefully continue to learn and grow from them.
-With the desire for &lt;a href=&quot;https://www.wildfly.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;WildFly&lt;/a&gt; to also include &lt;a href=&quot;https://microprofile.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MicroProfile&lt;/a&gt;,
-there was an opportunity to have re-use between &lt;a href=&quot;https://www.wildfly.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;WildFly&lt;/a&gt; and
-&lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;WildFly Swarm&lt;/a&gt;.
-I pushed hard for the creation of &lt;a href=&quot;https://smallrye.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SmallRye&lt;/a&gt; as a shared home for
-&lt;a href=&quot;https://microprofile.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MicroProfile&lt;/a&gt; implementations.
+With the desire for &lt;a href="https://www.wildfly.org/" target="_blank" rel="noopener"&gt;WildFly&lt;/a&gt; to also include &lt;a href="https://microprofile.io/" target="_blank" rel="noopener"&gt;MicroProfile&lt;/a&gt;,
+there was an opportunity to have re-use between &lt;a href="https://www.wildfly.org/" target="_blank" rel="noopener"&gt;WildFly&lt;/a&gt; and
+&lt;a href="https://thorntail.io/" target="_blank" rel="noopener"&gt;WildFly Swarm&lt;/a&gt;.
+I pushed hard for the creation of &lt;a href="https://smallrye.io/" target="_blank" rel="noopener"&gt;SmallRye&lt;/a&gt; as a shared home for
+&lt;a href="https://microprofile.io/" target="_blank" rel="noopener"&gt;MicroProfile&lt;/a&gt; implementations.
 There was some immediate community building with OpenAPI,
 but other projects took some time to garner additional contributors,
 while others remained purely as a vehicle for Red Hat to share implementations.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect2&quot;&gt;
-&lt;h3 id=&quot;_thorntail&quot;&gt;Thorntail&lt;/h3&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I think it was around the time we created &lt;a href=&quot;https://smallrye.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SmallRye&lt;/a&gt;,
-that WildFly Swarm was renamed to &lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thorntail&lt;/a&gt;.
+&lt;div class="sect2"&gt;
+&lt;h3 id="_thorntail"&gt;Thorntail&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;I think it was around the time we created &lt;a href="https://smallrye.io/" target="_blank" rel="noopener"&gt;SmallRye&lt;/a&gt;,
+that WildFly Swarm was renamed to &lt;a href="https://thorntail.io/" target="_blank" rel="noopener"&gt;Thorntail&lt;/a&gt;.
 It would&amp;#8217;ve been so cool if we could have found somewhere to make a plushy version of the logo!
 No such luck unfortunately.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;In early 2018 I&amp;#8217;d spent a few months completely re-architecting &lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thorntail&lt;/a&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;In early 2018 I&amp;#8217;d spent a few months completely re-architecting &lt;a href="https://thorntail.io/" target="_blank" rel="noopener"&gt;Thorntail&lt;/a&gt;
 to have CDI at the very core of the runtime.
 It was tricky to figure out the right pieces initially,
 but once it started coming together it was so much easier to manage than the previous model.
-Also, each of the extensions, what we called &quot;fractions&quot;, needed way less code than the previous model.
-The work was stopped when we first started the PoC for &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt;!&lt;/p&gt;
+Also, each of the extensions, what we called "fractions", needed way less code than the previous model.
+The work was stopped when we first started the PoC for &lt;a href="https://quarkus.io/" target="_blank" rel="noopener"&gt;Quarkus&lt;/a&gt;!&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect2&quot;&gt;
-&lt;h3 id=&quot;_quarkus&quot;&gt;Quarkus&lt;/h3&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;It was a pleasure and a privelege to be a part of the small team working on &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt; from day one.
-It was a little sad to be moving on from &lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thorntail&lt;/a&gt;,
-but it was great to be able to build on all the learnings from &lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thorntail&lt;/a&gt;
-and combine it with AOT (Ahead of Time compilation) in &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="sect2"&gt;
+&lt;h3 id="_quarkus"&gt;Quarkus&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;It was a pleasure and a privelege to be a part of the small team working on &lt;a href="https://quarkus.io/" target="_blank" rel="noopener"&gt;Quarkus&lt;/a&gt; from day one.
+It was a little sad to be moving on from &lt;a href="https://thorntail.io/" target="_blank" rel="noopener"&gt;Thorntail&lt;/a&gt;,
+but it was great to be able to build on all the learnings from &lt;a href="https://thorntail.io/" target="_blank" rel="noopener"&gt;Thorntail&lt;/a&gt;
+and combine it with AOT (Ahead of Time compilation) in &lt;a href="https://quarkus.io/" target="_blank" rel="noopener"&gt;Quarkus&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Having worked on &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt; for a while,
-I had the pleasure of handing over &lt;a href=&quot;https://thorntail.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thorntail&lt;/a&gt;
-to &lt;a href=&quot;https://twitter.com/_ladicek?lang=en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Ladislav Thon&lt;/a&gt;.
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Having worked on &lt;a href="https://quarkus.io/" target="_blank" rel="noopener"&gt;Quarkus&lt;/a&gt; for a while,
+I had the pleasure of handing over &lt;a href="https://thorntail.io/" target="_blank" rel="noopener"&gt;Thorntail&lt;/a&gt;
+to &lt;a href="https://twitter.com/_ladicek?lang=en" target="_blank" rel="noopener"&gt;Ladislav Thon&lt;/a&gt;.
 It wasn&amp;#8217;t the easiest for him to take on a project he knew would end one day,
 but he did so with distinction.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;After a couple of years of working on &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt;,
-&lt;a href=&quot;https://smallrye.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SmallRye&lt;/a&gt;, and &lt;a href=&quot;https://microprofile.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MicroProfile&lt;/a&gt;,
+&lt;div class="paragraph"&gt;
+&lt;p&gt;After a couple of years of working on &lt;a href="https://quarkus.io/" target="_blank" rel="noopener"&gt;Quarkus&lt;/a&gt;,
+&lt;a href="https://smallrye.io/" target="_blank" rel="noopener"&gt;SmallRye&lt;/a&gt;, and &lt;a href="https://microprofile.io/" target="_blank" rel="noopener"&gt;MicroProfile&lt;/a&gt;,
 it was time to hand over the reins of being the Technical Architect for Red Hat at MicroProfile.
-&lt;a href=&quot;https://twitter.com/radcortez?lang=en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Roberto Cortez&lt;/a&gt; jumped in to take over
-&lt;a href=&quot;https://smallrye.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SmallRye&lt;/a&gt; and &lt;a href=&quot;https://microprofile.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MicroProfile&lt;/a&gt;
+&lt;a href="https://twitter.com/radcortez?lang=en" target="_blank" rel="noopener"&gt;Roberto Cortez&lt;/a&gt; jumped in to take over
+&lt;a href="https://smallrye.io/" target="_blank" rel="noopener"&gt;SmallRye&lt;/a&gt; and &lt;a href="https://microprofile.io/" target="_blank" rel="noopener"&gt;MicroProfile&lt;/a&gt;
 with incredible enthusiasm.
 I&amp;#8217;ve been very happy to see what he&amp;#8217;s achieved in the last year or so,
 and look forward to seeing what he continues to accomplish.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect2&quot;&gt;
-&lt;h3 id=&quot;_observability&quot;&gt;Observability&lt;/h3&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Over the last 12 to 18 months I&amp;#8217;ve still been working on &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt;,
+&lt;div class="sect2"&gt;
+&lt;h3 id="_observability"&gt;Observability&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Over the last 12 to 18 months I&amp;#8217;ve still been working on &lt;a href="https://quarkus.io/" target="_blank" rel="noopener"&gt;Quarkus&lt;/a&gt;,
 focused on the observability aspects.
-It all started when &lt;a href=&quot;https://twitter.com/ebullientworks&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Erin Schnabel&lt;/a&gt; shared
-concerns with MicroProfile Metrics and how &lt;a href=&quot;https://micrometer.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Micrometer&lt;/a&gt;
+It all started when &lt;a href="https://twitter.com/ebullientworks" target="_blank" rel="noopener"&gt;Erin Schnabel&lt;/a&gt; shared
+concerns with MicroProfile Metrics and how &lt;a href="https://micrometer.io/" target="_blank" rel="noopener"&gt;Micrometer&lt;/a&gt;
 is a mature library for metrics better suited to what SREs need to monitor Java applications.
 I can&amp;#8217;t thank Erin enough
 for opening my eyes to look beyond what might be more familiar to find gems from the wider ecosystem.
 Erin brings energy and enthusiasm to her work
 that is infectious!&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;My observability journey began with &lt;a href=&quot;https://micrometer.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Micrometer&lt;/a&gt;,
-but quickly included &lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; as most vendors in the space were contributing.
-I&amp;#8217;ve not contributed much to &lt;a href=&quot;https://opentelemetry.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenTelemetry&lt;/a&gt; so far,
+&lt;div class="paragraph"&gt;
+&lt;p&gt;My observability journey began with &lt;a href="https://micrometer.io/" target="_blank" rel="noopener"&gt;Micrometer&lt;/a&gt;,
+but quickly included &lt;a href="https://opentelemetry.io/" target="_blank" rel="noopener"&gt;OpenTelemetry&lt;/a&gt; as most vendors in the space were contributing.
+I&amp;#8217;ve not contributed much to &lt;a href="https://opentelemetry.io/" target="_blank" rel="noopener"&gt;OpenTelemetry&lt;/a&gt; so far,
 but it&amp;#8217;s been a tremendous and welcoming experience dealing with the community.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect2&quot;&gt;
-&lt;h3 id=&quot;_thanks_to_everyone&quot;&gt;Thanks to everyone&lt;/h3&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect2"&gt;
+&lt;h3 id="_thanks_to_everyone"&gt;Thanks to everyone&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;As my time at Red Hat draws to a close, at least for now,
-I want to profusely thank &lt;a href=&quot;https://twitter.com/nmcl?lang=en&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Mark Little&lt;/a&gt; for his guidance
+I want to profusely thank &lt;a href="https://twitter.com/nmcl?lang=en" target="_blank" rel="noopener"&gt;Mark Little&lt;/a&gt; for his guidance
 and mentorship over the years.
 I look forward to continuing our relationship,
 hopefully catching up at a conference at some point!
 I also want to thank all my managers over the years for helping to guide my growth,
 as well as all the fantastic team members I&amp;#8217;ve had the pleasure to work with.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I want to wish everyone on the &lt;a href=&quot;https://quarkus.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quarkus&lt;/a&gt; team continued success in the years ahead.&lt;/p&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;I want to wish everyone on the &lt;a href="https://quarkus.io/" target="_blank" rel="noopener"&gt;Quarkus&lt;/a&gt; team continued success in the years ahead.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_whats_next&quot;&gt;What&amp;#8217;s next?&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_whats_next"&gt;What&amp;#8217;s next?&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I will have a short break after Red Hat before beginning a new journey.
 Where I&amp;#8217;m heading and what I&amp;#8217;m up to will be for another post in the near future!&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Updated to Gatsby]]></title><description><![CDATA[It's been over a year since I first created this blog with the goal of posting more...]]></description><link>https://kenfinnigan.me/blog/updated-blog-to-gatsby/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/updated-blog-to-gatsby/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Mon, 25 May 2020 00:00:00 GMT</pubDate><content:encoded>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Updated to Gatsby]]></title><description><![CDATA[It's been over a year since I first created this blog with the goal of posting more...]]></description><link>https://kenfinnigan.me/blog/updated-blog-to-gatsby/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/updated-blog-to-gatsby/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Mon, 25 May 2020 00:00:00 GMT</pubDate><content:encoded>&lt;div class="paragraph"&gt;
 &lt;p&gt;It&amp;#8217;s been over a year since I first created this blog with the goal of posting more.
 It went so well that I&amp;#8217;ve no posts until now,
-and I decided to move the blog to &lt;a href=&quot;https://www.gatsbyjs.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GatsbyJS&lt;/a&gt; as well!&lt;/p&gt;
+and I decided to move the blog to &lt;a href="https://www.gatsbyjs.org/" target="_blank" rel="noopener"&gt;GatsbyJS&lt;/a&gt; as well!&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Though Hugo wasn&amp;#8217;t too bad to set up and get working with Asciidoc content,
 the theme I&amp;#8217;d chosen didn&amp;#8217;t make it easier to figure out,
 and I didn&amp;#8217;t really understand how to tweak pieces if needed.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I explored a few options in deciding on an alternative blog platform,
 as there are plenty to choose from.
-As I had some previous experience with &lt;a href=&quot;https://reactjs.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;React&lt;/a&gt;,
-using &lt;a href=&quot;https://www.gatsbyjs.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GatsbyJS&lt;/a&gt; appeared to be a good fit.
-Though I had no previous experience with &lt;a href=&quot;https://graphql.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GraphQL&lt;/a&gt;,
+As I had some previous experience with &lt;a href="https://reactjs.org/" target="_blank" rel="noopener"&gt;React&lt;/a&gt;,
+using &lt;a href="https://www.gatsbyjs.org/" target="_blank" rel="noopener"&gt;GatsbyJS&lt;/a&gt; appeared to be a good fit.
+Though I had no previous experience with &lt;a href="https://graphql.org/" target="_blank" rel="noopener"&gt;GraphQL&lt;/a&gt;,
 it seemed like a good opportunity to learn it.
 It was a little challenging to get to grips with in the beginning,
 but the docs are very thorough, so I managed to work through any issues without much hassle.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;In a future post I will cover the details of getting Asciidoc transformation
-working with &lt;a href=&quot;https://www.gatsbyjs.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GatsbyJS&lt;/a&gt;.&lt;/p&gt;
+working with &lt;a href="https://www.gatsbyjs.org/" target="_blank" rel="noopener"&gt;GatsbyJS&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Overall I&amp;#8217;m very happy with the choice,
-and have found it reasonably easy to write components in &lt;a href=&quot;https://reactjs.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;React&lt;/a&gt;
-and retrieve the data with &lt;a href=&quot;https://graphql.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GraphQL&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Introduction]]></title><description><![CDATA[It's definitely weird to think that this is the first time I will have had a personal blog in the over 20 years that I've been working with technology of various kinds...]]></description><link>https://kenfinnigan.me/blog/introduction/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/introduction/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sat, 09 Feb 2019 00:00:00 GMT</pubDate><content:encoded>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+and have found it reasonably easy to write components in &lt;a href="https://reactjs.org/" target="_blank" rel="noopener"&gt;React&lt;/a&gt;
+and retrieve the data with &lt;a href="https://graphql.org/" target="_blank" rel="noopener"&gt;GraphQL&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Introduction]]></title><description><![CDATA[It's definitely weird to think that this is the first time I will have had a personal blog in the over 20 years that I've been working with technology of various kinds...]]></description><link>https://kenfinnigan.me/blog/introduction/</link><guid isPermaLink="false">https://kenfinnigan.me/blog/introduction/</guid><dc:creator><![CDATA[Ken Finnigan]]></dc:creator><pubDate>Sat, 09 Feb 2019 00:00:00 GMT</pubDate><content:encoded>&lt;div id="preamble"&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;It&amp;#8217;s definitely weird to think that this is the first time I will have had a personal blog in the over 20
 years that I&amp;#8217;ve been working with technology of various kinds.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Maybe not so weird when I think that it&amp;#8217;s probably been on my &lt;strong&gt;todo list&lt;/strong&gt; for nearly 10 of those years.
 Possibly longer.
 It&amp;#8217;s actually been on my list so long I can&amp;#8217;t be sure how long it&amp;#8217;s been there!&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;So I finally pulled out the proverbial finger and put together a blog.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_a_bit_about_me&quot;&gt;A bit about me&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_a_bit_about_me"&gt;A bit about me&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I&amp;#8217;ve been working on open source projects for about 10 years or so now,
 and I&amp;#8217;ve enjoyed every minute of being part of something in each of the communities that I&amp;#8217;ve participated in.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;What&amp;#8217;s more, being able to contribute to open source projects while working for Red Hat has been fantastic.
 It makes the job even more rewarding being able to participate openly with communities of different projects.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;I&amp;#8217;ve always enjoyed playing with computers,
 and in particular programming on them.
 The first computer my family had in the early 80&amp;#8217;s was a Commodore 64.
@@ -2447,11 +2447,11 @@ At the time it seemed like the games were so amazing!
 A couple of years after that we upgraded to the Commodore 128D,
 which is when I really began learning to program.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;The first computer that was mine alone,
 I bought a second hand XT from Gateway with my pocket money.
 It was 1987 and it had a whopping 20MB HDD and 1280Kb RAM,
-and of course the wonderful 5 1/4&quot; floppy drive!
+and of course the wonderful 5 1/4" floppy drive!
 My dad would bring home old versions of software they&amp;#8217;d been using at his work for me to play around with.
 I spent many hours installing dBase IV, Lotus 1-2-3, and the like.
 Continually switching through up to a dozen floppy disks to complete an installation.
@@ -2459,38 +2459,38 @@ Those were the days!&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_what_will_this_blog_be_about&quot;&gt;What will this blog be about?&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_what_will_this_blog_be_about"&gt;What will this blog be about?&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Honestly, I&amp;#8217;m not entirely sure it will have a defined theme or group of topics right now.
 It will very much depend on how my interests change and what I might be working on at a specific time.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;What I can say is that there&amp;#8217;s definitely going to be topics on computing,
 most likely focusing around software development, microservices, and cloud.
 I may also talk about interesting genealogical things I find in doing my research.
 Some of which could cross over into software related to genealogy as well.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Lastly, you may find the odd post about family life or vacations we have taken.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_last_words&quot;&gt;Last words&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_last_words"&gt;Last words&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;A lot of the above is a round about way of saying,
 &lt;em&gt;this blog won&amp;#8217;t be for everyone&lt;/em&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;At any rate,
 I hope from time to time you find interesting topics I&amp;#8217;ve discussed here.
 And if you do, please let me know.
 I may decide to talk deeper about those topics that others also find of interest.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
+&lt;div class="paragraph"&gt;
 &lt;p&gt;Thanks for reading, Ken.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
