@@ -13,8 +13,7 @@ const layout = ({
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   ${seo({ title: seoTitle, description: seoDescription, pathName })}
-  <link rel="stylesheet" href="/styles/tachyons.min.css" />
-  <link rel="stylesheet" href="/styles/global.css" />
+  <link rel="stylesheet" href="/styles/site.css" />
 </head>
 <body class="ma0 avenir bg-near-white">
   ${header(pageTitle, pageDescription)}

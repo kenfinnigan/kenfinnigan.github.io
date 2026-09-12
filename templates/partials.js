@@ -95,4 +95,4 @@ const seo = ({ title, description, pathName }) => {
     <meta name="twitter:description" content="${escapeHtml(metaDescription)}" />`
 }
 
-module.exports = { socialButtons, navigation, header, footer, seo, escapeHtml }
+module.exports = { header, footer, seo, escapeHtml }

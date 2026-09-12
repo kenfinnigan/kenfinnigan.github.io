@@ -141,9 +141,9 @@ const twitterMonths = fs
 
 // ---------- page renderers ----------
 
-const pageArticle = (html, { narrow } = {}) => `
+const pageArticle = html => `
   <article class="pa3 pa4-ns nested-copy-line-height nested-img">
-    <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center lh-copy mid-gray" style="max-width:750px">
+    <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center lh-copy mid-gray" style="max-width:1000px">
       ${html}
     </section>
   </article>`
@@ -163,7 +163,7 @@ const renderBlogPost = post =>
     pathName: post.slug,
     body: `
   <article class="pa3 pa4-ns nested-copy-line-height">
-    <section class="cf ph3 ph5-l pv3 pv4-l f4 tl-l center lh-copy mid-gray" style="max-width:850px">
+    <section class="cf ph3 ph5-l pv3 pv4-l f4 tl-l center lh-copy mid-gray" style="max-width:1000px">
       ${post.html}
     </section>
   </article>`,
@@ -254,11 +254,7 @@ clean()
 copyRecursive(path.join(ROOT, "static"), PUBLIC)
 copyRecursive(path.join(SRC, "images"), path.join(PUBLIC, "images"))
 fs.mkdirSync(path.join(PUBLIC, "styles"), { recursive: true })
-fs.copyFileSync(path.join(SRC, "styles", "global.css"), path.join(PUBLIC, "styles", "global.css"))
-fs.copyFileSync(
-  path.join(SRC, "styles", "tachyons", "tachyons.min.css"),
-  path.join(PUBLIC, "styles", "tachyons.min.css")
-)
+fs.copyFileSync(path.join(SRC, "styles", "site.css"), path.join(PUBLIC, "styles", "site.css"))
 
 // about
 const about = renderAsciidoc(path.join(SRC, "pages", "about.adoc"))
