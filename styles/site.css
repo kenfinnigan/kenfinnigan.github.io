@@ -1,6 +1,7 @@
 /* Utility classes actually used by templates/, extracted from Tachyons
    (https://tachyons.io) so the page ships only what it uses instead of the
    full ~74KB framework. */
+*,*:before,*:after{box-sizing:border-box}
 .cover{background-size:cover!important}
 .bg-top{background-repeat:no-repeat}
 .bg-top{background-position:top}
@@ -103,7 +104,8 @@ header {
   background-image: url(../images/kings-cross.jpg);
 }
 
-.nested-img img {
+.nested-img img,
+.nested-img video {
   display: block;
   width: auto;
   max-width: 100%;
