@@ -99,8 +99,10 @@ const posts = fs
       date: pageAttributes.date,
       dateFormatted: formatDate(pageAttributes.date),
       summary: pageAttributes.summary,
+      draft: pageAttributes.draft,
     }
   })
+  .filter(p => !p.draft)
   .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
 
 const poetryDir = path.join(SRC, "poetry")
